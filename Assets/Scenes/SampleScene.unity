@@ -379,6 +379,7 @@ GameObject:
   - component: {fileID: 913498963}
   - component: {fileID: 913498965}
   - component: {fileID: 913498966}
+  - component: {fileID: 913498967}
   m_Layer: 0
   m_Name: Script
   m_TagString: Untagged
@@ -447,6 +448,19 @@ MonoBehaviour:
   _enemyLayerMask:
     serializedVersion: 2
     m_Bits: 128
+--- !u!114 &913498967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 913498962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c038b262050add1458c5d92cd30a73d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 1252939575}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,13 +546,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 1, z: 10}
+  m_LocalRotation: {x: 0, y: 0.9961947, z: -0.08715578, w: 0}
+  m_LocalPosition: {x: 0, y: 5, z: 15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 10, y: 180, z: 0}
 --- !u!1 &1008438191 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4039820552881895150, guid: db2fb690b16e47345b3fc1822e2b541a, type: 3}
@@ -613,6 +627,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d54d0a4deb5ed7f4ab32cf3bff75afeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &1252939575 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2150944403330472110, guid: db2fb690b16e47345b3fc1822e2b541a, type: 3}
+  m_PrefabInstance: {fileID: 1669247645}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1261033864 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4837150622333602023, guid: db2fb690b16e47345b3fc1822e2b541a, type: 3}

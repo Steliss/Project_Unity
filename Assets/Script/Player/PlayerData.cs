@@ -14,6 +14,7 @@ public class PlayerData
     [SerializeField] private float _attackRange = 5f;
     [SerializeField] private float _findRange = 100f;
     [SerializeField] private float _moveSpeed = 1f;
+    [SerializeField] private float _rotateSpeed = 90f;
     [SerializeField] private float _criticalChance = 0.1f;
     [SerializeField] private float _criticalDamageMultiplier = 1.5f;
 
@@ -23,6 +24,7 @@ public class PlayerData
     public float AttackRange => _attackRange;
     public float FindRange => _findRange;
     public float MoveSpeed => _moveSpeed;
+    public float RotateSpeed => _rotateSpeed;
     public float CriticalChance => _criticalChance;
     public float CriticalDamageMultiplier => _criticalDamageMultiplier;
 

@@ -18,14 +18,21 @@ public class PlayerBattle : MonoBehaviour
     private PlayerReward _playerReward;
 
     // 레이캐스트로 찾은 애너미, 레이어를 활용 enemy만 찾게 설정
-    private Enemy _enemy;
     [SerializeField] private LayerMask _enemyLayerMask;
 
+    private Enemy _enemy;
+    private PlayerAnimation _playerAnimation;
+
     // 강화 상태 
-    private bool _isPower = false;
+    private bool _flagPower = false;
+    private bool _flagShoot = false;
+
+
+    private float _distance = 0f;
 
 
     public PlayerData PlayerData => _playerData;
+    public Enemy Enemy => _enemy;
 
     private void Awake()
     {
@@ -48,20 +55,28 @@ public class PlayerBattle : MonoBehaviour
             return;
         }
 
+        _playerAnimation = GetComponent<PlayerAnimation>();
+        if (_playerAnimation == null)
+        {
+            Log.LogNull(nameof(PlayerBattle), nameof(Start), nameof(_playerAnimation));
+            return;
+        }
+
         _playerReward.Initialize(_playerData);
     }
 
 
     private void Update()
     {
-        // 초기 시행 
+        // 적 탐색 
         if (_enemy == null)
         {
             EnemyFind();
         }
 
+        // 테스트
         if (Input.GetMouseButtonDown(0))
-        {
+        {   
             EnemyFind();
         }
 
@@ -129,33 +144,62 @@ public class PlayerBattle : MonoBehaviour
         Vector3 playerPos = _player.transform.position;
         Vector3 enemyPos = _enemy.transform.position;
 
-        float distance = Vector3.Distance(enemyPos, playerPos);
+
+        // 방향 계산
+        Vector3 directionToEnemy = (enemyPos - playerPos).normalized;
+        directionToEnemy.y = 0f;
+
+        _distance = Vector3.Distance(enemyPos, playerPos);
+        _playerAnimation.PlayerMoving(_distance - _playerData.AttackRange, _playerData.MoveSpeed);
 
         // 사거리 안이라면 이동하지 않음
-        if (distance <= _playerData.AttackRange)
+        if (_distance <= _playerData.AttackRange)
         {
             return;
         }
 
-        // 방향 계산
-        Vector3 directionToEnemy = (playerPos- enemyPos).normalized;
 
-        // 적에게서 플레이어 방향으로 사거리만큼 떨어진 위치 보정값 3f
-        Vector3 stopPosition = enemyPos - directionToEnemy * (_playerData.AttackRange - 3f);
+        // 유효한 방향이 없으면 처리하지 않음
+        if (directionToEnemy.sqrMagnitude <= 0.0001f)
+        {
+            return;
+        }
+
+        // 적에게서 플레이어 방향으로 사거리반 만큼 이동 
+        Vector3 stopPosition = enemyPos - directionToEnemy * (_playerData.AttackRange * 0.5f);
         stopPosition.y = 0f;
 
-        _player.transform.position = Vector3.MoveTowards(playerPos, stopPosition, _playerData.MoveSpeed * Time.deltaTime);
 
-        // 속도에 따른 애니메이션 
-        PlayerAnimation.PlayerMoving(_playerData.MoveSpeed);
+        Quaternion targetRotation = Quaternion.LookRotation(directionToEnemy, Vector3.up);
+
+        float remainingAngle = Quaternion.Angle(_player.transform.rotation, targetRotation);
+
+        if (remainingAngle > 5f)
+        {
+            // 아직 적을 바라보지 않으므로 회전
+            _player.transform.rotation = Quaternion.RotateTowards(_player.transform.rotation, targetRotation, _playerData.RotateSpeed * Time.deltaTime);
+        }
+        else
+        {
+            // 적을 거의 바라봤으므로 이동
+            _player.transform.position = Vector3.MoveTowards(playerPos, stopPosition, _playerData.MoveSpeed * Time.deltaTime);
+        }
     }
+
+
+    
 
     private void Battle()
     {
-
+        // 전투 모션 
+        // 데미지 계산 
+        // 
     }
 
-
+    private void ItemDrop()
+    {
+        // 전투 종료 확률 계산 드랍 
+    }
 
 
 
