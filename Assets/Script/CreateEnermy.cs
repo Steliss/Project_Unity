@@ -1,47 +1,46 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
-
-public class CreateEnermy : MonoBehaviour
+public class CreateEnemy : MonoBehaviour
 {
-    // 해야 할거 10마리의 적 랜덤 스폰만 관리 
+    // 적 15마리의 생성과 랜덤 스폰 관리
 
     [Header("스폰할 적 오브젝트")]
     [SerializeField] GameObject _GoEnermy = null;
     [SerializeField] private int _enermyCreate = 15;
     [SerializeField] private int _enermyCount = 10;
 
-    [SerializeField] private Vector3 _enemyCenter = new Vector3(0f, 5f, 0f);
-    [SerializeField] private float _enemySpwanMin = -10.0f; 
-    [SerializeField] private float _enemySpwanMax = 10.0f;
+    [Header("적 스폰 범위")]
+    [SerializeField]
+    private Vector3 _enemyCenter = new Vector3(0f, 5f, 0f);
 
-    private Queue<GameObject> _enemyQueue = new Queue<GameObject>();
-    private List<GameObject> _enemyList = new List<GameObject>();
+    [SerializeField] private float _enemySpawnMin = -10f;
+    [SerializeField] private float _enemySpawnMax = 10f;
+
+    private readonly Queue<GameObject> _enemyQueue = new Queue<GameObject>();
+    private readonly List<GameObject> _enemyList = new List<GameObject>();
+
     private Transform _enemy;
-
 
     private void Awake()
     {
-
         if (_GoEnermy == null)
         {
-            Debug.Log("적 오브젝트 비었음");
+            Debug.LogError("적 프리팹이 연결되지 않았습니다.");
+
             return;
         }
     }
 
-    void Start()
+    private void Start()
     {
         EnemySetting();
     }
 
-    void Update()
+    private void Update()
     {
         EnemySpawn();
     }
-
 
     private void EnemySetting()
     {
@@ -50,55 +49,58 @@ public class CreateEnermy : MonoBehaviour
             return;
         }
 
-        //풀 루트 생성 ->하이어라키 정리용
+        // 풀 루트 생성 → Hierarchy 정리용
         GameObject root = new GameObject("Enermy");
-
         _enemy = root.transform;
 
-        for (int i = 0; i < _enermyCount; i++)
+        // 풀에는 15개 생성
+        for (int i = 0; i < _enermyCreate; i++)
         {
-            GameObject Apple = Instantiate(_GoEnermy, _enemy);
-            Apple.SetActive(false);
+            GameObject enemy = Instantiate(_GoEnermy, _enemy);
+            enemy.SetActive(false);
 
-            _enemyQueue.Enqueue(Apple);
+            _enemyQueue.Enqueue(enemy);
         }
     }
-
 
     private void EnemySpawn()
     {
+        // 활성화된 적이 10마리면 추가 스폰하지 않음
+        if (_enemyList.Count >= _enermyCount)
+        {
+            return;
+        }
+
         if (_enemyQueue.Count == 0)
         {
-            // 더 생성할 생각이 없으니 리턴
             return;
         }
 
-        GameObject apple = _enemyQueue.Dequeue();
+        GameObject enemy = _enemyQueue.Dequeue();
 
-        float randX = Random.Range(_enemySpwanMin, _enemySpwanMax);
-        float randZ = Random.Range(_enemySpwanMin, _enemySpwanMax);
+        float randX = Random.Range(_enemySpawnMin, _enemySpawnMax);
+        float randZ = Random.Range(_enemySpawnMin, _enemySpawnMax);
 
-        apple.transform.position = new Vector3(randX, 4f, randZ) + _enemyCenter;
-        apple.transform.rotation = Quaternion.identity;
+        enemy.transform.position = new Vector3(randX, 4f, randZ) + _enemyCenter;
+        enemy.transform.rotation = Quaternion.identity;
 
-        apple.SetActive(true);
-        _enemyList.Add(apple);
+        enemy.SetActive(true);
+        _enemyList.Add(enemy);
     }
 
-    // 죽이고 호출
-    public void EnemyToPool(GameObject apple)
+
+    // 적이 죽었을 때 호출
+    public void EnemyToPool(GameObject enemy)
     {
-        if (apple == null)
+        if (enemy == null)
         {
             return;
         }
 
-        apple.SetActive(false);
-        _enemyList.Remove(apple);
+        enemy.SetActive(false);
+        _enemyList.Remove(enemy);
 
-        apple.transform.SetParent(_enemy);
-        _enemyQueue.Enqueue(apple);
+        enemy.transform.SetParent(_enemy);
+        _enemyQueue.Enqueue(enemy);
     }
-
 }
-
