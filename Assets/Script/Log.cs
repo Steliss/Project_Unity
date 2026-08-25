@@ -8,8 +8,18 @@ public class Log : MonoBehaviour
     /// <param name="className"></param>
     /// <param name="methodName"></param>
     /// <param name="targetName"></param>
-    public static void LogNull(string className, string methodName, string targetName)
+    public static void LogNull(string className, string methodName, string targetName = null)
     {
-        Debug.LogError($"[{className}] / [{methodName}]  {targetName}이 null입니다.");
+        if(targetName == null)
+        {
+            Debug.LogError($"[{className}] / [{methodName}] 인스펙터 null입니다.");
+        }
+        else
+        {
+            Debug.LogError($"[{className}] / [{methodName}]  {targetName}이 null입니다.");
+        }
+
     }
+
+
 }

@@ -5,8 +5,6 @@ using UnityEngine;
 public class PlayerAnimation : MonoBehaviour
 {
     // 에니메이터
-    // 들고 오는 김에 플레이어 위치 보정도? => 이동
-    // 
 
     [Header("참조")]
     [SerializeField] private Animator _animator;
@@ -23,13 +21,13 @@ public class PlayerAnimation : MonoBehaviour
     }
 
 
-    private Animation _anime = new Animation();
-
     private int _hashSpeed;
+    private int _hashShoot;
 
     private void Awake()
     {
         _hashSpeed = Animator.StringToHash("fSpeed");
+        _hashShoot = Animator.StringToHash("bShoot");
     }
 
     public void PlayerMoving(float stopDistance, float moveSpeed)
@@ -53,6 +51,11 @@ public class PlayerAnimation : MonoBehaviour
         }
 
         _animator.SetFloat(_hashSpeed, speed01);
+    }
+
+    public void PlayerShoot(bool shoot)
+    {
+        _animator.SetBool(_hashShoot, shoot);
     }
 
 }
