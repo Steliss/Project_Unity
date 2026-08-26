@@ -16,8 +16,6 @@ public class CreateItem : MonoBehaviour
     }
 
 
-    [SerializeField] GameData _gameData = null;
-
     [Header("Å° ½ºÆù")]
     [SerializeField] GameObject _goKey = null;
     [SerializeField] private int _keyCount = 5;
@@ -33,6 +31,9 @@ public class CreateItem : MonoBehaviour
     private readonly Queue<GameObject> _potionQueue = new Queue<GameObject>();
     private readonly List<GameObject> _potionList = new List<GameObject>();
     private readonly Dictionary<GameObject, float> _potionDiction = new Dictionary<GameObject, float>();
+
+
+    GameData _gameData;
 
     private Transform _key;
     private Transform _powerPotion;
@@ -71,6 +72,13 @@ public class CreateItem : MonoBehaviour
 
     private void Start()
     {
+        _gameData = ManagerDontDestroy.Instance.GameData;
+        if (_gameData == null)
+        {
+            Log.LogNull(nameof(CreateItem), nameof(Start), nameof(_gameData));
+        }
+
+
         _objectData = _gameData._ObjectData;
         _playerData = _gameData._PlayerData;
 
@@ -141,10 +149,10 @@ public class CreateItem : MonoBehaviour
 
         for (int i = 0; i < _potionCount; i++)
         {
-            GameObject key = Instantiate(_goPotion, _powerPotion);
-            key.SetActive(false);
+            GameObject potion = Instantiate(_goPotion, _powerPotion);
+            potion.SetActive(false);
 
-            _potionQueue.Enqueue(key);
+            _potionQueue.Enqueue(potion);
         }
     }
 
@@ -163,7 +171,6 @@ public class CreateItem : MonoBehaviour
 
         GameObject potion = _potionQueue.Dequeue();
 
-        potion.transform.SetParent(null);
         potion.transform.position = dropPosition;
         potion.SetActive(true);
 
@@ -356,7 +363,6 @@ public class CreateItem : MonoBehaviour
 
         GameObject key = _keyQueue.Dequeue();
 
-        key.transform.SetParent(null);
         key.transform.position = dropPosition;
         key.SetActive(true);
 

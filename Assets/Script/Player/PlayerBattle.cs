@@ -11,7 +11,6 @@ public class PlayerBattle : MonoBehaviour
     [SerializeField] private bool _flagTestLog = false;
 
     [SerializeField] private GameObject _player;
-    [SerializeField] private GameData _gameData = null;
     [SerializeField] private CreateItem _createItem = null;
 
     // 레이캐스트로 찾은 애너미, 레이어를 활용 enemy만 찾게 설정
@@ -19,6 +18,7 @@ public class PlayerBattle : MonoBehaviour
 
     // 데이터 생성&전달 
     // 생성 끝나고 넣어주기 
+    private GameData _gameData;
     private PlayerData _playerData;
     private ObjectData _objectData;
     private Enemy _enemy;
@@ -32,10 +32,21 @@ public class PlayerBattle : MonoBehaviour
     private float _distance = 0f;
     private float _attakDuration = 0f;
 
+    public Enemy _Enemy => _enemy;
+
 
 
     private void Start()
     {
+
+        _gameData = ManagerDontDestroy.Instance.GameData;
+        if (_gameData == null)
+        {
+            Log.LogNull(nameof(PlayerBattle), nameof(Start), nameof(_gameData));
+        }
+
+
+
         _playerAnimation = GetComponent<PlayerAnimation>();
         if (_playerAnimation == null)
         {

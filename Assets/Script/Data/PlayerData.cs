@@ -18,6 +18,10 @@ public class PlayerData
     [SerializeField] private float _criticalChance = 0.1f;
     [SerializeField] private float _criticalDamageMultiplier = 1.5f;
 
+    [SerializeField] private bool _flagBossBattle = false;
+    
+    [SerializeField] private float _petAttackPower = 10f;
+
 
     public float AttackPower => _attackPower;
     public float AttackSpeed => _attackSpeed;
@@ -27,6 +31,8 @@ public class PlayerData
     public float RotateSpeed => _rotateSpeed;
     public float CriticalChance => _criticalChance;
     public float CriticalDamageMultiplier => _criticalDamageMultiplier;
+    public bool FlagBossBattle => _flagBossBattle;
+    public float PetAttackPower => _petAttackPower;
 
 
     public void AddAttackPower(float value)
@@ -56,5 +62,18 @@ public class PlayerData
     {
         _criticalDamageMultiplier += value;
     }
+    public void AddPetAttackPower(float value)
+    {
+        _petAttackPower += value;
+    }
+
+    
+    // 스타트 단계에서만 받아올거고. 상태 변환이 필요하니 이게 맞네 
+    public bool BossBattle(bool valve)
+    {
+        _flagBossBattle = !valve;
+        return _flagBossBattle!;
+    }
+
 }
 
