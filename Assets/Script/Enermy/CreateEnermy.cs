@@ -97,9 +97,13 @@ public class CreateEnemy : MonoBehaviour
             return;
         }
 
-        enemy.SetActive(false);
-        _enemyList.Remove(enemy);
+        // 중복 제거 체크 
+        if (!_enemyList.Remove(enemy))
+        {
+            return;
+        }
 
+        enemy.SetActive(false);
         enemy.transform.SetParent(_enemy);
         _enemyQueue.Enqueue(enemy);
     }

@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
 
 
     [SerializeField] private CreateEnemy _createEnemy = null;
+    [SerializeField] private CreateItem _createItem = null;
     [SerializeField] private float _enemyBaseHP = 10f;
 
     private GameData _gameData;
@@ -17,8 +18,7 @@ public class Enemy : MonoBehaviour
     private float _maxHP;
     private float _currentHP;
 
-    // 이거로 다시 찾을지 아님 플레이어 데이터 넘길지 고민 
-    private bool _flagtarget = true;
+    private bool _flagIsDead = false;
 
     public float CurrentHP => _currentHP;
 
@@ -36,10 +36,16 @@ public class Enemy : MonoBehaviour
         {
             Log.LogNull(nameof(Enemy), nameof(Start), nameof(_createEnemy));
         }
+
+        if (_createItem == null)
+        {
+            Log.LogNull(nameof(PlayerBattle), nameof(Start));
+        }
     }
 
     private void OnEnable()
     {
+        _flagIsDead = false;
         // 풀에서 다시 나올 때 초기화
         _maxHP = _enemyBaseHP + 3f;
         _currentHP = _maxHP;
@@ -48,11 +54,22 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        _currentHP -= damage;
-
-        if (CurrentHP <= 0)
+        if (_flagIsDead || !isActiveAndEnabled)
         {
-            _createEnemy.EnemyToPool(this.gameObject);
+            return;
+        }
+
+        _currentHP -= damage;
+        Debug.Log($"가한 데미지 : {damage}");
+        Debug.Log($"남은 HP : {_currentHP}");
+
+        if (_currentHP <= 0f)
+        {
+            _currentHP = 0f;
+            _flagIsDead = true;
+
+            _createItem.ItemDrop(transform.position);
+            _createEnemy.EnemyToPool(gameObject);
         }
     }
 

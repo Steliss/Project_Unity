@@ -26,6 +26,14 @@ public class PlayerAnimation : MonoBehaviour
 
     private void Awake()
     {
+        if (_animator == null)
+        {
+            _animator = GetComponent<Animator>();
+        }
+        if (_animator == null)
+        {
+            Log.LogNull(nameof(PlayerAnimation), nameof(Awake));
+        }
         _hashSpeed = Animator.StringToHash("fSpeed");
         _hashShoot = Animator.StringToHash("bShoot");
     }

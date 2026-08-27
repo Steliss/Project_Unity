@@ -8,10 +8,8 @@ using UnityEngine;
 
 public class PlayerBattle : MonoBehaviour
 {
-    [SerializeField] private bool _flagTestLog = false;
 
     [SerializeField] private GameObject _player;
-    [SerializeField] private CreateItem _createItem = null;
 
     // 레이캐스트로 찾은 애너미, 레이어를 활용 enemy만 찾게 설정
     [SerializeField] private LayerMask _enemyLayerMask;
@@ -68,21 +66,23 @@ public class PlayerBattle : MonoBehaviour
             return;
         }
 
-        if(_createItem == null)
-        {
-            Log.LogNull(nameof(PlayerBattle), nameof(Start));
-        }
-
 
     }
 
 
     private void Update()
     {
-        // 적 탐색 
-        if (_enemy == null)
+        // 죽거나 풀로 돌아간 적 참조 제거
+        if (!IsEnemyValid())
         {
+            ClearEnemy();
             EnemyFind();
+        }
+
+        // 새 적도 찾지 못했다면 이동과 공격 중단
+        if (!IsEnemyValid())
+        {
+            return;
         }
 
         // 테스트
@@ -97,6 +97,25 @@ public class PlayerBattle : MonoBehaviour
         //  ㄴ 보상
         
 
+    }
+
+
+    private bool IsEnemyValid()
+    {
+        return _enemy != null && _enemy.isActiveAndEnabled && _enemy.CurrentHP > 0f;
+    }
+
+    // 펫이 죽였을때 상태 초기화
+    private void ClearEnemy()
+    {
+        _enemy = null;
+
+        _flagShoot = false;
+        _flagCanBattle = false;
+
+        _distance = 0f;
+
+        _playerAnimation.PlayerShoot(false);
     }
 
     // 레이캐스트 범위 안 적 발견 및 리스트에 순서대로 배치 
@@ -114,13 +133,13 @@ public class PlayerBattle : MonoBehaviour
         {
             Enemy enemy = detectedCollider.GetComponentInParent<Enemy>();
 
-            if (enemy == null)
+            // 테스트용 끝나고 지우기
+            EnermyCheck(enemy, Color.white);
+
+            if (IsEnemyValid())
             {
                 continue;
             }
-
-            // 테스트용 끝나고 지우기
-            EnermyCheck(enemy, Color.white);
 
             float distance = (enemy.transform.position - _player.transform.position).sqrMagnitude;
 
@@ -199,29 +218,16 @@ public class PlayerBattle : MonoBehaviour
 
     private void Battle()
     {
-        // 테스트로그
-        if (_flagTestLog)
-        {
-            Debug.Log(_attakDuration);
-            Debug.Log(_flagShoot);
-        }
+        // 전투 모션 
+        _playerAnimation.PlayerShoot(_flagShoot);
 
-        // 적이 비었으면 리턴
-        if (_enemy == null)
+        // 
+        if (!IsEnemyValid() || !_flagCanBattle)
         {
-            _flagShoot = false;
-            return;
-        }
-
-        if(!_flagCanBattle)
-        {
-            //Log(_flagCanBattle);
             return;
         }
 
         _attakDuration += Time.deltaTime;
-        // 전투 모션 
-        _playerAnimation.PlayerShoot(_flagShoot);
 
         // 사거리 밖이면 리턴
         if (_distance > _playerData.AttackRange)
@@ -231,11 +237,7 @@ public class PlayerBattle : MonoBehaviour
         }
 
         // 파워 업의 경우 
-        float duration = 10f;
-        if (_flagPower)
-        {
-            duration = 1f;
-        }
+        float duration = _flagPower ? 1f : 10f;
 
         // 공격 주기가 안됬음 리턴  
         if (_attakDuration * _playerData.AttackSpeed < duration)
@@ -258,25 +260,16 @@ public class PlayerBattle : MonoBehaviour
             Debug.Log($"치명타");
         }
 
-        if (_flagTestLog)
-        {
-            Debug.Log($"데미지를 줬습니다 {toDamage}");
-        }
-
         _enemy.TakeDamage(toDamage);
         _attakDuration = 0f;
 
-        if (_enemy.CurrentHP <= 0.1f)
+        if (!IsEnemyValid())
         {
-            _flagShoot = false;
-
-            // 아이템 드랍
-            _createItem.ItemDrop(_enemy.transform.position);
-
-            _enemy = null;
+            ClearEnemy();
         }
-
     }
+
+
 
 
 

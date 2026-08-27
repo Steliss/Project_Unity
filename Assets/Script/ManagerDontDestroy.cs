@@ -3,8 +3,7 @@ using UnityEngine;
 public class ManagerDontDestroy : MonoBehaviour
 {
 
-    [SerializeField]
-    private GameData _gameData;
+    [SerializeField] private GameData _gameData;
 
     public static ManagerDontDestroy Instance
     {
