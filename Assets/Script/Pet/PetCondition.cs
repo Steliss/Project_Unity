@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 // 펫 자체의 고유 데이터 관리 / 이속, 회전값, 회전반경, sin파 높이, 공격 속도, 순간이동 범위 
@@ -20,10 +21,10 @@ public class PetCondition : MonoBehaviour
     [SerializeField] private float _orbitRadius = 3f;
     [SerializeField] private float _orbitSpeed = 12f;
     [SerializeField] private float _moveSpeed = 5f;
-    [SerializeField] private float _rotateSpeed = 180f;
+    [SerializeField] private float _rotateSpeed = 240f;
 
     // 비행 설정
-    [SerializeField] private float _flyingHeight = 2f;
+    [SerializeField] private float _flyingHeight = 4f;
     [SerializeField] private float _floatingHeight = 2f;
     [SerializeField] private float _floatingSpeed = 2f;
 
@@ -33,7 +34,7 @@ public class PetCondition : MonoBehaviour
     [SerializeField] private float _landingSpeed = 3f;
 
     // 복귀 설정
-    [SerializeField] private float _teleportDistance = 10f;
+    [SerializeField] private float _teleportDistance = 20f;
 
     private PlayerData _playerData;
     private PlayerBattle _playerBattle;
@@ -46,11 +47,13 @@ public class PetCondition : MonoBehaviour
 
     private bool _flagFlying = false;
     private bool _flagLanding = false;
+
     private bool _flagAnimation = false;
 
     private float _orbitAngle;
 
     private float battleTimer = 0f;
+    private float animationTimer = 0f;
 
     Vector3 tarPos;
 
@@ -96,6 +99,8 @@ public class PetCondition : MonoBehaviour
             return;
         }
 
+        _petCondition = Condition.Move;
+
         // 위치 초기값 넣어주기. 
     }
 
@@ -126,28 +131,117 @@ public class PetCondition : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
-            _petCondition = Condition.Move;
+            _petCondition = Condition.Idle;
+            Debug.Log($" _petCondition : {_petCondition}");
         }
 
-        if(battleTimer > 10f)
+
+        if (battleTimer > 10f)
         {
             _flagBattle = true;
-            Debug.Log("Battle flag On");
         }
 
+        DragonIdle();
+        DragonPlay();
         DragonPetBattle();
         DragonPetMove();
-
-        //TestRotate();
+        
     }
+
+
+    // 아이들 모션 트리거 
+    // 애니메이션 재생후 무빙으로 
+    // 날고 있다면 땅으로 내리기
+    private void DragonIdle()
+    {
+        if (_player == null || _petCondition != Condition.Idle || _flagBattle)
+        {
+            return;
+        }
+
+        if (_flagFlying)
+        {
+            _petAnimation.PetMoving(1f);
+            DragonPetLanding();
+
+            if (_flagFlying)
+            {
+                return;
+            }
+        }
+
+        PetLookRotate(_player.transform.position);
+        _petAnimation.PetMoving(0f);
+        int motion = Random.Range(0, 2);
+
+
+        if (!_flagAnimation)
+        {
+            _petAnimation.PlayAnimation(motion == 0 ? PetAnimation.Animation.IdleSmell : PetAnimation.Animation.IdleYaw);
+            _flagAnimation = true;
+        }
+        else
+        {
+            animationTimer += Time.deltaTime;
+        }
+        
+        if(animationTimer > 3.5f)
+        {
+            _petCondition = Condition.Move;
+
+            _flagAnimation = false;
+            animationTimer = 0;
+        }
+
+    }
+
+    private void DragonPlay()
+    {
+        if (_player == null || _petCondition != Condition.Play || _flagBattle)
+        {
+            return;
+        }
+
+        if (_flagFlying)
+        {
+            _petAnimation.PetMoving(1f);
+            DragonPetLanding();
+
+            if (_flagFlying)
+            {
+                return;
+            }
+        }
+
+        PetLookRotate(_player.transform.position);
+        _petAnimation.PetMoving(0f);
+        int motion = Random.Range(0, 2);
+
+
+        if (!_flagAnimation)
+        {
+            _petAnimation.PlayAnimation(motion == 0 ? PetAnimation.Animation.PetVr : PetAnimation.Animation.Confuse);
+            _flagAnimation = true;
+        }
+        else
+        {
+            animationTimer += Time.deltaTime;
+        }
+
+        if (animationTimer > 5f)
+        {
+            _petCondition = Condition.Move;
+
+            _flagAnimation = false;
+            animationTimer = 0;
+        }
+    }
+
+
 
     private void DragonPetBattle()
     {
         battleTimer += Time.deltaTime;
-        // 날때 땅일때 구분 
-
-        // 땅일때 공격 실패시 => 보상 
-        // 날고 있을때 
 
         if (!_flagBattle || !IsEnemyValid())
         {
@@ -166,12 +260,21 @@ public class PetCondition : MonoBehaviour
 
         if (_flagFlying)
         {
-            _enemy.TakeDamage(toDamage);
-            // 애니메이션 코루틴 
+            // 시간나면 플레이어처럼 봤을때 공격하기로 바꾸기
+            PetLookRotate(_enemy.transform.position);
+
             _petAnimation.PlayAnimation(PetAnimation.Animation.FireAttack);
 
-            //
-            DragonBattleConditionClear();
+            // 클리어 전에 딜레이 시간 주기
+            animationTimer += Time.deltaTime;
+
+            if (animationTimer > 1f)
+            {
+                _enemy.TakeDamage(toDamage);
+                DragonBattleConditionClear();
+                _flagFlying = true;
+            }
+
         }
         else
         {
@@ -187,43 +290,52 @@ public class PetCondition : MonoBehaviour
             Vector3 tarpos = _enemy.transform.position - normal * 1f;
             tarpos.y = 0f;
             transform.position = Vector3.MoveTowards(transform.position, tarpos, _playerData.MoveSpeed * 2 * Time.deltaTime);
-            Quaternion rot = Quaternion.LookRotation(normal);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, rot, _rotateSpeed);
+            PetLookRotate(_enemy.transform.position);
 
 
             // 공격 
             if ((transform.position - tarpos).sqrMagnitude <= 0.01f)
             {
-                _enemy.TakeDamage(toDamage);
-                Debug.Log("petBattle");
-                //
                 _petAnimation.PlayAnimation(PetAnimation.Animation.PawR);
-                //
-                DragonBattleConditionClear();
+
+                animationTimer += Time.deltaTime;
+                if (animationTimer > 1f)
+                {
+                    _enemy.TakeDamage(toDamage);
+                    DragonBattleConditionClear();
+                }
             }
-
-
-
-            // 애니메이션 코루틴
-
-            // 타겟 근처 전에 적이 죽으면 뺑뺑이인데 뺑뻉이 시간 길면 보상으로 
         }
     }
 
     private void DragonBattleConditionClear()
     {
         _flagBattle = false;
+        _flagFlying = !_flagFlying;
         battleTimer = 0f;
+        animationTimer = 0f;
+        _petAnimation.PetMoving(0f);
 
-        _petCondition = (Condition)_petCondition++;
+        int rand = Random.Range(0, 3);
 
-        if (_petCondition == Condition.None)
+        if (rand == 0)
         {
             _petCondition = Condition.Idle;
         }
+        else if (rand == 1)
+        {
+            _petCondition = Condition.Play;
+        }
+        else
+        {
+            _petCondition = Condition.Move;
+        }
 
         Debug.Log("Battle Clear");
+        Debug.Log($"pet cpondition : {_petCondition}");
     }
+
+
 
 
     private void DragonPetMove()
@@ -260,6 +372,7 @@ public class PetCondition : MonoBehaviour
 
         if (_flagLanding)
         {
+            _petAnimation.PetMoving(1f);
             DragonPetLanding();
             return;
         }
@@ -270,14 +383,14 @@ public class PetCondition : MonoBehaviour
             float floatingOffset = Mathf.Sin(Time.time * _floatingSpeed) * _floatingHeight;
             tarPos.y = playerPosition.y + _flyingHeight + floatingOffset;
             //
-            _petAnimation.PlayAnimation(PetAnimation.Animation.Fly);
+            _petAnimation.PetMoving(1f);
             //
         }
         else
         {
             tarPos.y = GroundHeight();
             //
-            _petAnimation.PlayAnimation(PetAnimation.Animation.Run);
+            _petAnimation.PetMoving(0.5f);
             //
         }
 
@@ -332,19 +445,6 @@ public class PetCondition : MonoBehaviour
 
 
 
-    private void TestRotate()
-    {       
-        // Test
-        if (_enemy != null)
-        {
-            Vector3 directionToEnemy = (_enemy.transform.position - transform.position).normalized;
-
-            Quaternion targetRotation = Quaternion.LookRotation(directionToEnemy, Vector3.up);
-
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 90f * Time.deltaTime);
-        }
-
-    }
 
 
 

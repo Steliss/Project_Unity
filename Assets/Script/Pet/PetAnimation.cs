@@ -29,16 +29,16 @@ public class PetAnimation : MonoBehaviour
         Animator.StringToHash("tIdleSmell"),
         Animator.StringToHash("tIdleYaw"),
         Animator.StringToHash("tConfuse"),
-        Animator.StringToHash("tPetVr"),
+        Animator.StringToHash("tPetVR"),
         Animator.StringToHash("tLevelUp"),
         Animator.StringToHash("tHappy"),
         Animator.StringToHash("tScared"),
         Animator.StringToHash("tFireBall"),
         Animator.StringToHash("tPawR"),
-        Animator.StringToHash("tPawL"),
-        Animator.StringToHash("tFly"),
-        Animator.StringToHash("tRun")
+        Animator.StringToHash("tPawL")
     };
+
+    private int _hashMove;
 
     private void Awake()
     {
@@ -50,6 +50,8 @@ public class PetAnimation : MonoBehaviour
         {
             Log.LogNull(nameof(PlayerAnimation), nameof(Awake));
         }
+
+        _hashMove = Animator.StringToHash("fMove");
     }
 
     public void PlayAnimation(Animation animation)
@@ -69,5 +71,13 @@ public class PetAnimation : MonoBehaviour
         _animator.SetTrigger(TriggerHashes[index]);
     }
 
+    /// <summary>
+    /// 0 = idle / 0.5 = run / 1 = fly
+    /// </summary>
+    /// <param name="moveCondition"></param>
+    public void PetMoving(float moveCondition)
+    {
+        _animator.SetFloat(_hashMove, moveCondition);
+    }
 
 }
