@@ -9,11 +9,11 @@ using UnityEngine;
 public class PlayerData
 {
 
-    [SerializeField] private float _attackPower = 5f;
-    [SerializeField] private float _attackSpeed = 1f;
+    [SerializeField] private float _attackPower = 50f;
+    [SerializeField] private float _attackSpeed = 10f;
     [SerializeField] private float _attackRange = 5f;
     [SerializeField] private float _findRange = 100f;
-    [SerializeField] private float _moveSpeed = 1f;
+    [SerializeField] private float _moveSpeed = 10f;
     [SerializeField] private float _rotateSpeed = 90f;
     [SerializeField] private float _criticalChance = 0.1f;
     [SerializeField] private float _criticalDamageMultiplier = 1.5f;

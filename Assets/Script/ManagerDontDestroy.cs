@@ -4,6 +4,7 @@ public class ManagerDontDestroy : MonoBehaviour
 {
 
     [SerializeField] private GameData _gameData;
+    [SerializeField] private CSceneManager _sceneManager;
 
     public static ManagerDontDestroy Instance
     {
@@ -12,7 +13,7 @@ public class ManagerDontDestroy : MonoBehaviour
     }
 
     public GameData GameData => _gameData;
-
+    public CSceneManager SceneManager => _sceneManager;
 
     private void Awake()
     {
@@ -36,6 +37,16 @@ public class ManagerDontDestroy : MonoBehaviour
         if (_gameData == null)
         {
             Log.LogNull(nameof(ManagerDontDestroy), nameof(Awake), nameof(_gameData));
+        }
+
+        if (_sceneManager == null)
+        {
+            _sceneManager = GetComponentInChildren<CSceneManager>(true);
+        }
+
+        if (_sceneManager == null)
+        {
+            Log.LogNull(nameof(ManagerDontDestroy), nameof(Awake), nameof(_sceneManager));
         }
     }
 

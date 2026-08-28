@@ -55,7 +55,7 @@ public class PetCondition : MonoBehaviour
     private float battleTimer = 0f;
     private float animationTimer = 0f;
 
-    Vector3 tarPos;
+    private Vector3 tarPos;
 
 
     private enum Condition
@@ -66,7 +66,7 @@ public class PetCondition : MonoBehaviour
         None
     }
 
-    Condition _petCondition = new Condition();
+    private Condition _petCondition = new Condition();
 
 
     private void Awake()
@@ -74,15 +74,18 @@ public class PetCondition : MonoBehaviour
         if(_player == null)
         {
             Log.LogNull(nameof(PetCondition), nameof(Awake), nameof(_player));
+            return;
         }
 
         if (_playerBattle == null)
         {
             _playerBattle = _player.GetComponent<PlayerBattle>();
+            return;
         }
         if (_playerBattle == null)
         {
             Log.LogNull(nameof(PetCondition), nameof(Awake), nameof(_playerBattle));
+            return;
         }
 
 
@@ -228,7 +231,7 @@ public class PetCondition : MonoBehaviour
             animationTimer += Time.deltaTime;
         }
 
-        if (animationTimer > 5f)
+        if (animationTimer > 8.3f)
         {
             _petCondition = Condition.Move;
 
@@ -255,6 +258,7 @@ public class PetCondition : MonoBehaviour
         {
             DragonBattleConditionClear();
             Debug.Log("펫 배틀 타임 초과");
+            return;
         }
 
 
@@ -263,8 +267,13 @@ public class PetCondition : MonoBehaviour
             // 시간나면 플레이어처럼 봤을때 공격하기로 바꾸기
             PetLookRotate(_enemy.transform.position);
 
-            _petAnimation.PlayAnimation(PetAnimation.Animation.FireAttack);
+            if (!_flagAnimation)
+            {
+                _petAnimation.PlayAnimation(PetAnimation.Animation.FireAttack);
 
+                _flagAnimation = true;
+                animationTimer = 0f;
+            }
             // 클리어 전에 딜레이 시간 주기
             animationTimer += Time.deltaTime;
 
@@ -272,31 +281,38 @@ public class PetCondition : MonoBehaviour
             {
                 _enemy.TakeDamage(toDamage);
                 DragonBattleConditionClear();
-                _flagFlying = true;
             }
 
         }
+        // 지상
         else
         {
             if (_enemy.isActiveAndEnabled == false)
             {
                 Debug.Log("Error");
                 return;
-
             }
 
             //땅일때 
             Vector3 normal = (_enemy.transform.position - transform.position).normalized;
             Vector3 tarpos = _enemy.transform.position - normal * 1f;
-            tarpos.y = 0f;
+            tarpos.y = GroundHeight();
             transform.position = Vector3.MoveTowards(transform.position, tarpos, _playerData.MoveSpeed * 2 * Time.deltaTime);
             PetLookRotate(_enemy.transform.position);
+
 
 
             // 공격 
             if ((transform.position - tarpos).sqrMagnitude <= 0.01f)
             {
-                _petAnimation.PlayAnimation(PetAnimation.Animation.PawR);
+                int rand = -1;
+
+                if (!_flagAnimation)
+                {
+                    rand = Random.Range(0, 2);
+                    _petAnimation.PlayAnimation(rand == 0 ? PetAnimation.Animation.PawR : PetAnimation.Animation.PawL);
+                    _flagAnimation = true;
+                }
 
                 animationTimer += Time.deltaTime;
                 if (animationTimer > 1f)
@@ -304,17 +320,24 @@ public class PetCondition : MonoBehaviour
                     _enemy.TakeDamage(toDamage);
                     DragonBattleConditionClear();
                 }
+
+                Debug.Log(rand);
             }
         }
+
+
     }
 
     private void DragonBattleConditionClear()
     {
         _flagBattle = false;
-        _flagFlying = !_flagFlying;
+        _flagFlying = true;
+        _flagAnimation = false;
         battleTimer = 0f;
         animationTimer = 0f;
         _petAnimation.PetMoving(0f);
+
+
 
         int rand = Random.Range(0, 3);
 
@@ -439,7 +462,6 @@ public class PetCondition : MonoBehaviour
 
     private float GroundHeight()
     {
-        // 평평한데서 쓸건데 굳이 만들어야하나? 
         return _player.transform.position.y;
     }
 

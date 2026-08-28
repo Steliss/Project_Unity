@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class CSceneFlowManager : MonoBehaviour
+public class CSceneManager : MonoBehaviour
 {
     [Header("¾À Ä«Å»·Î±×")]
     [SerializeField] private CSceneCatalog _catalog;
@@ -21,7 +21,7 @@ public class CSceneFlowManager : MonoBehaviour
 
         if (_catalog == null)
         {
-            Log.LogNull(nameof(CSceneFlowManager), nameof(Awake));
+            Log.LogNull(nameof(CSceneManager), nameof(Awake));
 
             Destroy(gameObject);
             return;
