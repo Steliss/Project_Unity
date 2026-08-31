@@ -10,6 +10,7 @@ public class PlayerBattle : MonoBehaviour
 {
 
     [SerializeField] private GameObject _player;
+    [SerializeField] private GameObject _uiPlayer;
 
     // 레이캐스트로 찾은 애너미, 레이어를 활용 enemy만 찾게 설정
     [SerializeField] private LayerMask _enemyLayerMask;
@@ -21,6 +22,7 @@ public class PlayerBattle : MonoBehaviour
     private ObjectData _objectData;
     private Enemy _enemy;
     private PlayerAnimation _playerAnimation;
+    private PlayerAnimation _uiPlayerAnimation;
 
     // 강화 상태 여기 두기 애매한거 같은데 흠.
     private bool _flagPower = false;
@@ -66,6 +68,11 @@ public class PlayerBattle : MonoBehaviour
             return;
         }
 
+        _uiPlayerAnimation = _uiPlayer.GetComponent<PlayerAnimation>();
+        if (_uiPlayerAnimation == null)
+        {
+            Log.LogNull(nameof(PlayerBattle), nameof(Start), nameof(_uiPlayerAnimation));
+        }
 
     }
 
@@ -84,13 +91,6 @@ public class PlayerBattle : MonoBehaviour
         {
             return;
         }
-
-        // 테스트
-        if (Input.GetMouseButtonDown(0))
-        {   
-            EnemyFind();
-        }
-
 
         PlayerMoving();
         Battle();
@@ -116,6 +116,7 @@ public class PlayerBattle : MonoBehaviour
         _distance = 0f;
 
         _playerAnimation.PlayerShoot(false);
+        _uiPlayerAnimation.PlayerShoot(false);
     }
 
     // 레이캐스트 범위 안 적 발견 및 리스트에 순서대로 배치 
@@ -178,6 +179,7 @@ public class PlayerBattle : MonoBehaviour
 
         _distance = Vector3.Distance(enemyPos, playerPos);
         _playerAnimation.PlayerMoving(_distance - _playerData.AttackRange, _playerData.MoveSpeed);
+        _uiPlayerAnimation.PlayerMoving(_distance - _playerData.AttackRange, _playerData.MoveSpeed);
 
         Quaternion targetRotation = Quaternion.LookRotation(directionToEnemy, Vector3.up);
         float remainingAngle = Quaternion.Angle(_player.transform.rotation, targetRotation);
@@ -220,6 +222,7 @@ public class PlayerBattle : MonoBehaviour
     {
         // 전투 모션 
         _playerAnimation.PlayerShoot(_flagShoot);
+        _uiPlayerAnimation.PlayerShoot(_flagShoot);
 
         // 
         if (!IsEnemyValid() || !_flagCanBattle)
@@ -268,12 +271,6 @@ public class PlayerBattle : MonoBehaviour
             ClearEnemy();
         }
     }
-
-
-
-
-
-
 
 
 

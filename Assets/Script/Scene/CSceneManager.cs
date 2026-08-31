@@ -30,32 +30,6 @@ public class CSceneManager : MonoBehaviour
         _catalog.BuildMaps();
     }
 
-    private void Update()
-    {
-        if (_isLoading)
-        {
-            return;
-        }
-
-        TestSceneInput();
-    }
-
-    private void TestSceneInput()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            LoadScene(ESceneId.Menu);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            LoadScene(ESceneId.Field);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            LoadScene(ESceneId.BossRoom);
-        }
-    }
-
     public void LoadScene(ESceneId id)
     {
         if (_isLoading)

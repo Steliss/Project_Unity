@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -299,7 +298,8 @@ public class CreateItem : MonoBehaviour
                 break;
 
             case ItemType.PetUpgrade:
-                Debug.Log("Test PetUpgrade");
+                DropPetUpgrade();
+                Debug.Log($"PetUpgradeCoupon °³¼ö : {_objectData.PetUpgrade}");
                 break;
 
             default:

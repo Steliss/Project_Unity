@@ -54,25 +54,31 @@ public class PlayerData
     {
         _moveSpeed += value;
     }
+
+    public void AddRotateSpeed(float value)
+    {
+        _rotateSpeed += value;
+    }
+
     public void AddCriticalChance(float value)
     {
         _criticalChance += value;
     }
+
     public void AddCriticalDamageMultiplier(float value)
     {
         _criticalDamageMultiplier += value;
     }
+
     public void AddPetAttackPower(float value)
     {
         _petAttackPower += value;
     }
 
-    
-    // 스타트 단계에서만 받아올거고. 상태 변환이 필요하니 이게 맞네 
-    public bool BossBattle(bool valve)
+
+    public void SetBossBattle(bool value)
     {
-        _flagBossBattle = !valve;
-        return _flagBossBattle!;
+        _flagBossBattle = value;
     }
 
 }
