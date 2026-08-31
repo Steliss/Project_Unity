@@ -93,16 +93,16 @@ public class FiledUI : MonoBehaviour
             return;
         }
 
-        int currentUpgradeCoupon = _objectData.ChestLevel;
+        int currentChestLevel = _objectData.ChestLevel;
 
-        if (_previousChestLevel == currentUpgradeCoupon)
+        if (_previousChestLevel == currentChestLevel)
         {
             return;
         }
 
-        _previousChestLevel = currentUpgradeCoupon;
+        _previousChestLevel = currentChestLevel;
 
-        _chestLevel.text = $"강화 쿠폰: {currentUpgradeCoupon}";
+        _chestLevel.text = $" 상자 레벨: {currentChestLevel}";
     }
 
 

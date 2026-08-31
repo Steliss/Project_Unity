@@ -16,7 +16,6 @@ public class ObjectData
 
     public int ChestLevel => _chestLevel;
     public int PlayerUpgrade => _playerUpgrade;
-
     public int PetUpgrade => _PetUpgrade;
 
 

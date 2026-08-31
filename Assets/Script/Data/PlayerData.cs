@@ -22,6 +22,9 @@ public class PlayerData
     
     [SerializeField] private float _petAttackPower = 1f;
 
+    private int _playerLevel = 1;
+    private int _petLevel = 1;
+    private int _failUpgrade = 0;
 
     public float AttackPower => _attackPower;
     public float AttackSpeed => _attackSpeed;
@@ -33,7 +36,9 @@ public class PlayerData
     public float CriticalDamageMultiplier => _criticalDamageMultiplier;
     public bool FlagBossBattle => _flagBossBattle;
     public float PetAttackPower => _petAttackPower;
-
+    public int PlayerLevel => _playerLevel;
+    public int PetLevel => _petLevel;
+    public int FailUpgrade => _failUpgrade;
 
     public void AddAttackPower(float value)
     {
@@ -75,11 +80,38 @@ public class PlayerData
         _petAttackPower += value;
     }
 
-
     public void SetBossBattle(bool value)
     {
         _flagBossBattle = value;
     }
 
+    public void AddPlayerLevel(int value)
+    {
+        _playerLevel += value;
+
+        if (_playerLevel < 0)
+        {
+            _playerLevel = 0;
+        }
+    }
+    public void AddPetLevel(int value)
+    {
+        _petLevel += value;
+
+        if (_petLevel < 0)
+        {
+            _petLevel = 0;
+        }
+    }
+    public void AddFailUpgrade(int value)
+    {
+        _failUpgrade += value;
+
+        if (_failUpgrade < 0)
+        {
+            _failUpgrade = 0;
+        }
+    }
 }
+
 
