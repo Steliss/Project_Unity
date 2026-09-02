@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using UnityEngine.Playables;
 
 // 펫 자체의 고유 데이터 관리 / 이속, 회전값, 회전반경, sin파 높이, 공격 속도, 순간이동 범위 
 
@@ -42,12 +43,9 @@ public class PetCondition : MonoBehaviour
     private Enemy _enemy;
 
 
-    // 개 빡쎌거 같은데... 
     private bool _flagBattle = false;
-
     private bool _flagFlying = false;
     private bool _flagLanding = false;
-
     private bool _flagAnimation = false;
 
     private float _orbitAngle;
@@ -148,7 +146,17 @@ public class PetCondition : MonoBehaviour
         DragonPlay();
         DragonPetBattle();
         DragonPetMove();
-        
+
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            _playerData.AddPlayerLevel(1);
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            _playerData.AddPlayerLevel(-1);
+        }
+
     }
 
 

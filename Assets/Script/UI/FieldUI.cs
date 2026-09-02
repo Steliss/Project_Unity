@@ -31,7 +31,7 @@ public class FiledUI : MonoBehaviour
         ManagerDontDestroy manager = ManagerDontDestroy.Instance;
 
         _cSceneManager = manager.SceneManager;
-        if (_cSceneManager ==null)
+        if (_cSceneManager == null)
         {
             Log.LogNull(nameof(FiledUI), nameof(Start), nameof(_cSceneManager));
         }
@@ -43,19 +43,21 @@ public class FiledUI : MonoBehaviour
 
 
         // 인덱스 서치 부분 다듬을 필요 있음 주의!
-        _upgradeUI = transform.GetChild(3).gameObject;
-        if(_upgradeUI == null)
+
+        _upgradeUI = transform.Find("BottomBar/Upgrade").gameObject;
+        if (_upgradeUI == null)
         {
             Log.LogNull(nameof(FiledUI), nameof(Start), nameof(_upgradeUI));
         }
 
+
         // 애도 다듬을 방법 생각하기
-        _upgradeCoupon = transform.Find("UpgradeCouponText").GetComponent<TextMeshProUGUI>();
+        _upgradeCoupon = transform.Find("UpperBar/UpgradeCoupon/UpgradeCouponText").GetComponent<TextMeshProUGUI>();
         if (_upgradeCoupon == null)
         {
             Log.LogNull(nameof(FiledUI), nameof(Start), nameof(_upgradeCoupon));
         }
-        _chestLevel = transform.Find("ChestLevelText").GetComponent<TextMeshProUGUI>();
+        _chestLevel = transform.Find("UpperBar/ChestLevel/ChestLevelText").GetComponent<TextMeshProUGUI>();
         if (_upgradeCoupon == null)
         {
             Log.LogNull(nameof(FiledUI), nameof(Start), nameof(_upgradeCoupon));

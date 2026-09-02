@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PetBattle : MonoBehaviour
+public class CreateBoss : MonoBehaviour
 {
 
     void Start()

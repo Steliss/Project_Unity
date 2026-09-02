@@ -9,7 +9,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: EggCrack
+    m_ConditionEvent: tEggCrack
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 480265253129237387}
@@ -60,7 +60,7 @@ AnimatorController:
   m_Name: EnermyController
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: EggCrack
+  - m_Name: tEggCrack
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0

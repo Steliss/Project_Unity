@@ -209,8 +209,7 @@ public class PlayerUpgrade : MonoBehaviour
         // 실패 강화 횟수 저장
         _playerData.AddFailUpgrade(1);
     }
-
-
+ 
 
 
 
