@@ -66,9 +66,6 @@ public class CreateItem : MonoBehaviour
     private ObjectData _objectData;
     private PlayerData _playerData;
 
-    private float KeyDropChance = 1f;
-
-
     private void Start()
     {
         _gameData = ManagerDontDestroy.Instance.GameData;

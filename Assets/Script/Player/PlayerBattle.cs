@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 // 생성된 적을 찾고 이를 타격 제거 => 보상까지 이어지게. 
@@ -5,8 +6,7 @@ using UnityEngine;
 // 
 
 
-
-public class PlayerBattle : MonoBehaviour
+public class PlayerBattle : MonoBehaviour 
 {
 
     [SerializeField] private GameObject _player;
@@ -19,7 +19,7 @@ public class PlayerBattle : MonoBehaviour
     private GameData _gameData;
     private PlayerData _playerData;
     private ObjectData _objectData;
-    private Enemy _enemy;
+    //private Enemy _enemy;
     private PlayerAnimation _playerAnimation;
 
     // 강화 상태 여기 두기 애매한거 같은데 흠.
@@ -30,9 +30,8 @@ public class PlayerBattle : MonoBehaviour
     private float _distance = 0f;
     private float _attakDuration = 0f;
 
-    public Enemy _Enemy => _enemy;
-
-
+    private IDamageable _target;
+    public IDamageable _Target => _target;
 
     private void Start()
     {
@@ -70,7 +69,7 @@ public class PlayerBattle : MonoBehaviour
     private void Update()
     {
         // 죽거나 풀로 돌아간 적 참조 제거
-        if (!IsEnemyValid())
+        if (!IsEnemyValid() && _gameData.CurrentPhase != GameData.GamePhase.None)
         {
             ClearEnemy();
             EnemyFind();
@@ -92,13 +91,13 @@ public class PlayerBattle : MonoBehaviour
 
     private bool IsEnemyValid()
     {
-        return _enemy != null && _enemy.isActiveAndEnabled && _enemy.CurrentHP > 0f;
+        return _target != null && _target.CurrentHP > 0f && !_target.FlagIsDead;
     }
 
     // 펫이 죽였을때 상태 초기화
     private void ClearEnemy()
     {
-        _enemy = null;
+        _target = null;
 
         _flagShoot = false;
         _flagCanBattle = false;
@@ -112,47 +111,43 @@ public class PlayerBattle : MonoBehaviour
     // 적 생성하고 같이 돌아서 첫 파인딩이 불안한데 사소하니 넘김
     private void EnemyFind()
     {
-        // 기존 삭제 및 탐색후 저장
-        _enemy = null;
         Collider[] detectedColliders = Physics.OverlapSphere(_player.transform.position, _playerData.FindRange, _enemyLayerMask);
 
-        float closestDistance = float.MaxValue;
+        float closeDistance = float.MaxValue;
 
-        // 찾은 배열 순회
+        Debug.Log($"length {detectedColliders.Length}");
+
         foreach (Collider detectedCollider in detectedColliders)
         {
-            Enemy enemy = detectedCollider.GetComponentInParent<Enemy>();
+            IDamageable target = detectedCollider.GetComponentInParent<IDamageable>();
 
-            if (IsEnemyValid())
+            if (target == null || target.FlagIsDead)
+            {
+                continue;
+            }
+            
+            float distance = (target.TargetTransform.position - _player.transform.position).sqrMagnitude;
+
+            if (distance >= closeDistance)
             {
                 continue;
             }
 
-            float distance = (enemy.transform.position - _player.transform.position).sqrMagnitude;
-
-            // 거리가 순회 거리보다 클 경우
-            if (distance >= closestDistance)
-            {
-                continue;
-            }
-
-            // 작을경우 0번 리스트 갱신 및 애너미 추가
-            closestDistance = distance;
-            _enemy = enemy;
+            closeDistance = distance;
+            _target = target;
         }
+
     }
 
     private void PlayerMoving()
     {
-        if (_enemy == null)
+        if (!IsEnemyValid())
         {
-            Log.LogNull(nameof(PlayerBattle), nameof(PlayerMoving));
             return;
         }
 
         Vector3 playerPos = _player.transform.position;
-        Vector3 enemyPos = _enemy.transform.position;
-
+        Vector3 enemyPos = _target.TargetTransform.position;
 
         // 방향 계산
         Vector3 directionToEnemy = (enemyPos - playerPos).normalized;
@@ -242,7 +237,7 @@ public class PlayerBattle : MonoBehaviour
             Debug.Log($"치명타");
         }
 
-        _enemy.TakeDamage(toDamage);
+        _target.TakeDamage(toDamage);
         _attakDuration = 0f;
 
         if (!IsEnemyValid())

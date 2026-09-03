@@ -20,7 +20,5 @@ public class EnemyMatarialChange : MonoBehaviour
         }
         Material selectedMaterial = _materials[materialIndex];
         _skinnedMeshRenderer.sharedMaterial = selectedMaterial;
-
-        Debug.Log("test");
     }
 }

@@ -1,6 +1,14 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public interface IDamageable
+{
+    float CurrentHP { get; }
+    bool FlagIsDead { get; }
+    Transform TargetTransform { get; }
+    void TakeDamage(float damage);
+}
+
+public class Enemy : MonoBehaviour , IDamageable
 {
     [SerializeField] private Animator _animator;
 
@@ -40,6 +48,8 @@ public class Enemy : MonoBehaviour
     private float _vertical;
 
     public float CurrentHP => _currentHP;
+    public Transform TargetTransform => transform;
+    public bool FlagIsDead => _flagIsDead;
 
     private void Awake()
     {
@@ -217,3 +227,4 @@ public class Enemy : MonoBehaviour
         _shakeAmount = Mathf.MoveTowards(_shakeAmount, 0f, _speedDecrease * Time.deltaTime);
     }
 }
+

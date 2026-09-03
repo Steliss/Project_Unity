@@ -5,6 +5,7 @@ public class ManagerDontDestroy : MonoBehaviour
 
     [SerializeField] private GameData _gameData;
     [SerializeField] private CSceneManager _sceneManager;
+    [SerializeField] private RewardChoiceManager _rewardChoiceManager;
 
     public static ManagerDontDestroy Instance
     {
@@ -14,6 +15,7 @@ public class ManagerDontDestroy : MonoBehaviour
 
     public GameData GameData => _gameData;
     public CSceneManager SceneManager => _sceneManager;
+    public RewardChoiceManager RewardChoiceManager => _rewardChoiceManager;
 
     private void Awake()
     {
@@ -47,6 +49,16 @@ public class ManagerDontDestroy : MonoBehaviour
         if (_sceneManager == null)
         {
             Log.LogNull(nameof(ManagerDontDestroy), nameof(Awake), nameof(_sceneManager));
+        }
+
+        if (_rewardChoiceManager == null)
+        {
+            _rewardChoiceManager = GetComponentInChildren<RewardChoiceManager>(true);
+        }
+
+        if (_rewardChoiceManager == null)
+        {
+            Log.LogNull(nameof(ManagerDontDestroy), nameof(Awake), nameof(_rewardChoiceManager));
         }
     }
 

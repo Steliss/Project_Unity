@@ -2,18 +2,6 @@
 using UnityEngine;
 using UnityEngine.Playables;
 
-// 펫 자체의 고유 데이터 관리 / 이속, 회전값, 회전반경, sin파 높이, 공격 속도, 순간이동 범위 
-
-// 펫자체 컨디션값(상태 행동값) 조정 = enum
-// 강화 값 => 플레이어 데이터 
-
-// 날아다님 플레이어를 둥글게 돌면서 위 아래로 움직임 
-// 가끔 착륙해서 행동
-// 공격할때는 목표를 바라보고 공격 
-// 땅/ 하늘의 모션 차이 있어야함 => 공격 방법이 달라짐 
-// 플레이어에 넣으려니 변수값을 바꿔야하네 흠..
-
-
 public class PetCondition : MonoBehaviour
 {
     [SerializeField] private GameObject _player = null;
@@ -30,18 +18,19 @@ public class PetCondition : MonoBehaviour
     [SerializeField] private float _floatingSpeed = 2f;
 
     // 지상 및 착륙 설정
-    [SerializeField] private LayerMask _groundLayer;
-    [SerializeField] private float _groundCheckDistance = 10f;
+    //[SerializeField] private LayerMask _groundLayer;
+    //[SerializeField] private float _groundCheckDistance = 10f;
     [SerializeField] private float _landingSpeed = 3f;
 
     // 복귀 설정
     [SerializeField] private float _teleportDistance = 20f;
 
     private PlayerData _playerData;
+    private GameData _gameData;
     private PlayerBattle _playerBattle;
     private PetAnimation _petAnimation;
-    private Enemy _enemy;
 
+    private IDamageable _target;
 
     private bool _flagBattle = false;
     private bool _flagFlying = false;
@@ -54,7 +43,6 @@ public class PetCondition : MonoBehaviour
     private float animationTimer = 0f;
 
     private Vector3 tarPos;
-
 
     private enum Condition
     {
@@ -91,7 +79,8 @@ public class PetCondition : MonoBehaviour
 
     void Start()
     {
-        _playerData = ManagerDontDestroy.Instance.GameData._PlayerData;
+        _gameData = ManagerDontDestroy.Instance.GameData;
+        _playerData = _gameData._PlayerData;
 
         _petAnimation = GetComponent<PetAnimation>();
         if (_petAnimation == null)
@@ -107,35 +96,16 @@ public class PetCondition : MonoBehaviour
 
     private bool IsEnemyValid()
     {
-        return _enemy != null && _enemy.isActiveAndEnabled && _enemy.CurrentHP > 0f;
+        return _target != null && _target.CurrentHP > 0f && !_target.FlagIsDead;
     }
 
-
+        
     void Update()
     {
-        _enemy = _playerBattle._Enemy;
-
-        if(Input.GetKeyDown(KeyCode.Q))
+        if(_gameData.CurrentPhase != GameData.GamePhase.None)
         {
-            _flagFlying = !_flagFlying;
-            Debug.Log($" 활공 상태 : {_flagFlying}");
+            _target = _playerBattle._Target;
         }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            _flagLanding = !_flagLanding;
-            Debug.Log($" 랜딩 상태 : {_flagLanding}");
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            _flagBattle = !_flagBattle;
-            Debug.Log($" 전투 상태 : {_flagBattle}");
-        }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            _petCondition = Condition.Idle;
-            Debug.Log($" _petCondition : {_petCondition}");
-        }
-
 
         if (battleTimer > 10f)
         {
@@ -273,7 +243,7 @@ public class PetCondition : MonoBehaviour
         if (_flagFlying)
         {
             // 시간나면 플레이어처럼 봤을때 공격하기로 바꾸기
-            PetLookRotate(_enemy.transform.position);
+            PetLookRotate(_target.TargetTransform.position);
 
             if (!_flagAnimation)
             {
@@ -287,7 +257,7 @@ public class PetCondition : MonoBehaviour
 
             if (animationTimer > 1f)
             {
-                _enemy.TakeDamage(toDamage);
+                _target.TakeDamage(toDamage);
                 DragonBattleConditionClear();
             }
 
@@ -295,18 +265,12 @@ public class PetCondition : MonoBehaviour
         // 지상
         else
         {
-            if (_enemy.isActiveAndEnabled == false)
-            {
-                Debug.Log("Error");
-                return;
-            }
-
             //땅일때 
-            Vector3 normal = (_enemy.transform.position - transform.position).normalized;
-            Vector3 tarpos = _enemy.transform.position - normal * 1f;
+            Vector3 normal = (_target.TargetTransform.position - transform.position).normalized;
+            Vector3 tarpos = _target.TargetTransform.position - normal * 1f;
             tarpos.y = GroundHeight();
             transform.position = Vector3.MoveTowards(transform.position, tarpos, _playerData.MoveSpeed * 2 * Time.deltaTime);
-            PetLookRotate(_enemy.transform.position);
+            PetLookRotate(_target.TargetTransform.position);
 
 
 
@@ -325,11 +289,9 @@ public class PetCondition : MonoBehaviour
                 animationTimer += Time.deltaTime;
                 if (animationTimer > 1f)
                 {
-                    _enemy.TakeDamage(toDamage);
+                    _target.TakeDamage(toDamage);
                     DragonBattleConditionClear();
                 }
-
-                Debug.Log(rand);
             }
         }
 

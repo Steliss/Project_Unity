@@ -22,6 +22,8 @@ public class RewardChoiceManager : MonoBehaviour
 
     private bool _isSelecting;
 
+    public bool IsSelecting => _isSelecting;
+
     public enum RewardSize
     {
         None,
@@ -105,13 +107,13 @@ public class RewardChoiceManager : MonoBehaviour
     {
         if (!_isSelecting)
         {
-            return;
+            return ;
         }
 
         if (index < 0 || index >= _currentChoices.Count)
         {
             Debug.LogWarning("유효하지 않은 선택지 번호입니다.");
-            return;
+            return ;
         }
 
         IReward selectedReward = _currentChoices[index];
@@ -136,11 +138,13 @@ public class RewardChoiceManager : MonoBehaviour
 
     public void OpenChoices()
     {
-        if (_isSelecting)
-        {
-            Debug.LogWarning("선택지가 이미 열려 있습니다");
-            return;
-        }
+        _isSelecting = true;
+
+        //if (_isSelecting)
+        //{
+        //    Debug.LogWarning("선택지가 이미 열려 있습니다");
+        //    return;
+        //}
 
         if (_playerData == null)
         {
@@ -172,7 +176,6 @@ public class RewardChoiceManager : MonoBehaviour
             copydada.RemoveAt(randomIndex);
         }
 
-        _isSelecting = true;
         _rewardChoicePanel.SetActive(true);
 
         // 일시정지 
@@ -215,11 +218,11 @@ public class RewardChoiceManager : MonoBehaviour
     private void CloseChoices()
     {
         _currentChoices.Clear();
-        _isSelecting = false;
         _rewardChoicePanel.SetActive(false);
 
         // 일시정지 해제
         Time.timeScale = 1f;
+        _isSelecting = false;
 
         if (_testLog)
         {

@@ -169,7 +169,6 @@ public class PlayerMaterialChange : MonoBehaviour
         }
         if (suitType == RendererType.Hair)
         {
-            Debug.Log("Hair º±≈√");
             return;
         }
 

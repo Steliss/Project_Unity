@@ -9,20 +9,32 @@ public class PlayerAnimation : MonoBehaviour
     [Header("ÂüÁ¶")]
     [SerializeField] private Animator _animator;
 
-    enum Animation
+    public enum Animation
     {
-        None,
         tPutGun,
         tTakeGun,
         tReload,
         tStun,
         tDieF,
-        tDieB
+        tDieB,
+        tGreeting,
+        tSmile
     }
-
 
     private int _hashSpeed;
     private int _hashShoot;
+    private readonly int[] TriggerHashes =
+    {
+        Animator.StringToHash("tPutGun"),
+        Animator.StringToHash("tTakeGun"),
+        Animator.StringToHash("tReload"),
+        Animator.StringToHash("tStun"),
+        Animator.StringToHash("tDieF"),
+        Animator.StringToHash("tDieB"),
+        Animator.StringToHash("tGreeting"),
+        Animator.StringToHash("tSmile")
+    };
+
 
     private void Awake()
     {
@@ -64,6 +76,23 @@ public class PlayerAnimation : MonoBehaviour
     public void PlayerShoot(bool shoot)
     {
         _animator.SetBool(_hashShoot, shoot);
+    }
+
+    public void PlayAnimation(Animation animation)
+    {
+        if (_animator == null)
+        {
+            return;
+        }
+
+        int index = (int)animation;
+
+        if (index < 0 || index >= TriggerHashes.Length)
+        {
+            return;
+        }
+
+        _animator.SetTrigger(TriggerHashes[index]);
     }
 
 }

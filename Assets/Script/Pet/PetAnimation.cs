@@ -24,7 +24,7 @@ public class PetAnimation : MonoBehaviour
 
 
 
-    private static readonly int[] TriggerHashes =
+    private readonly int[] TriggerHashes =
     {
         Animator.StringToHash("tIdleSmell"),
         Animator.StringToHash("tIdleYaw"),

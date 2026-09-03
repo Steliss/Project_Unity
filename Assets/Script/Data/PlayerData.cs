@@ -10,7 +10,7 @@ public class PlayerData
 {
 
     [SerializeField] private float _attackPower = 50f;
-    [SerializeField] private float _attackSpeed = 10f;
+    [SerializeField] private float _attackSpeed = 100f;
     [SerializeField] private float _attackRange = 5f;
     [SerializeField] private float _findRange = 100f;
     [SerializeField] private float _moveSpeed = 10f;
@@ -25,6 +25,8 @@ public class PlayerData
     private int _playerLevel = 1;
     private int _petLevel = 1;
     private int _failUpgrade = 0;
+    private int _round = 0;
+
 
     public float AttackPower => _attackPower;
     public float AttackSpeed => _attackSpeed;
@@ -39,6 +41,7 @@ public class PlayerData
     public int PlayerLevel => _playerLevel;
     public int PetLevel => _petLevel;
     public int FailUpgrade => _failUpgrade;
+    public int Round => _round;
 
     public void AddAttackPower(float value)
     {
@@ -111,6 +114,11 @@ public class PlayerData
         {
             _failUpgrade = 0;
         }
+    }
+
+    public void AddRound(int value)
+    {
+        _round += value;
     }
 }
 
