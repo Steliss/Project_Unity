@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 
 // 생성된 적을 찾고 이를 타격 제거 => 보상까지 이어지게. 
@@ -6,7 +5,7 @@ using UnityEngine;
 // 
 
 
-public class PlayerBattle : MonoBehaviour 
+public class PlayerBattle : MonoBehaviour
 {
 
     [SerializeField] private GameObject _player;
@@ -26,12 +25,15 @@ public class PlayerBattle : MonoBehaviour
     private bool _flagPower = false;
     private bool _flagShoot = false;
     private bool _flagCanBattle = false;
+    private bool _flagBossBattle = false;
 
     private float _distance = 0f;
     private float _attakDuration = 0f;
 
     private IDamageable _target;
     public IDamageable _Target => _target;
+
+    public bool FlagCanBattle { get => _flagBossBattle; set => _flagBossBattle = value; }
 
     private void Start()
     {
@@ -84,7 +86,7 @@ public class PlayerBattle : MonoBehaviour
         PlayerMoving();
         Battle();
         //  ㄴ 보상
-        
+
 
     }
 
@@ -115,8 +117,6 @@ public class PlayerBattle : MonoBehaviour
 
         float closeDistance = float.MaxValue;
 
-        Debug.Log($"length {detectedColliders.Length}");
-
         foreach (Collider detectedCollider in detectedColliders)
         {
             IDamageable target = detectedCollider.GetComponentInParent<IDamageable>();
@@ -125,7 +125,7 @@ public class PlayerBattle : MonoBehaviour
             {
                 continue;
             }
-            
+
             float distance = (target.TargetTransform.position - _player.transform.position).sqrMagnitude;
 
             if (distance >= closeDistance)
@@ -198,8 +198,9 @@ public class PlayerBattle : MonoBehaviour
         // 전투 모션 
         _playerAnimation.PlayerShoot(_flagShoot);
 
+
         // 
-        if (!IsEnemyValid() || !_flagCanBattle)
+        if (!IsEnemyValid() || !_flagCanBattle || _flagBossBattle)
         {
             return;
         }
@@ -246,20 +247,8 @@ public class PlayerBattle : MonoBehaviour
         }
     }
 
+    // 변수 들고가기 귀찮은데 카메라 관련?
 
 
 
-    // 테스트용 끝나고 지우기
-    private void EnermyCheck(Enemy enemy, Color color)
-    {
-        Renderer enemyRenderer = enemy.GetComponent<Renderer>();
-
-        if (enemyRenderer == null)
-        {
-            Log.LogNull(nameof(PlayerBattle), nameof(EnermyCheck), nameof(enemyRenderer));
-            return;
-        }
-
-        enemyRenderer.material.color = color;
-    }
 }

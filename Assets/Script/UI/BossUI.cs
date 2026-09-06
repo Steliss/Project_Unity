@@ -1,13 +1,15 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class BossUI : MonoBehaviour
 {
-
     [SerializeField] private Button FieldButton;
 
+    private TextMeshProUGUI _timer;
+
     private CSceneManager _cSceneManager;
+    private GameData _gameData;
 
 
     void Start()
@@ -15,14 +17,15 @@ public class BossUI : MonoBehaviour
 
         FieldButton.onClick.AddListener(() => OnButtonClick("Field"));
 
-        ManagerDontDestroy manager = ManagerDontDestroy.Instance;
+        _gameData = ManagerDontDestroy.Instance.GameData;
+        _cSceneManager = ManagerDontDestroy.Instance.SceneManager;
 
-        _cSceneManager = manager.SceneManager;
-        if (_cSceneManager == null)
+        if (_cSceneManager == null || _gameData == null)
         {
-            Log.LogNull(nameof(FiledUI), nameof(Start), nameof(_cSceneManager));
+            Log.LogNull(nameof(FiledUI), nameof(Start));
         }
 
+        _timer = transform.Find("Timer/TimerText").GetComponent<TextMeshProUGUI>();
     }
 
     private void OnButtonClick(string buttonType)
@@ -31,6 +34,31 @@ public class BossUI : MonoBehaviour
         {
             _cSceneManager.LoadScene(ESceneId.Field);
         }
+    }
+
+    private void Update()
+    {
+        TimerTextUpdate();
+    }
+
+    private void TimerTextUpdate()
+    {
+        float time = 0f;
+        if (_gameData.CurrentPhase == GameData.GamePhase.Farming)
+        {
+            time = _gameData.FarmingTime;
+        }
+        else if (_gameData.CurrentPhase == GameData.GamePhase.BossBattle)
+        {
+            time = _gameData.BossTime;
+        }
+
+        time = Mathf.Max(0f, time - _gameData.Timer);
+
+        int minutes = Mathf.FloorToInt(time / 60f);
+        int seconds = Mathf.FloorToInt(time % 60f);
+
+        _timer.text = $"{minutes:00}:{seconds:00}";
     }
 
 }

@@ -20,6 +20,7 @@ public class GameData : MonoBehaviour
     private CSceneManager _cSceneManager;
     private float _timer = 0f;
 
+    private bool _flagBossBaltte = false;
 
     public ObjectData _ObjectData => _objectData;
     public PlayerData _PlayerData => _playerData;
@@ -33,6 +34,7 @@ public class GameData : MonoBehaviour
 
     public float FarmingTime => _farmingTime;
     public float BossTime => _bossTime;
+    public bool FlagBossBattle => _flagBossBaltte;
 
     private void Awake()
     {
@@ -101,11 +103,21 @@ public class GameData : MonoBehaviour
 
     private void StartBossBattle()
     {
+        SetBossBattle();
         _currentPhase = GamePhase.BossBattle;
         _timer = 0f;
 
         Debug.Log("보스전 타이머");
     }
+
+    public void EndBossBattle()
+    {
+        SetBossBattle();
+        _playerData.AddRound(1);
+        _currentPhase = GamePhase.Farming;
+        _timer = 0f;
+    }
+
 
     private void GameOver()
     {
@@ -116,6 +128,12 @@ public class GameData : MonoBehaviour
 
         _cSceneManager.LoadScene(ESceneId.Menu);
     }
+
+    public void SetBossBattle()
+    {
+        _flagBossBaltte = !_flagBossBaltte;
+    }
+
 
 }
 

@@ -8,7 +8,7 @@ public class CSceneManager : MonoBehaviour
     [SerializeField] private CSceneCatalog _catalog;
 
     private bool _isLoading;
-
+    private FadeInOut fadeInOut;
 
 
     private void Awake()
@@ -28,6 +28,15 @@ public class CSceneManager : MonoBehaviour
         }
 
         _catalog.BuildMaps();
+    }
+
+    private void Start()
+    {
+        fadeInOut = ManagerDontDestroy.Instance.FadeInOut;
+        if (fadeInOut == null)
+        {
+            Log.LogNull(nameof(CSceneManager), nameof(Awake), nameof(fadeInOut));
+        }
     }
 
     public void LoadScene(ESceneId id)
@@ -51,19 +60,12 @@ public class CSceneManager : MonoBehaviour
 
         _isLoading = true;
         StartCoroutine(Co_LoadScene(id, sceneName));
+        //StopAllCoroutines();
     }
 
     private IEnumerator Co_LoadScene(ESceneId id, string sceneName)
     {
-
-        //Debug.Log($"씬 이동 시작: {id} / {sceneName}");
-
-        /*
-         * 나중에 페이드 아웃을 넣을 위치
-         *
-         * yield return
-         *     _transitionUI.Co_FadeTo(1f);
-         */
+        yield return fadeInOut.FadeOut();
 
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
 
@@ -82,15 +84,7 @@ public class CSceneManager : MonoBehaviour
             yield return null;
         }
 
-        /*
-         * 나중에 페이드 인을 넣을 위치
-         *
-         * yield return
-         *     _transitionUI.Co_FadeTo(0f);
-         */
-
-        //Debug.Log($"씬 이동 완료: {sceneName}"
-        
+        yield return fadeInOut.FadeIn();
 
         _isLoading = false;
     }

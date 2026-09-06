@@ -91,6 +91,11 @@ public class PlayerUpgrade : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        PetUpgrade();
+    }
+
 
     private void OnButtonClick(string buttonType)
     {
@@ -167,7 +172,6 @@ public class PlayerUpgrade : MonoBehaviour
         // 에니메이션 
         // 애도 고민좀 해야겠네 이펙트만 줄지 에니메이션도 줄지 
 
-
         Debug.Log($"강화 성공 플레이어 레벨 : {_playerData.PlayerLevel}");
     }
 
@@ -210,7 +214,23 @@ public class PlayerUpgrade : MonoBehaviour
         _playerData.AddFailUpgrade(1);
     }
  
+    private void PetUpgrade()
+    {
+        // 자동 펫 업그레이드 
+        if(_playerData.PetLevel * 3 > _objectData.PetUpgrade)
+        {
+            return;
+        }
 
+        _playerData.AddPetAttackPower(_playerData.PetLevel);
+        Debug.Log("펫 강화 성공 : 공격력 +1");
+
+        // 공격력에 따른 레벨 상승 
+        if(_playerData.PetAttackPower > _playerData.PetLevel * 10f)
+        {
+            _playerData.AddPetLevel(1);
+        }
+    }
 
 
 }

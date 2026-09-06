@@ -71,7 +71,7 @@ public class FiledUI : MonoBehaviour
         _informationDisplay = transform.Find("BottomBar/UpgradeBackGround/Information").gameObject;
 
         // 필드로 이동시 상태 변경 
-        _gameData.CurrentPhase = GameData.GamePhase.Farming;
+        //_gameData.CurrentPhase = GameData.GamePhase.Farming;
 
         TextMeshSetting();
     }

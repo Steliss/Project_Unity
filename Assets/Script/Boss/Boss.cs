@@ -11,19 +11,21 @@ public class Boss : MonoBehaviour, IDamageable
     [SerializeField] private float _bossCoefficientHP = 50f;
     // ºÀÀÎ È®·ü 
 
+
     [Header("Èçµé¸²")]
     [SerializeField] private float _hitShake = 0.1f;
     [SerializeField] private float _maxShake = 0.3f;
     [SerializeField] private float _speedDecrease = 1f;
     [SerializeField] private float _shakeFrequency = 40f;
 
+    [SerializeField, Range(0f, 1f)]    private float _deathChance = 0.1f;
+    [SerializeField, Range(0f, 1f)]    private float _deathChanceIncrease = 0.1f;
 
     private GameData _gameData;
 
     private Transform _shakeTarget;
     private Vector3 _localPos;
     private float _shakeAmount;
-
 
     private float _maxHP;
     private float _currentHP;
@@ -97,7 +99,15 @@ public class Boss : MonoBehaviour, IDamageable
 
         if (_currentHP <= 0f)
         {
-            BossDie();
+            if (Random.value < _deathChance)
+            {
+                BossDie();
+            }
+            else
+            {
+                _currentHP = _maxHP;
+                _deathChance = Mathf.Clamp01(_deathChance + _deathChanceIncrease);
+            }
         }
     }
 
@@ -108,13 +118,8 @@ public class Boss : MonoBehaviour, IDamageable
         transform.gameObject.SetActive(false);
 
         _gameData.CurrentPhase = GameData.GamePhase.None;
-        _gameData._PlayerData.AddRound(1);
 
         _createBoss.CoroutineStart();
-        //StartCoroutine(RewardCoroutine());
-        //StartCoroutine(AnimationCoroutine());
-        //StopAllCoroutines();
-
 
         Debug.Log($"test {_gameData._PlayerData.Round}");
     }
@@ -143,4 +148,8 @@ public class Boss : MonoBehaviour, IDamageable
 
         _shakeAmount = Mathf.MoveTowards(_shakeAmount, 0f, _speedDecrease * Time.deltaTime);
     }
+
+
+
+
 }

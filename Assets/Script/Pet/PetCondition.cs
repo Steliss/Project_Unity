@@ -228,7 +228,7 @@ public class PetCondition : MonoBehaviour
         {
             return;
         }
-        Debug.Log("펫 배틀 진입");
+        //Debug.Log("펫 배틀 진입");
 
         float toDamage = _playerData.PetAttackPower;
 
