@@ -1,4 +1,5 @@
 using UnityEngine;
+using static RelicData;
 
 public class ManagerDontDestroy : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public class ManagerDontDestroy : MonoBehaviour
     [SerializeField] private CSceneManager _sceneManager;
     [SerializeField] private RewardChoiceManager _rewardChoiceManager;
     [SerializeField] private FadeInOut _fadeInOut;
+    [SerializeField] private SaveData _saveData;
+    [SerializeField] private RelicData _relicData;
 
     public static ManagerDontDestroy Instance
     {
@@ -18,6 +21,8 @@ public class ManagerDontDestroy : MonoBehaviour
     public CSceneManager SceneManager => _sceneManager;
     public RewardChoiceManager RewardChoiceManager => _rewardChoiceManager;
     public FadeInOut FadeInOut => _fadeInOut;
+    public SaveData SaveData => _saveData;  
+    public RelicData RelicData => _relicData;
 
     private void Awake()
     {
@@ -71,6 +76,26 @@ public class ManagerDontDestroy : MonoBehaviour
         if (_fadeInOut == null)
         {
             Log.LogNull(nameof(ManagerDontDestroy), nameof(Awake), nameof(_rewardChoiceManager));
+        }
+
+        if (_saveData == null)
+        {
+            _saveData = GetComponentInChildren<SaveData>(true);
+        }
+
+        if (_saveData == null)
+        {
+            Log.LogNull(nameof(ManagerDontDestroy), nameof(Awake), nameof(_saveData));
+        }
+
+        if (_relicData == null)
+        {
+            _relicData = GetComponentInChildren<RelicData>(true);
+        }
+
+        if (_relicData == null)
+        {
+            Log.LogNull(nameof(ManagerDontDestroy), nameof(Awake), nameof(_relicData));
         }
     }
 

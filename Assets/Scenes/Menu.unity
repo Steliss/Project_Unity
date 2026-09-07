@@ -1440,6 +1440,75 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 475185140}
   m_CullTransparentMesh: 1
+--- !u!1 &610294961
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 610294963}
+  - component: {fileID: 610294965}
+  - component: {fileID: 610294964}
+  m_Layer: 0
+  m_Name: Relic
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &610294963
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610294961}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -354.0935, y: -225.62956, z: -155.52443}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1426991526}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &610294964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610294961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d53b9d3408d0494b9f9f5b2e212d8c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxAttackPower: 5
+  _maxAttackSpeed: 5
+  _maxMoveSpeed: 5
+  _maxRotateSpeed: 5
+  _maxCriticalChance: 5
+  _maxCriticalDamageMultiplier: 5
+  _coeAttackPower: 10
+  _coeAttackSpeed: 3
+  _coeMoveSpeed: 5
+  _coeRotateSpeed: 5
+  _coeCriticalChance: 1
+  _coeCriticalDamageMultiplier: 0.1
+--- !u!114 &610294965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610294961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfe0313149f2d8f43aa6e39fa4121d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &787345763
 GameObject:
   m_ObjectHideFlags: 0
@@ -1871,7 +1940,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _farmingTime: 10
-  _bossTime: 150
+  _bossTime: 10
 --- !u!1 &1426991524
 GameObject:
   m_ObjectHideFlags: 0
@@ -1905,6 +1974,8 @@ MonoBehaviour:
   _sceneManager: {fileID: 0}
   _rewardChoiceManager: {fileID: 0}
   _fadeInOut: {fileID: 0}
+  _saveData: {fileID: 0}
+  _relicData: {fileID: 0}
 --- !u!4 &1426991526
 Transform:
   m_ObjectHideFlags: 0
@@ -1918,6 +1989,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 610294963}
   - {fileID: 1774133242}
   - {fileID: 1295799412}
   - {fileID: 391192520}

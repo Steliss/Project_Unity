@@ -9,13 +9,17 @@ public class CreateBoss : MonoBehaviour
 
     [SerializeField] private PlayerAnimation _playerAnimation;
     [SerializeField] private BossCameraController _bossCameraController;
+    [SerializeField] private BossUI _bossUI;
 
     private GameData _gameData;
+    private ObjectData _objectData;
     private PlayerData _playerData;
     private PlayerBattle _playerBattle;
 
-    private RewardChoiceManager _rewardChoiceManager;
+    private RewardChoiceManager _rewardChoiceManager;    
     private CSceneManager _sceneManager;
+
+
 
     void Start()
     {
@@ -33,12 +37,39 @@ public class CreateBoss : MonoBehaviour
             Log.LogNull(nameof(Boss), nameof(Start), nameof(_rewardChoiceManager));
         }
         _playerData = _gameData._PlayerData;
+        _objectData = _gameData._ObjectData;
     }
 
     private void Update()
     {
         SpawnBoss();
+
+        if(_gameData.CurrentPhase == GameData.GamePhase.GameOver)
+        {
+            StartCoroutine(GameOver());
+        }
     }
+
+    private IEnumerator GameOver()
+    {
+        Debug.Log("제한시간 초과 / 게임 오버");
+
+        // 플레이어 애니메이션 애도 분기 
+        _playerAnimation.PlayAnimation(PlayerAnimation.Animation.tDieB);
+        yield return new WaitForSeconds(3f);
+
+        // 패배 UI => 점수 및 통계 (승리씬도 가야하네?)
+        _bossUI.BattleLossUI(true);
+        yield return new WaitUntil(() => Input.anyKeyDown);
+        _bossUI.BattleLossUI(false);
+
+        // 플레이어 데이터 초기화 타이머는 gamedata에서 처리 
+        _playerData.ResetState();
+        _objectData.ResetState();
+
+        _sceneManager.LoadScene(ESceneId.Menu);
+    }
+
 
     public void SpawnBoss()
     {
@@ -67,8 +98,7 @@ public class CreateBoss : MonoBehaviour
     {
         if (_playerData.Round == 3)
         {
-            // 게임 종료
-
+            // 승리 
         }
         StartCoroutine(RewardCoroutine());
         StartCoroutine(AnimationCoroutine());
@@ -91,19 +121,16 @@ public class CreateBoss : MonoBehaviour
         _bossCameraController.DollyCameraChange(_player.transform, offSet);
 
         _playerAnimation.PlayAnimation(PlayerAnimation.Animation.tPutGun);
-
         yield return new WaitForSeconds(3f);
 
+        // 스마일 분기 추가
         _playerAnimation.PlayAnimation(PlayerAnimation.Animation.tGreeting);
-
         yield return new WaitForSeconds(2f);
 
         _playerAnimation.PlayAnimation(PlayerAnimation.Animation.tTakeGun);
-
         yield return new WaitForSeconds(4f);
 
         _playerAnimation.PlayAnimation(PlayerAnimation.Animation.tReload);
-
         yield return new WaitForSeconds(5f);
         // 애니메이션 종료 후 씬 이동
 

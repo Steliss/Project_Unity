@@ -6,16 +6,16 @@ public class BossUI : MonoBehaviour
 {
     [SerializeField] private Button FieldButton;
 
-    private TextMeshProUGUI _timer;
-
     private CSceneManager _cSceneManager;
     private GameData _gameData;
+    private TextMeshProUGUI _timer;
+    private GameObject _lossUI;
 
 
     void Start()
     {
-
         FieldButton.onClick.AddListener(() => OnButtonClick("Field"));
+        _lossUI = transform.Find("LossReport").gameObject;
 
         _gameData = ManagerDontDestroy.Instance.GameData;
         _cSceneManager = ManagerDontDestroy.Instance.SceneManager;
@@ -60,5 +60,11 @@ public class BossUI : MonoBehaviour
 
         _timer.text = $"{minutes:00}:{seconds:00}";
     }
+
+    public void BattleLossUI(bool set)
+    {
+        _lossUI.SetActive(set);
+    }
+
 
 }

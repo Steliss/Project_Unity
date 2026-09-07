@@ -8,17 +8,14 @@ using UnityEngine;
 [Serializable]
 public class PlayerData
 {
-
-    [SerializeField] private float _attackPower = 50f;
-    [SerializeField] private float _attackSpeed = 100f;
+    [SerializeField] private float _attackPower = 1f;
+    [SerializeField] private float _attackSpeed = 1f;
     [SerializeField] private float _attackRange = 5f;
     [SerializeField] private float _findRange = 100f;
-    [SerializeField] private float _moveSpeed = 10f;
-    [SerializeField] private float _rotateSpeed = 90f;
-    [SerializeField] private float _criticalChance = 0.1f;
-    [SerializeField] private float _criticalDamageMultiplier = 1.5f;
-
-    [SerializeField] private bool _flagBossBattle = false;
+    [SerializeField] private float _moveSpeed = 1f;
+    [SerializeField] private float _rotateSpeed = 1f;
+    [SerializeField] private float _criticalChance = 1f;
+    [SerializeField] private float _criticalDamageMultiplier = 1f;
     
     [SerializeField] private float _petAttackPower = 1f;
 
@@ -27,6 +24,8 @@ public class PlayerData
     private int _failUpgrade = 0;
     private int _round = 0;
 
+    private float[] _initialStats;
+    private int[] _initialLevel;
 
     public float AttackPower => _attackPower;
     public float AttackSpeed => _attackSpeed;
@@ -36,12 +35,58 @@ public class PlayerData
     public float RotateSpeed => _rotateSpeed;
     public float CriticalChance => _criticalChance;
     public float CriticalDamageMultiplier => _criticalDamageMultiplier;
-    public bool FlagBossBattle => _flagBossBattle;
     public float PetAttackPower => _petAttackPower;
     public int PlayerLevel => _playerLevel;
     public int PetLevel => _petLevel;
     public int FailUpgrade => _failUpgrade;
     public int Round => _round;
+
+
+    public void SaveState()
+    {
+        _initialStats = new float[]
+        {
+        _attackPower,
+        _attackSpeed,
+        _attackRange,
+        _findRange,
+        _moveSpeed,
+        _rotateSpeed,
+        _criticalChance,
+        _criticalDamageMultiplier,
+        _petAttackPower
+        };
+
+        _initialLevel = new int[]
+        {
+        _playerLevel,
+        _petLevel,
+        _failUpgrade,
+        _round
+        };
+    }
+
+    public void ResetState()
+    {
+        if (_initialStats == null || _initialLevel == null)
+        {
+            return;
+        }
+        _attackPower = _initialStats[0];
+        _attackSpeed = _initialStats[1];
+        _attackRange = _initialStats[2];
+        _findRange = _initialStats[3];
+        _moveSpeed = _initialStats[4];
+        _rotateSpeed = _initialStats[5];
+        _criticalChance = _initialStats[6];
+        _criticalDamageMultiplier = _initialStats[7];
+        _petAttackPower = _initialStats[8];
+
+        _playerLevel = _initialLevel[0];
+        _petLevel = _initialLevel[1];
+        _failUpgrade = _initialLevel[2];
+        _round = _initialLevel[3];
+    }
 
     public void AddAttackPower(float value)
     {
@@ -81,11 +126,6 @@ public class PlayerData
     public void AddPetAttackPower(float value)
     {
         _petAttackPower += value;
-    }
-
-    public void SetBossBattle(bool value)
-    {
-        _flagBossBattle = value;
     }
 
     public void AddPlayerLevel(int value)

@@ -32,6 +32,14 @@ public class RewardChoiceManager : MonoBehaviour
         High
     }
 
+    public interface IReward
+    {
+        string Name { get; }
+        string Description { get; }
+        bool removeAfterSelect { get; }
+
+        void Apply(PlayerData playerData);
+    }
 
     private void Start()
     {
@@ -229,16 +237,6 @@ public class RewardChoiceManager : MonoBehaviour
             Debug.Log("보상 선택이 종료되었습니다.");
         }
     }
-
-    public interface IReward
-    {
-        string Name { get; }
-        string Description { get; }
-        bool removeAfterSelect { get; }
-
-        void Apply(PlayerData playerData);
-    }
-
 
     ///////////////////////////////////////
     /// 보상 목록

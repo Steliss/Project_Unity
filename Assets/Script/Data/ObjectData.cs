@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 // 기타 오브젝트 관련 자료 공간 
@@ -7,16 +8,39 @@ using UnityEngine;
 [Serializable]
 public class ObjectData
 {
-    // 상자 레벨, 보스순서, 레벨당 HP증가량?, 아이템에 대한 갯수, 
-
     [SerializeField] private int _chestLevel = 1;
     [SerializeField] private int _playerUpgrade = 0;
     [SerializeField] private int _PetUpgrade = 0;
 
+    private int[] _initialLevel;
 
     public int ChestLevel => _chestLevel;
     public int PlayerUpgrade => _playerUpgrade;
     public int PetUpgrade => _PetUpgrade;
+
+
+    public void SaveState()
+    {
+        _initialLevel = new int[]
+        {
+        _chestLevel,
+        _playerUpgrade,
+        _PetUpgrade
+        };
+    }
+
+    public void ResetState()
+    {
+        if (_initialLevel == null)
+        {
+            return;
+        }
+        _chestLevel = _initialLevel[0];
+        _playerUpgrade = _initialLevel[1];
+        _PetUpgrade = _initialLevel[2];
+    }
+
+
 
 
     public void AddChestLevel(int value)

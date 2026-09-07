@@ -39,7 +39,6 @@ public class GameData : MonoBehaviour
     private void Awake()
     {
         _playerData = new PlayerData();
-
         if (_playerData == null)
         {
             Log.LogNull(nameof(GameData), nameof(Awake), nameof(_playerData));
@@ -47,7 +46,6 @@ public class GameData : MonoBehaviour
         }
 
         _objectData = new ObjectData();
-
         if (_objectData == null)
         {
             Log.LogNull(nameof(GameData), nameof(Awake), nameof(_objectData));
@@ -61,7 +59,7 @@ public class GameData : MonoBehaviour
         if(_cSceneManager == null)
         {
             Log.LogNull(nameof(GameData), nameof(Start), nameof(_cSceneManager));
-        }    
+        }
     }
 
     private void Update()
@@ -121,12 +119,9 @@ public class GameData : MonoBehaviour
 
     private void GameOver()
     {
+        // 페이즈만 변화 처리는 CreateBoss에서 승리조건과 같이
         _currentPhase = GamePhase.GameOver;
         _timer = 0f;
-
-        Debug.Log("제한시간 초과 / 게임 오버");
-
-        _cSceneManager.LoadScene(ESceneId.Menu);
     }
 
     public void SetBossBattle()
