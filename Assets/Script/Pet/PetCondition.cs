@@ -9,7 +9,6 @@ public class PetCondition : MonoBehaviour
     // 공전 설정
     [SerializeField] private float _orbitRadius = 3f;
     [SerializeField] private float _orbitSpeed = 12f;
-    [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _rotateSpeed = 240f;
 
     // 비행 설정
@@ -388,7 +387,7 @@ public class PetCondition : MonoBehaviour
         }
 
         PetLookRotate(tarPos);
-        transform.position = Vector3.MoveTowards(transform.position, tarPos, _moveSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, tarPos, _playerData.MoveSpeed * Time.deltaTime);
     }
 
 

@@ -1,11 +1,13 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class CreateBoss : MonoBehaviour
 {
     [SerializeField] private GameObject[] Boss = null;
     [SerializeField] private Vector3 _spawnPoint;
     [SerializeField] private GameObject _player;
+    [SerializeField] private GameObject _pet;
 
     [SerializeField] private PlayerAnimation _playerAnimation;
     [SerializeField] private BossCameraController _bossCameraController;
@@ -18,12 +20,22 @@ public class CreateBoss : MonoBehaviour
 
     private RewardChoiceManager _rewardChoiceManager;    
     private CSceneManager _sceneManager;
+    private SaveData _saveData;
 
-
+    private void Awake()
+    {
+        if(_player == null || _pet == null)
+        {
+            Log.LogNull(nameof(CreateBoss), nameof(Awake), nameof(_gameData));
+            return;
+        }
+    }
 
     void Start()
     {
+
         _gameData = ManagerDontDestroy.Instance.GameData;
+        _saveData = ManagerDontDestroy.Instance.SaveData;
         _rewardChoiceManager = ManagerDontDestroy.Instance.RewardChoiceManager;
         _sceneManager = ManagerDontDestroy.Instance.SceneManager;
         _playerBattle = _player.GetComponent<PlayerBattle>();
@@ -52,16 +64,20 @@ public class CreateBoss : MonoBehaviour
 
     private IEnumerator GameOver()
     {
-        Debug.Log("제한시간 초과 / 게임 오버");
+        //Debug.Log("제한시간 초과 / 게임 오버");
 
         // 플레이어 애니메이션 애도 분기 
         _playerAnimation.PlayAnimation(PlayerAnimation.Animation.tDieB);
         yield return new WaitForSeconds(3f);
 
         // 패배 UI => 점수 및 통계 (승리씬도 가야하네?)
-        _bossUI.BattleLossUI(true);
+        _bossUI.BattleLossUI(true, false);
+
+        _player.SetActive(false);
+        _pet.SetActive(false);
+
         yield return new WaitUntil(() => Input.anyKeyDown);
-        _bossUI.BattleLossUI(false);
+        _bossUI.BattleLossUI(false, false);
 
         // 플레이어 데이터 초기화 타이머는 gamedata에서 처리 
         _playerData.ResetState();
@@ -98,12 +114,29 @@ public class CreateBoss : MonoBehaviour
     {
         if (_playerData.Round == 3)
         {
-            // 승리 
+            // 승리
+            // 유물 획득  
+            _saveData.GetRelic();
+
+            StartCoroutine(AnimationCoroutine());
+            // 패배처럼 UI 업데이트 추가 
+
+            StartCoroutine(CoroutineWin());
+
         }
         StartCoroutine(RewardCoroutine());
         StartCoroutine(AnimationCoroutine());
+        _sceneManager.LoadScene(ESceneId.Field);
     }
 
+    private IEnumerator CoroutineWin()
+    {
+        _bossUI.BattleLossUI(true, true);
+        yield return new WaitUntil(() => Input.anyKeyDown);
+
+        _bossUI.BattleLossUI(false, true);
+
+    }
 
 
     private IEnumerator RewardCoroutine()
@@ -134,7 +167,6 @@ public class CreateBoss : MonoBehaviour
         yield return new WaitForSeconds(5f);
         // 애니메이션 종료 후 씬 이동
 
-        _sceneManager.LoadScene(ESceneId.Field);
         _gameData.EndBossBattle();
     }
 

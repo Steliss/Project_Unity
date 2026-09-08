@@ -1940,7 +1940,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _farmingTime: 10
-  _bossTime: 10
+  _bossTime: 20
 --- !u!1 &1426991524
 GameObject:
   m_ObjectHideFlags: 0

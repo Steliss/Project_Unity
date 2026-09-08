@@ -107,4 +107,19 @@ public class CreateEnemy : MonoBehaviour
         enemy.transform.SetParent(_enemy);
         _enemyQueue.Enqueue(enemy);
     }
+
+    private void OnDrawGizmos()
+    {
+        float size = _enemySpawnMax - _enemySpawnMin;
+        float offset = (_enemySpawnMin + _enemySpawnMax) * 0.5f;
+
+        Vector3 center = new Vector3(
+            _enemyCenter.x + offset,
+            0f,
+            _enemyCenter.z + offset
+        );
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(center, new Vector3(size, 0f, size));
+    }
 }

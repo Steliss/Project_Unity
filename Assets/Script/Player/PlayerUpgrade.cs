@@ -1,23 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
-
-// 업그레이드 
-
-// UI 버튼 누르면 동작
-// 오브젝트 데이터와 상호작용(소모) => 플레이어 데이터에 데이터 처리
-// 확률과 관련된거라 방법 생각해보기
-
-// 선택지 기능 만들어둔거 아까운데 꽝 몇번시 선택지창? => 선택지도 보스 -> 필드 이동 돈 디스트로이 
-// 선택지 켜질때 다른 UI 꺼지게 바꿔야함 
-
-// 강화에 따른 외형 변화 플레이어 + UI
-// UI의 경우 강화 성공시 모션 
-
-// 펫은 자동 강화 
-
-
-// 이펙트 물어보기
-
 
 public class PlayerUpgrade : MonoBehaviour
 {
@@ -25,8 +6,6 @@ public class PlayerUpgrade : MonoBehaviour
 
     [SerializeField] private GameObject _player;
     [SerializeField] private GameObject _uiPlayer;
-
-    [SerializeField] private Button UpgradeUIButton;
 
     [Header("강화 확률 조작")]
     [SerializeField] private float _successChanceMax = 1f;
@@ -61,12 +40,12 @@ public class PlayerUpgrade : MonoBehaviour
     private PlayerData _playerData;
     private ObjectData _objectData;
 
+    private float successChance;
+    public float SuccessChance => successChance;
 
 
     private void Start()
     {
-        UpgradeUIButton.onClick.AddListener(() => OnButtonClick("UpgradeUIButton"));
-
         _gameData = ManagerDontDestroy.Instance.GameData;
         if (_gameData == null)
         {
@@ -89,24 +68,18 @@ public class PlayerUpgrade : MonoBehaviour
         {
             Log.LogNull(nameof(PlayerUpgrade), nameof(Start));
         }
+
+        // 강화확률 초기값 계산 UI용
+        successChance = CalculateSuccessChance(_playerData.PlayerLevel);
+        //Debug.Log($"Test : {successChance}");
     }
 
     private void Update()
     {
         PetUpgrade();
     }
-
-
-    private void OnButtonClick(string buttonType)
-    {
-        if (buttonType == "UpgradeUIButton")
-        {
-            PlayerUpgradeClick();
-        }
-    }
-
     
-    private void PlayerUpgradeClick()
+    public void PlayerUpgradeClick()
     {
         if (_playerData == null)
         {
@@ -122,9 +95,10 @@ public class PlayerUpgrade : MonoBehaviour
         }
 
         _objectData.AddPlayerUpgrade(-cost);
+        _playerData.AddTotalCoupon(cost);
 
         // 강화 확률 계산
-        float successChance = CalculateSuccessChance(_playerData.PlayerLevel);
+        successChance = CalculateSuccessChance(_playerData.PlayerLevel);
 
         bool isSuccess = Random.value <= successChance;
 
@@ -222,8 +196,10 @@ public class PlayerUpgrade : MonoBehaviour
             return;
         }
 
+        _objectData.AddPetUpgrade(-_playerData.PetLevel * 3);
+        _playerData.AddTotalCoupon(_playerData.PetLevel * 3);
         _playerData.AddPetAttackPower(_playerData.PetLevel);
-        Debug.Log("펫 강화 성공 : 공격력 +1");
+        Debug.Log($"펫 강화 성공 : 공격력 {_playerData.PetLevel}");
 
         // 공격력에 따른 레벨 상승 
         if(_playerData.PetAttackPower > _playerData.PetLevel * 10f)

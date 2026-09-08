@@ -242,7 +242,7 @@ public class RewardChoiceManager : MonoBehaviour
     /// 보상 목록
     ///////////////////////////////////////
 
-    public class AttackPowerReward : IReward
+    private class AttackPowerReward : IReward
     {
         private readonly float _value;
         private readonly RewardSize _rewardSize;
@@ -284,7 +284,7 @@ public class RewardChoiceManager : MonoBehaviour
     }
 
 
-    public class AttackSpeedReward : IReward
+    private class AttackSpeedReward : IReward
     {
         private readonly float _value;
         private readonly RewardSize _rewardSize;
@@ -325,7 +325,7 @@ public class RewardChoiceManager : MonoBehaviour
         }
     }
 
-    public class AttackRangeReward : IReward
+    private class AttackRangeReward : IReward
     {
         private readonly float _value;
         private readonly RewardSize _rewardSize;
@@ -366,7 +366,7 @@ public class RewardChoiceManager : MonoBehaviour
         }
     }
 
-    public class RotateSpeedReward : IReward
+    private class RotateSpeedReward : IReward
     {
         private readonly float _value;
         private readonly RewardSize _rewardSize;
@@ -408,7 +408,7 @@ public class RewardChoiceManager : MonoBehaviour
     }
 
 
-    public class MoveSpeedReward : IReward
+    private class MoveSpeedReward : IReward
     {
         private readonly float _value;
         private readonly RewardSize _rewardSize;
@@ -449,7 +449,7 @@ public class RewardChoiceManager : MonoBehaviour
         }
     }
 
-    public class CriticalChanceReward : IReward
+    private class CriticalChanceReward : IReward
     {
         private readonly float _value;
         private readonly RewardSize _rewardSize;
@@ -490,7 +490,7 @@ public class RewardChoiceManager : MonoBehaviour
         }
     }
 
-    public class CriticalDamageReward : IReward
+    private class CriticalDamageReward : IReward
     {
         private readonly float _value;
         private readonly RewardSize _rewardSize;

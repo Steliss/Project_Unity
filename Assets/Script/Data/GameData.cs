@@ -11,15 +11,15 @@ public class GameData : MonoBehaviour
     }
 
     [SerializeField] private float _farmingTime = 60f;   // 10분
-    [SerializeField] private float _bossTime = 15f;      // 2분 30초
+    [SerializeField] private float _bossTime = 20f;      // 2분 30초
 
     private GamePhase _currentPhase;
 
     private ObjectData _objectData;
     private PlayerData _playerData;
     private CSceneManager _cSceneManager;
-    private float _timer = 0f;
 
+    private float _timer = 0f;
     private bool _flagBossBaltte = false;
 
     public ObjectData _ObjectData => _objectData;

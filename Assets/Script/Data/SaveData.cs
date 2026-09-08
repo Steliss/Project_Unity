@@ -91,7 +91,6 @@ public class SaveData : MonoBehaviour
     private string SavePath => Path.Combine(Application.persistentDataPath, "relic.json");
     private RelicData _relicData;
 
-
     private void Start()
     {
         gameData = ManagerDontDestroy.Instance.GameData;
@@ -118,6 +117,75 @@ public class SaveData : MonoBehaviour
         Debug.Log($"포인트 확인 : {_saveData.Points}");
     }
 
+
+    public void GetRelic()
+    {
+        int[] weights =
+        {
+        _maxAttackPower,
+        _maxAttackSpeed,
+        _maxMoveSpeed,
+        _maxRotateSpeed,
+        _maxCriticalChance,
+        _maxCriticalDamageMultiplier
+         };
+
+        int totalWeight = 0;
+
+        foreach (int weight in weights)
+        {
+            totalWeight += weight;
+        }
+
+        if (totalWeight <= 0)
+        {
+            return;
+        }
+
+        int randomValue = UnityEngine.Random.Range(0, totalWeight);
+        RelicType getRelicType = default;
+
+        for (int i = 0; i < weights.Length; i++)
+        {
+            if (randomValue < weights[i])
+            {
+                getRelicType = (RelicType)i;
+                break;
+            }
+
+            randomValue -= weights[i];
+        }
+
+        switch (getRelicType)
+        {
+            case RelicType.AttackPower:
+                Relic00();
+                break;
+
+            case RelicType.AttackSpeed:
+                Relic01();
+                break;
+
+            case RelicType.MoveSpeed:
+                Relic02();
+                break;
+
+            case RelicType.RotateSpeed:
+                Relic03();
+                break;
+
+            case RelicType.CriticalChance:
+                Relic04();
+                break;
+
+            case RelicType.CriticalDamageMultiplier:
+                Relic05();
+                break;
+
+            default:
+                break;
+        }
+    }
 
 
     public void Relic00()

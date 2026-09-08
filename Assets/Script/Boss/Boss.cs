@@ -94,6 +94,7 @@ public class Boss : MonoBehaviour, IDamageable
         AddHitShake();
 
         _currentHP -= damage;
+        _gameData._PlayerData.AddTotalDamage(damage);
         Debug.Log($"가한 데미지 : {damage}");
         Debug.Log($"남은 HP : {_currentHP}");
 

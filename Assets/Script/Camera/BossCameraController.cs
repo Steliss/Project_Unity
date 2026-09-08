@@ -13,8 +13,6 @@ public class BossCameraController : MonoBehaviour
     private CinemachineSmoothPath _dollytrack;
     private CinemachineDollyCart _dollyCart;
 
-    private GameData _gameDate;
-    private PlayerData _playerData;
 
     private void Awake()
     {
@@ -23,13 +21,6 @@ public class BossCameraController : MonoBehaviour
 
         PlayerCameraChange();
     }
-
-    private void Start()
-    {
-        _gameDate = ManagerDontDestroy.Instance.GameData;
-        _playerData = _gameDate._PlayerData;
-    }
-
 
     private void TransformCheck()
     {

@@ -24,9 +24,12 @@ public class PlayerData
     private int _failUpgrade = 0;
     private int _round = 0;
 
+    private float _totalDamage = 0f;
+    private int _totalUseCoupon = 0;
+
     private float[] _initialStats;
     private int[] _initialLevel;
-
+    
     public float AttackPower => _attackPower;
     public float AttackSpeed => _attackSpeed;
     public float AttackRange => _attackRange;
@@ -40,6 +43,9 @@ public class PlayerData
     public int PetLevel => _petLevel;
     public int FailUpgrade => _failUpgrade;
     public int Round => _round;
+
+    public float TotalDamage => _totalDamage;
+    public int TotalUseCoupon => _totalUseCoupon;
 
 
     public void SaveState()
@@ -86,6 +92,9 @@ public class PlayerData
         _petLevel = _initialLevel[1];
         _failUpgrade = _initialLevel[2];
         _round = _initialLevel[3];
+
+        _totalDamage = 0;
+        _totalUseCoupon = 0;
     }
 
     public void AddAttackPower(float value)
@@ -160,6 +169,17 @@ public class PlayerData
     {
         _round += value;
     }
+
+    public void AddTotalCoupon(int value)
+    {
+        _totalUseCoupon += value;
+    }
+
+    public void AddTotalDamage(float value)
+    {
+        _totalDamage += value;
+    }
+
 }
 
 

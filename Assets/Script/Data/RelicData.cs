@@ -9,7 +9,7 @@ public interface IRelic<T>
     void Apply(PlayerData playerData);
 }
 
-[Serializable]
+
 public class RelicData : MonoBehaviour
 {
     private GameData gameData;
@@ -25,7 +25,6 @@ public class RelicData : MonoBehaviour
         }
     }
 
-
     public void SetRelic00(float valve)
     {
         if (valve < 0)
@@ -34,14 +33,10 @@ public class RelicData : MonoBehaviour
         }
 
         IRelic<float> relic = new Relic00(valve);
-
-        //Debug.Log($"test : {valve}");
-        //Debug.Log($"test2 : {playerData}");
-
         relic.Apply(playerData);
     }
 
-    public class Relic00 : IRelic<float>
+    private class Relic00 : IRelic<float>
     {
         public string Name => "힘의 유물";
         public string Description => $"공격력이 {Valve:F0} 증가합니다.";
@@ -70,7 +65,7 @@ public class RelicData : MonoBehaviour
         relic.Apply(playerData);
     }
 
-    public class Relic01 : IRelic<float>
+    private class Relic01 : IRelic<float>
     {
         public string Name => "공격속도의 유물";
         public string Description => $"공격속도가 {Valve:F0} 증가합니다.";
@@ -99,7 +94,7 @@ public class RelicData : MonoBehaviour
         relic.Apply(playerData);
     }
 
-    public class Relic02 : IRelic<float>
+    private class Relic02 : IRelic<float>
     {
         public string Name => "이동속도의 유물";
         public string Description => $"이속속도가 {Valve:F0} 증가합니다.";
@@ -128,7 +123,7 @@ public class RelicData : MonoBehaviour
         relic.Apply(playerData);
     }
 
-    public class Relic03 : IRelic<float>
+    private class Relic03 : IRelic<float>
     {
         public string Name => "회전속도의 유물";
         public string Description => $"회전속도가 {Valve:F0} 증가합니다.";
@@ -157,7 +152,7 @@ public class RelicData : MonoBehaviour
         relic.Apply(playerData);
     }
 
-    public class Relic04 : IRelic<float>
+    private class Relic04 : IRelic<float>
     {
         public string Name => "치명타확률의 유물";
         public string Description => $"치명타확률이 {Valve:F0} 증가합니다.";
@@ -186,7 +181,7 @@ public class RelicData : MonoBehaviour
         relic.Apply(playerData);
     }
 
-    public class Relic05 : IRelic<float>
+    private class Relic05 : IRelic<float>
     {
         public string Name => "치명타 배율의 유물";
         public string Description => $"치명타 배율이 {Valve:F0} 증가합니다.";

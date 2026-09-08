@@ -1,7 +1,6 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Playables;
 using UnityEngine.UI;
 
 
@@ -11,8 +10,9 @@ public class FiledUI : MonoBehaviour
     [SerializeField] private Button useItemButton;
     [SerializeField] private Button bossSceneButton;
     [SerializeField] private Button upgradeUIOpenButton;
+    [SerializeField] private Button UpgradeUIButton;
     [SerializeField] private Toggle informationChangeToggle;
-
+    [SerializeField] private PlayerUpgrade _playerUpgrade;
 
     private CSceneManager _cSceneManager;
     private GameData _gameData;
@@ -38,6 +38,7 @@ public class FiledUI : MonoBehaviour
     private TextMeshProUGUI _petLevel;
     private TextMeshProUGUI _petAttackPower;
     private TextMeshProUGUI _DPSCheck;
+    private TextMeshProUGUI _playerUpgradeButton;
 
     private int _previousUpgradeCoupon = -1;
     private int _previousChestLevel = -1;
@@ -49,6 +50,7 @@ public class FiledUI : MonoBehaviour
         useItemButton.onClick.AddListener(() => OnButtonClick("UseItem"));
         bossSceneButton.onClick.AddListener(() => OnButtonClick("BossScene"));
         upgradeUIOpenButton.onClick.AddListener(() => OnButtonClick("UpgradeUIOpen"));
+        UpgradeUIButton.onClick.AddListener(() => OnButtonClick("UpgradeUIButton"));
         informationChangeToggle.onValueChanged.AddListener(OnToggleChanged);
 
         _cSceneManager = ManagerDontDestroy.Instance.SceneManager;
@@ -69,9 +71,6 @@ public class FiledUI : MonoBehaviour
         _upgradeUI = transform.Find("BottomBar/UpgradeBackGround").gameObject;
         _uiPlayerDisplay = transform.Find("BottomBar/UpgradeBackGround/Upgrade").gameObject;
         _informationDisplay = transform.Find("BottomBar/UpgradeBackGround/Information").gameObject;
-
-        // 필드로 이동시 상태 변경 
-        //_gameData.CurrentPhase = GameData.GamePhase.Farming;
 
         TextMeshSetting();
     }
@@ -194,6 +193,11 @@ public class FiledUI : MonoBehaviour
         {
             OpenUpgradeUI();
         }
+        else if (buttonType == "UpgradeUIButton")
+        {
+            _playerUpgradeButton.text = $"성공 확률 : {_playerUpgrade.SuccessChance * 100:F5}";
+            _playerUpgrade.PlayerUpgradeClick();
+        }
     }
 
 
@@ -206,8 +210,8 @@ public class FiledUI : MonoBehaviour
             return;
         }
 
+        _playerUpgradeButton.text = $"성공 확률 : {_playerUpgrade.SuccessChance * 100:F5}";
         _upgradeUI.SetActive(!_upgradeUI.activeSelf);
-
     }
 
     private void TextMeshSetting()
@@ -228,6 +232,7 @@ public class FiledUI : MonoBehaviour
             _petLevel = transform.Find("BottomBar/UpgradeBackGround/Information/PetLevelText").GetComponent<TextMeshProUGUI>();
             _petAttackPower = transform.Find("BottomBar/UpgradeBackGround/Information/PetAttackPowerText").GetComponent<TextMeshProUGUI>();
             _DPSCheck = transform.Find("BottomBar/UpgradeBackGround/Information/DPSCheckText").GetComponent<TextMeshProUGUI>();
+            _playerUpgradeButton = transform.Find("BottomBar/UpgradeBackGround/Upgrade/UpgradeButton/UpgradeButtonText").GetComponent<TextMeshProUGUI>();
         }
 
         catch (NullReferenceException)
