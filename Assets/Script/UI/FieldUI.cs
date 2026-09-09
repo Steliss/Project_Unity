@@ -13,6 +13,7 @@ public class FiledUI : MonoBehaviour
     [SerializeField] private Button UpgradeUIButton;
     [SerializeField] private Toggle informationChangeToggle;
     [SerializeField] private PlayerUpgrade _playerUpgrade;
+    [SerializeField] private UseItem _useItem;
 
     private CSceneManager _cSceneManager;
     private GameData _gameData;
@@ -22,10 +23,13 @@ public class FiledUI : MonoBehaviour
     private GameObject _upgradeUI;
     private GameObject _uiPlayerDisplay;
     private GameObject _informationDisplay;
+    private GameObject _itemInventory;
+    private GameObject _powerTimer;
 
     private TextMeshProUGUI _upgradeCoupon;
     private TextMeshProUGUI _chestLevel;
     private TextMeshProUGUI _timer;
+    private TextMeshProUGUI _powerTimeText;
 
     private TextMeshProUGUI _playerLevel;
     private TextMeshProUGUI _attackPower;
@@ -67,10 +71,12 @@ public class FiledUI : MonoBehaviour
 
         _objectData = _gameData._ObjectData;
         _playerData = _gameData._PlayerData;
-        
+
         _upgradeUI = transform.Find("BottomBar/UpgradeBackGround").gameObject;
-        _uiPlayerDisplay = transform.Find("BottomBar/UpgradeBackGround/Upgrade").gameObject;
+        _uiPlayerDisplay = transform.Find("BottomBar/UpgradeBackGround/UpgradeText").gameObject;
         _informationDisplay = transform.Find("BottomBar/UpgradeBackGround/Information").gameObject;
+        _itemInventory = transform.Find("BottomBar/ItemInventory").gameObject;
+        _powerTimer = transform.Find("TopBar/PowerTime").gameObject;
 
         TextMeshSetting();
     }
@@ -85,6 +91,7 @@ public class FiledUI : MonoBehaviour
         CouponTextUpdate();
         LevelTextUpdate();
         TimerTextUpdate();
+        PowerTimer();
     }
 
     private void BottomBarTextUpdate()
@@ -105,6 +112,20 @@ public class FiledUI : MonoBehaviour
 
         _DPSCheck.text = $"DPS : {dps:F1}";
     }
+
+    private void PowerTimer()
+    {
+        if(_useItem.FlagPotionTimer)
+        {
+            _powerTimer.SetActive(true);
+            _powerTimeText.text = $"남은 시간 : {_useItem.PowerTimer:F2}";
+        }
+        else
+        {
+            _powerTimer.SetActive(false);
+        }
+    }
+
     private void TimerTextUpdate()
     {
         float time = 0f;
@@ -179,11 +200,12 @@ public class FiledUI : MonoBehaviour
     }
 
 
+
     private void OnButtonClick(string buttonType)
     {
         if (buttonType == "UseItem")
         {
-
+            OpenInventoryUI();
         }
         else if (buttonType == "BossScene")
         {
@@ -199,6 +221,18 @@ public class FiledUI : MonoBehaviour
             _playerUpgrade.PlayerUpgradeClick();
         }
     }
+
+    private void OpenInventoryUI()
+    {
+        if (_itemInventory == null)
+        {
+            Log.LogNull(nameof(FiledUI), nameof(OpenUpgradeUI), nameof(_itemInventory));
+            return;
+        }
+
+        _itemInventory.SetActive(!_itemInventory.activeSelf);
+    }
+
 
 
 
@@ -221,6 +255,7 @@ public class FiledUI : MonoBehaviour
             _upgradeCoupon = transform.Find("TopBar/UpgradeCoupon/UpgradeCouponText").GetComponent<TextMeshProUGUI>();
             _chestLevel = transform.Find("TopBar/ChestLevel/ChestLevelText").GetComponent<TextMeshProUGUI>();
             _timer = transform.Find("TopBar/Timer/TimerText").GetComponent<TextMeshProUGUI>();
+            _powerTimeText = transform.Find("TopBar/PowerTime/PowerTimeText").GetComponent<TextMeshProUGUI>();
             _playerLevel = transform.Find("BottomBar/UpgradeBackGround/Information/PlayerLevelText").GetComponent<TextMeshProUGUI>();
             _attackPower = transform.Find("BottomBar/UpgradeBackGround/Information/AttackPowerText").GetComponent<TextMeshProUGUI>();
             _attackRange = transform.Find("BottomBar/UpgradeBackGround/Information/AttackRangeText").GetComponent<TextMeshProUGUI>();
@@ -232,12 +267,16 @@ public class FiledUI : MonoBehaviour
             _petLevel = transform.Find("BottomBar/UpgradeBackGround/Information/PetLevelText").GetComponent<TextMeshProUGUI>();
             _petAttackPower = transform.Find("BottomBar/UpgradeBackGround/Information/PetAttackPowerText").GetComponent<TextMeshProUGUI>();
             _DPSCheck = transform.Find("BottomBar/UpgradeBackGround/Information/DPSCheckText").GetComponent<TextMeshProUGUI>();
-            _playerUpgradeButton = transform.Find("BottomBar/UpgradeBackGround/Upgrade/UpgradeButton/UpgradeButtonText").GetComponent<TextMeshProUGUI>();
+            _playerUpgradeButton = transform.Find("BottomBar/UpgradeBackGround/UpgradeText/UpgradeButton/UpgradeButtonText").GetComponent<TextMeshProUGUI>();
         }
 
-        catch (NullReferenceException)
+       //  catch (NullReferenceException)
+       // {
+       //     Log.LogNull(nameof(FiledUI), nameof(TextMeshSetting));
+       // }
+        catch (NullReferenceException e)
         {
-            Log.LogNull(nameof(FiledUI), nameof(TextMeshSetting));
+            Debug.LogException(e, this);
         }
     }
 

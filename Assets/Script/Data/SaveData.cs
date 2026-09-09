@@ -19,8 +19,9 @@ public class RelicOwnedData
 {
     public RelicType Type;
     public int Level; // 0이면 미획득
+    public string Name;
+    public string Description;
 }
-
 
 [Serializable]
 public class RelicSaveData
@@ -47,6 +48,13 @@ public class SaveData : MonoBehaviour
     [SerializeField] private float _coeCriticalChance;
     [SerializeField] private float _coeCriticalDamageMultiplier;
 
+    public float CoeAttackPower => _coeAttackPower;
+    public float CoeAttackSpeed => _coeAttackSpeed;
+    public float CoeMovewSpeed => _coeMoveSpeed;
+    public float CoeRotateSpeed => _coeRotateSpeed;
+    public float CoeCriticalChance => _coeCriticalChance;
+    public float CoeCriticalDamageMultiplier => _coeCriticalDamageMultiplier;
+
     private RelicSaveData _saveData = new RelicSaveData
     {
         Relics = new List<RelicOwnedData>
@@ -54,32 +62,44 @@ public class SaveData : MonoBehaviour
             new RelicOwnedData
             {
                 Type = RelicType.AttackPower,
-                Level = 0
+                Level = 0,
+                Name = "", // "힘의 유물 {level}"
+                Description = "", // $"공격력이 {CoeAttackPower:F0} 증가합니다."
             },
             new RelicOwnedData
             {
                 Type = RelicType.AttackSpeed,
-                Level = 0
+                Level = 0,
+                Name = "", 
+                Description = "", 
             },
             new RelicOwnedData
             {
                 Type = RelicType.MoveSpeed,
-                Level = 0
+                Level = 0,
+                Name = "",
+                Description = "",
             },
             new RelicOwnedData
             {
                 Type = RelicType.RotateSpeed,
-                Level = 0
+                Level = 0,
+                Name = "",
+                Description = "",
             },
             new RelicOwnedData
             {
                 Type = RelicType.CriticalChance,
-                Level = 0
+                Level = 0,
+                Name = "",
+                Description = "",
             },
             new RelicOwnedData
             {
                 Type = RelicType.CriticalDamageMultiplier,
-                Level = 0
+                Level = 0,
+                Name = "",
+                Description = "",
             }
         }
     };
@@ -94,7 +114,7 @@ public class SaveData : MonoBehaviour
     private void Start()
     {
         gameData = ManagerDontDestroy.Instance.GameData;
-        if(gameData == null)
+        if (gameData == null)
         {
             Log.LogNull(nameof(RelicSaveData), nameof(Start), nameof(gameData));
         }
@@ -118,7 +138,7 @@ public class SaveData : MonoBehaviour
     }
 
 
-    public void GetRelic()
+    public RelicOwnedData GetRelic()
     {
         int[] weights =
         {
@@ -139,7 +159,7 @@ public class SaveData : MonoBehaviour
 
         if (totalWeight <= 0)
         {
-            return;
+            return null;
         }
 
         int randomValue = UnityEngine.Random.Range(0, totalWeight);
@@ -159,36 +179,30 @@ public class SaveData : MonoBehaviour
         switch (getRelicType)
         {
             case RelicType.AttackPower:
-                Relic00();
-                break;
+                return Relic00();
 
             case RelicType.AttackSpeed:
-                Relic01();
-                break;
+                return Relic01();
 
             case RelicType.MoveSpeed:
-                Relic02();
-                break;
+                return Relic02();
 
             case RelicType.RotateSpeed:
-                Relic03();
-                break;
+                return Relic03();
 
             case RelicType.CriticalChance:
-                Relic04();
-                break;
+                return Relic04();
 
             case RelicType.CriticalDamageMultiplier:
-                Relic05();
-                break;
+                return Relic05();
 
             default:
-                break;
+                return null;
         }
     }
 
 
-    public void Relic00()
+    public RelicOwnedData Relic00()
     {
         foreach (RelicOwnedData relic in _saveData.Relics)
         {
@@ -197,19 +211,20 @@ public class SaveData : MonoBehaviour
                 if (relic.Level < _maxAttackPower)
                 {
                     relic.Level++;
-                    break;
                 }
                 else
                 {
                     AddPoints(100);
-                    break;
                 }
+
+                SaveRelic();
+                return relic;
             }
         }
-        SaveRelic();
+        return null;
     }
 
-    public void Relic01()
+    public RelicOwnedData Relic01()
     {
         foreach (RelicOwnedData relic in _saveData.Relics)
         {
@@ -218,19 +233,20 @@ public class SaveData : MonoBehaviour
                 if (relic.Level < _maxAttackSpeed)
                 {
                     relic.Level++;
-                    break;
                 }
                 else
                 {
                     AddPoints(100);
-                    break;
                 }
+
+                SaveRelic();
+                return relic;
             }
         }
-        SaveRelic();
+        return null;
     }
 
-    public void Relic02()
+    public RelicOwnedData Relic02()
     {
         foreach (RelicOwnedData relic in _saveData.Relics)
         {
@@ -239,19 +255,20 @@ public class SaveData : MonoBehaviour
                 if (relic.Level < _maxMoveSpeed)
                 {
                     relic.Level++;
-                    break;
                 }
                 else
                 {
                     AddPoints(100);
-                    break;
                 }
+
+                SaveRelic();
+                return relic;
             }
         }
-        SaveRelic();
+        return null;
     }
 
-    public void Relic03()
+    public RelicOwnedData Relic03()
     {
         foreach (RelicOwnedData relic in _saveData.Relics)
         {
@@ -260,19 +277,20 @@ public class SaveData : MonoBehaviour
                 if (relic.Level < _maxRotateSpeed)
                 {
                     relic.Level++;
-                    break;
                 }
                 else
                 {
                     AddPoints(100);
-                    break;
                 }
+
+                SaveRelic();
+                return relic;
             }
         }
-        SaveRelic();
+        return null;
     }
 
-    public void Relic04()
+    public RelicOwnedData Relic04()
     {
         foreach (RelicOwnedData relic in _saveData.Relics)
         {
@@ -281,19 +299,20 @@ public class SaveData : MonoBehaviour
                 if (relic.Level < _maxCriticalChance)
                 {
                     relic.Level++;
-                    break;
                 }
                 else
                 {
                     AddPoints(100);
-                    break;
                 }
+
+                SaveRelic();
+                return relic;
             }
         }
-        SaveRelic();
+        return null;
     }
 
-    public void Relic05()
+    public RelicOwnedData Relic05()
     {
         foreach (RelicOwnedData relic in _saveData.Relics)
         {
@@ -302,16 +321,17 @@ public class SaveData : MonoBehaviour
                 if (relic.Level < _maxCriticalDamageMultiplier)
                 {
                     relic.Level++;
-                    break;
                 }
                 else
                 {
                     AddPoints(100);
-                    break;
                 }
+
+                SaveRelic();
+                return relic;
             }
         }
-        SaveRelic();
+        return null;
     }
 
 
@@ -325,7 +345,7 @@ public class SaveData : MonoBehaviour
     }
 
 
-    private void LoadRelic()
+    public void LoadRelic()
     {
         if (!File.Exists(SavePath))
         {
@@ -349,36 +369,48 @@ public class SaveData : MonoBehaviour
         if (relic.Type == RelicType.AttackPower && relic.Level != 0)
         {
             _relicData.SetRelic00(relic.Level * _coeAttackPower);
+            relic.Name = $"힘의 유물 {relic.Level}";
+            relic.Description = $"공격력이 {CoeAttackPower:F0} 증가합니다.";
         }
 
         relic = _saveData.Relics[1];
         if (relic.Type == RelicType.AttackSpeed && relic.Level != 0)
         {
             _relicData.SetRelic01(relic.Level * _coeAttackSpeed);
+            relic.Name = $"공격속도의 유물 {relic.Level}";
+            relic.Description = $"공격속도가 {CoeAttackSpeed:F0} 증가합니다.";
         }
 
         relic = _saveData.Relics[2];
         if (relic.Type == RelicType.MoveSpeed && relic.Level != 0)
         {
             _relicData.SetRelic02(relic.Level * _coeMoveSpeed);
+            relic.Name = $"이동속도의 유물 {relic.Level}";
+            relic.Description = $"이동속도가 {_coeMoveSpeed:F0} 증가합니다.";
         }
 
         relic = _saveData.Relics[3];
         if (relic.Type == RelicType.RotateSpeed && relic.Level != 0)
         {
             _relicData.SetRelic03(relic.Level * _coeRotateSpeed);
+            relic.Name = $"회전속도의 유물 {relic.Level}";
+            relic.Description = $"회전속도가 {_coeRotateSpeed:F0} 증가합니다.";
         }
 
         relic = _saveData.Relics[4];
         if (relic.Type == RelicType.CriticalChance && relic.Level != 0)
         {
             _relicData.SetRelic04(relic.Level * _coeCriticalChance);
+            relic.Name = $"치명타의 유물 {relic.Level}";
+            relic.Description = $"치명타확률이 {_coeCriticalChance:F0} 증가합니다.";
         }
 
         relic = _saveData.Relics[5];
         if (relic.Type == RelicType.CriticalDamageMultiplier && relic.Level != 0)
         {
             _relicData.SetRelic05(relic.Level * _coeCriticalDamageMultiplier);
+            relic.Name = $"치명타 계수의 유물 {relic.Level}";
+            relic.Description = $"치명타 계수가 {_coeCriticalDamageMultiplier:F0} 증가합니다.";
         }
 
         SaveRelic();

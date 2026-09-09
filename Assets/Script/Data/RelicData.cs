@@ -3,8 +3,6 @@ using UnityEngine;
 
 public interface IRelic<T>
 {
-    string Name { get; }
-    string Description { get; }
     T Valve { get; }
     void Apply(PlayerData playerData);
 }
@@ -38,9 +36,6 @@ public class RelicData : MonoBehaviour
 
     private class Relic00 : IRelic<float>
     {
-        public string Name => "힘의 유물";
-        public string Description => $"공격력이 {Valve:F0} 증가합니다.";
-
         public float Valve { get; }
 
         public Relic00(float value)
@@ -67,9 +62,6 @@ public class RelicData : MonoBehaviour
 
     private class Relic01 : IRelic<float>
     {
-        public string Name => "공격속도의 유물";
-        public string Description => $"공격속도가 {Valve:F0} 증가합니다.";
-
         public float Valve { get; }
 
         public Relic01(float value)
@@ -96,9 +88,6 @@ public class RelicData : MonoBehaviour
 
     private class Relic02 : IRelic<float>
     {
-        public string Name => "이동속도의 유물";
-        public string Description => $"이속속도가 {Valve:F0} 증가합니다.";
-
         public float Valve { get; }
 
         public Relic02(float value)
@@ -125,9 +114,6 @@ public class RelicData : MonoBehaviour
 
     private class Relic03 : IRelic<float>
     {
-        public string Name => "회전속도의 유물";
-        public string Description => $"회전속도가 {Valve:F0} 증가합니다.";
-
         public float Valve { get; }
 
         public Relic03(float value)
@@ -154,9 +140,6 @@ public class RelicData : MonoBehaviour
 
     private class Relic04 : IRelic<float>
     {
-        public string Name => "치명타확률의 유물";
-        public string Description => $"치명타확률이 {Valve:F0} 증가합니다.";
-
         public float Valve { get; }
 
         public Relic04(float value)
@@ -183,9 +166,6 @@ public class RelicData : MonoBehaviour
 
     private class Relic05 : IRelic<float>
     {
-        public string Name => "치명타 배율의 유물";
-        public string Description => $"치명타 배율이 {Valve:F0} 증가합니다.";
-
         public float Valve { get; }
 
         public Relic05(float value)

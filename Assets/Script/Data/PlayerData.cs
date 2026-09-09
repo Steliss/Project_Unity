@@ -8,14 +8,14 @@ using UnityEngine;
 [Serializable]
 public class PlayerData
 {
-    [SerializeField] private float _attackPower = 1f;
+    [SerializeField] private float _attackPower = 10f;
     [SerializeField] private float _attackSpeed = 1f;
-    [SerializeField] private float _attackRange = 5f;
+    [SerializeField] private float _attackRange = 3f;
     [SerializeField] private float _findRange = 100f;
-    [SerializeField] private float _moveSpeed = 1f;
-    [SerializeField] private float _rotateSpeed = 1f;
-    [SerializeField] private float _criticalChance = 1f;
-    [SerializeField] private float _criticalDamageMultiplier = 1f;
+    [SerializeField] private float _moveSpeed = 0.8f;
+    [SerializeField] private float _rotateSpeed = 60f;
+    [SerializeField] private float _criticalChance = 0.1f;
+    [SerializeField] private float _criticalDamageMultiplier = 1.5f;
     
     [SerializeField] private float _petAttackPower = 1f;
 

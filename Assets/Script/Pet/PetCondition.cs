@@ -115,17 +115,6 @@ public class PetCondition : MonoBehaviour
         DragonPlay();
         DragonPetBattle();
         DragonPetMove();
-
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            _playerData.AddPlayerLevel(1);
-        }
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            _playerData.AddPlayerLevel(-1);
-        }
-
     }
 
 

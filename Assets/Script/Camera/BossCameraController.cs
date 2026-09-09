@@ -72,6 +72,7 @@ public class BossCameraController : MonoBehaviour
         _dollytrack.InvalidateDistanceCache();
 
         _dollyCart.m_Position = 0f;
+        _dollyCart.m_Speed = 0.1f;
 
         _playerCamera.Priority = 10;
         _dollyCamera.Priority = 20;

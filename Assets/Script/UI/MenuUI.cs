@@ -11,7 +11,7 @@ public class MenuUI : MonoBehaviour
 
     void Start()
     {
-        StartButton.onClick.AddListener(() => OnButtonClick("Start"));
+        StartButton.onClick.AddListener(() => OnButtonClick("StartButton"));
 
         _cSceneManager = ManagerDontDestroy.Instance.SceneManager;
         _gameData = ManagerDontDestroy.Instance.GameData;
@@ -25,7 +25,7 @@ public class MenuUI : MonoBehaviour
 
     private void OnButtonClick(string buttonType)
     {
-        if (buttonType == "Start")
+        if (buttonType == "StartButton")
         {
             _cSceneManager.LoadScene(ESceneId.Field);
             _gameData.CurrentPhase = GameData.GamePhase.Farming;

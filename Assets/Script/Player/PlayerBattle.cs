@@ -1,9 +1,5 @@
 using UnityEngine;
 
-// 생성된 적을 찾고 이를 타격 제거 => 보상까지 이어지게. 
-// 플레이어 자료 생성의 창구  
-// 
-
 
 public class PlayerBattle : MonoBehaviour
 {
@@ -21,7 +17,7 @@ public class PlayerBattle : MonoBehaviour
     //private Enemy _enemy;
     private PlayerAnimation _playerAnimation;
 
-    // 강화 상태 여기 두기 애매한거 같은데 흠.
+
     private bool _flagPower = false;
     private bool _flagShoot = false;
     private bool _flagCanBattle = false;
@@ -34,6 +30,7 @@ public class PlayerBattle : MonoBehaviour
     public IDamageable _Target => _target;
 
     public bool FlagCanBattle { get => _flagBossBattle; set => _flagBossBattle = value; }
+    public bool FlagPower { get => _flagPower; set => _flagPower = value; }
 
     private void Start()
     {
@@ -85,7 +82,6 @@ public class PlayerBattle : MonoBehaviour
 
         PlayerMoving();
         Battle();
-        //  ㄴ 보상
 
 
     }

@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class CreateBoss : MonoBehaviour
 {
@@ -21,6 +20,8 @@ public class CreateBoss : MonoBehaviour
     private RewardChoiceManager _rewardChoiceManager;    
     private CSceneManager _sceneManager;
     private SaveData _saveData;
+
+    private bool test = false; 
 
     private void Awake()
     {
@@ -60,6 +61,15 @@ public class CreateBoss : MonoBehaviour
         {
             StartCoroutine(GameOver());
         }
+
+        //test
+        if(Input.GetKeyDown(KeyCode.O))
+        {
+            test = true;
+            CoroutineStart();
+        }
+
+
     }
 
     private IEnumerator GameOver()
@@ -71,13 +81,13 @@ public class CreateBoss : MonoBehaviour
         yield return new WaitForSeconds(3f);
 
         // 패배 UI => 점수 및 통계 (승리씬도 가야하네?)
-        _bossUI.BattleLossUI(true, false);
+        _bossUI.BattleEndUI(true, false);
 
         _player.SetActive(false);
         _pet.SetActive(false);
 
         yield return new WaitUntil(() => Input.anyKeyDown);
-        _bossUI.BattleLossUI(false, false);
+        _bossUI.BattleEndUI(false, false);
 
         // 플레이어 데이터 초기화 타이머는 gamedata에서 처리 
         _playerData.ResetState();
@@ -112,30 +122,33 @@ public class CreateBoss : MonoBehaviour
 
     public void CoroutineStart()
     {
-        if (_playerData.Round == 3)
+        if (_playerData.Round == 3 || test)
         {
-            // 승리
-            // 유물 획득  
-            _saveData.GetRelic();
+            RelicOwnedData relic = _saveData.GetRelic();
+            _saveData.LoadRelic();
 
-            StartCoroutine(AnimationCoroutine());
-            // 패배처럼 UI 업데이트 추가 
+            StartCoroutine(CoroutineWin(relic));
 
-            StartCoroutine(CoroutineWin());
-
+            return;
         }
         StartCoroutine(RewardCoroutine());
-        StartCoroutine(AnimationCoroutine());
+        StartCoroutine(AnimationCoroutine(new Vector3(0.6f, 0.3f, 0.6f)));
         _sceneManager.LoadScene(ESceneId.Field);
     }
 
-    private IEnumerator CoroutineWin()
+    private IEnumerator CoroutineWin(RelicOwnedData relic)
     {
-        _bossUI.BattleLossUI(true, true);
+        yield return StartCoroutine(AnimationCoroutine(new Vector3(0.3f, 0.2f, 0.3f)));
+
+        _bossUI.BattleEndUI(true, true, relic);
+        //yield return new WaitForSeconds(5f);
         yield return new WaitUntil(() => Input.anyKeyDown);
+        _bossUI.BattleEndUI(false, true);
 
-        _bossUI.BattleLossUI(false, true);
+        _playerData.ResetState();
+        _objectData.ResetState();
 
+        _sceneManager.LoadScene(ESceneId.Menu);
     }
 
 
@@ -147,10 +160,9 @@ public class CreateBoss : MonoBehaviour
 
     }
 
-    private IEnumerator AnimationCoroutine()
+    private IEnumerator AnimationCoroutine(Vector3 offSet)
     {
         // offset = 비율
-        Vector3 offSet = new Vector3(0.1f, 0.3f, 0.1f);
         _bossCameraController.DollyCameraChange(_player.transform, offSet);
 
         _playerAnimation.PlayAnimation(PlayerAnimation.Animation.tPutGun);

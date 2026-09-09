@@ -29,6 +29,9 @@ public class BossUI : MonoBehaviour
     private TextMeshProUGUI _upgradeCoupon;
     private TextMeshProUGUI _totalDamage;
 
+    private TextMeshProUGUI _title;
+    private TextMeshProUGUI _relicName;
+    private TextMeshProUGUI _relicEffect;
     void Start()
     {
         FieldButton.onClick.AddListener(() => OnButtonClick("Field"));
@@ -53,18 +56,22 @@ public class BossUI : MonoBehaviour
         try
         {
             _timer = transform.Find("Timer/TimerText").GetComponent<TextMeshProUGUI>();
-            _playerLevel = transform.Find("LossReport/PlayerLevelText").GetComponent<TextMeshProUGUI>();
-            _attackPower = transform.Find("LossReport/AttackPowerText").GetComponent<TextMeshProUGUI>();
-            _attackRange = transform.Find("LossReport/AttackRangeText").GetComponent<TextMeshProUGUI>();
-            _attackSpeed = transform.Find("LossReport/AttackSpeedText").GetComponent<TextMeshProUGUI>();
-            _criticalChance = transform.Find("LossReport/CriticalChanceText").GetComponent<TextMeshProUGUI>();
-            _criticalDamageMultiplier = transform.Find("LossReport/CriticalDamageMultiplierText").GetComponent<TextMeshProUGUI>();
-            _moveSpeed = transform.Find("LossReport/MoveSpeedText").GetComponent<TextMeshProUGUI>();
-            _rotateSpeed = transform.Find("LossReport/RotateSpeedText").GetComponent<TextMeshProUGUI>();
-            _petLevel = transform.Find("LossReport/PetLevelText").GetComponent<TextMeshProUGUI>();
-            _petAttackPower = transform.Find("LossReport/PetAttackPowerText").GetComponent<TextMeshProUGUI>();
-            _upgradeCoupon = transform.Find("LossReport/UseTotalCouponText").GetComponent<TextMeshProUGUI>();
-            _totalDamage = transform.Find("LossReport/TotalDamageText").GetComponent<TextMeshProUGUI>();
+            _playerLevel = transform.Find("EndReport/PlayerLevelText").GetComponent<TextMeshProUGUI>();
+            _attackPower = transform.Find("EndReport/AttackPowerText").GetComponent<TextMeshProUGUI>();
+            _attackRange = transform.Find("EndReport/AttackRangeText").GetComponent<TextMeshProUGUI>();
+            _attackSpeed = transform.Find("EndReport/AttackSpeedText").GetComponent<TextMeshProUGUI>();
+            _criticalChance = transform.Find("EndReport/CriticalChanceText").GetComponent<TextMeshProUGUI>();
+            _criticalDamageMultiplier = transform.Find("EndReport/CriticalDamageMultiplierText").GetComponent<TextMeshProUGUI>();
+            _moveSpeed = transform.Find("EndReport/MoveSpeedText").GetComponent<TextMeshProUGUI>();
+            _rotateSpeed = transform.Find("EndReport/RotateSpeedText").GetComponent<TextMeshProUGUI>();
+            _petLevel = transform.Find("EndReport/PetLevelText").GetComponent<TextMeshProUGUI>();
+            _petAttackPower = transform.Find("EndReport/PetAttackPowerText").GetComponent<TextMeshProUGUI>();
+            _upgradeCoupon = transform.Find("EndReport/UseTotalCouponText").GetComponent<TextMeshProUGUI>();
+            _totalDamage = transform.Find("EndReport/TotalDamageText").GetComponent<TextMeshProUGUI>();
+
+            _title = transform.Find("EndReport/TitleText").GetComponent<TextMeshProUGUI>();
+            _relicName = transform.Find("EndReport/WinImage/RelicNameText").GetComponent<TextMeshProUGUI>();
+            _relicEffect = transform.Find("EndReport/WinImage/RelicEffectText").GetComponent<TextMeshProUGUI>();
         }
 
         catch (NullReferenceException)
@@ -73,7 +80,7 @@ public class BossUI : MonoBehaviour
         }
     }
 
-    private void LossTextUpdate()
+    private void EndTextUpdate()
     {
         _playerLevel.text = $"플레이어 레벨 : {_playerData.PlayerLevel}";
         _attackPower.text = $"공격력 : {_playerData.AttackPower}";
@@ -88,6 +95,12 @@ public class BossUI : MonoBehaviour
         _upgradeCoupon.text = $"총 쿠폰사용량 : {_playerData.TotalUseCoupon}";
         _totalDamage.text = $"가한 데미지 : {_playerData.TotalDamage}";
 
+    }
+
+    private void RelicTextUpdate(RelicOwnedData relic)
+    {
+        _relicName.text = $"{relic.Name}";
+        _relicEffect.text = $"유물 정보 : {relic.Description}";
     }
 
     private void OnButtonClick(string buttonType)
@@ -123,19 +136,22 @@ public class BossUI : MonoBehaviour
         _timer.text = $"{minutes:00}:{seconds:00}";
     }
 
-    public void BattleLossUI(bool set, bool win)
+    public void BattleEndUI(bool set, bool win, RelicOwnedData relic = null)
     {
-        LossTextUpdate();
+        EndTextUpdate();
         Debug.Log($"test 가한 데미지 : {_playerData.TotalDamage}");
         _EndReport.SetActive(set);
         if(win)
         {
+            _title.text = "승리!";
+            RelicTextUpdate(relic);
             _lossImage.SetActive(false);
             _WinImage.SetActive(true);
 
         }
         else
         {
+            _title.text = "패배!";
             _lossImage.SetActive(true);
             _WinImage.SetActive(false);
         }

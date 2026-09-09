@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class CreateItem : MonoBehaviour
 {
+    [SerializeField] private InvenrotyUI _inventory;
+
     private enum ItemType
     {
         None,
@@ -31,14 +33,12 @@ public class CreateItem : MonoBehaviour
     private readonly List<GameObject> _potionList = new List<GameObject>();
     private readonly Dictionary<GameObject, float> _potionDiction = new Dictionary<GameObject, float>();
 
-
-    GameData _gameData;
-
     private Transform _key;
     private Transform _powerPotion;
 
-
-
+    public List<GameObject> PotionList => _potionList;
+    public Dictionary<GameObject, float> PotionDiction => _potionDiction;
+    public List<GameObject> KeyList => _keyList;
 
     [System.Serializable]
     private class ItemWeightRandom
@@ -63,6 +63,7 @@ public class CreateItem : MonoBehaviour
 
     private ItemWeightRandom[] _itemWeightRandoms;
 
+    private GameData _gameData;
     private ObjectData _objectData;
     private PlayerData _playerData;
 
@@ -77,15 +78,23 @@ public class CreateItem : MonoBehaviour
 
         _objectData = _gameData._ObjectData;
         _playerData = _gameData._PlayerData;
-
         if (_objectData == null || _playerData == null)
         {
             Log.LogNull(nameof(CreateItem), nameof(Start));
         }
 
+        if(_inventory == null)
+        {
+            Log.LogNull(nameof(CreateItem), nameof(Start));
+        }
+    }
+
+    public void ItemSetting()
+    {
         ItemWeightSetting();
         KeySetting();
         PotionSetting();
+        Debug.Log("TestLog : 아이템 세팅 완료");
     }
 
     private void Update()
@@ -172,6 +181,7 @@ public class CreateItem : MonoBehaviour
 
         _potionList.Add(potion);
         _potionDiction.Add(potion, _potionTimer);
+        _inventory.InventoryAdd(potion);
     }
 
     // 풀을 더 생성
@@ -255,7 +265,7 @@ public class CreateItem : MonoBehaviour
     }
 
     // 풀로 돌리기 
-    private void ReturnPotionToPool(GameObject potion)
+    public void ReturnPotionToPool(GameObject potion)
     {
         _potionList.Remove(potion);
         _potionDiction.Remove(potion);
@@ -264,6 +274,7 @@ public class CreateItem : MonoBehaviour
         potion.transform.SetParent(_powerPotion);
 
         _potionQueue.Enqueue(potion);
+        _inventory.InventoryRemove(potion);
     }
 
 
@@ -364,7 +375,7 @@ public class CreateItem : MonoBehaviour
         key.SetActive(true);
 
         _keyList.Add(key);
-
+        _inventory.InventoryAdd(key);
     }
 
 
@@ -388,6 +399,7 @@ public class CreateItem : MonoBehaviour
             key.transform.SetParent(_key);
 
             _keyQueue.Enqueue(key);
+            _inventory.InventoryRemove(key);
         }
 
         _keyList.Clear();

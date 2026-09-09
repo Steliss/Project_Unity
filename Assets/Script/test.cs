@@ -1,39 +1,52 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class test : MonoBehaviour
 {
 
-    private SaveData _saveData;
-    private GameData GameData;
-    private PlayerData PlayerData;
-    private ObjectData ObjectData;
+    [SerializeField] private Image[] _itemIcon;
+    [SerializeField] private Sprite _iconA;
+    [SerializeField] private Sprite _iconB;
+
 
     void Start()
     {
-        
-        _saveData = ManagerDontDestroy.Instance.SaveData;
-        GameData = ManagerDontDestroy.Instance.GameData;
-        PlayerData = GameData._PlayerData;
-        ObjectData = GameData._ObjectData;  
+
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha0))
+
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            _saveData.GetRelic();
-
-            Debug.Log($"test : {_saveData}");
-            Debug.Log($"ap : {PlayerData.AttackPower}");
-            Debug.Log($"as : {PlayerData.AttackSpeed}");
-            Debug.Log($"ms : {PlayerData.MoveSpeed}");
-            Debug.Log($"rs : {PlayerData.RotateSpeed}");
-            Debug.Log($"cc : {PlayerData.CriticalChance}");
-            Debug.Log($"cm : {PlayerData.CriticalDamageMultiplier}");
-
+            Test1();
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            Test2();
         }
 
+
     }
+    private void Test1()
+    {
+        foreach (var item in _itemIcon)
+        {
+            item.gameObject.SetActive(true);
+            item.sprite = _iconA;
+        }
+    }
+
+    private void Test2()
+    {
+        foreach (var item in _itemIcon)
+        {
+            item.gameObject.SetActive(true);
+            item.sprite = _iconB;
+        }
+    }
+
+
 }
