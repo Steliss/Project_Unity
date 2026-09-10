@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class PlayerUpgrade : MonoBehaviour
 {
-    // 버튼 UI로 빼기 => 리펙토링 
-
     [SerializeField] private GameObject _player;
     [SerializeField] private GameObject _uiPlayer;
 
@@ -40,6 +38,8 @@ public class PlayerUpgrade : MonoBehaviour
     private PlayerData _playerData;
     private ObjectData _objectData;
 
+    private UIPlayerEffect _uIPlayerEffect;
+
     private float successChance;
     public float SuccessChance => successChance;
 
@@ -67,6 +67,13 @@ public class PlayerUpgrade : MonoBehaviour
         if (_player == null || _uiPlayer == null)
         {
             Log.LogNull(nameof(PlayerUpgrade), nameof(Start));
+        }
+
+        _uIPlayerEffect = _uiPlayer.GetComponent<UIPlayerEffect>();
+        if( _uIPlayerEffect == null )
+        {
+            Log.LogNull(nameof(PlayerBattle), nameof(Start), nameof(_uIPlayerEffect));
+            return;
         }
 
         // 강화확률 초기값 계산 UI용
@@ -122,6 +129,8 @@ public class PlayerUpgrade : MonoBehaviour
     // 성공시 고정값과 퍼센트값 비교 큰쪽으로 능력치 증가
     private void PlayerUpgradeSuccess()
     {
+        _uIPlayerEffect.PlayEffect();
+
         _increaseSuccessSet = _increaseSuccessSet * _playerData.PlayerLevel;
         float increasePercent;
         float increaseAmount;
@@ -166,22 +175,22 @@ public class PlayerUpgrade : MonoBehaviour
         if (randomWeight < _attackPowerWeight)
         {
             _playerData.AddAttackPower(1f * _playerData.PlayerLevel);
-            Debug.Log("강화 실패 보상: 공격력 +1");
+            Debug.Log($"강화 실패 보상: 공격력 {1f * _playerData.PlayerLevel}");
         }
         else if (randomWeight < _attackPowerWeight + _criticalDamageWeight)
         {
             _playerData.AddCriticalDamageMultiplier(0.05f * _playerData.PlayerLevel);
-            Debug.Log("강화 실패 보상: 크리티컬 배율 +0.05");
+            Debug.Log($"강화 실패 보상: 크리티컬 배율 {0.05f * _playerData.PlayerLevel}");
         }
         else if (randomWeight < _attackPowerWeight + _criticalDamageWeight + _moveSpeedWeight)
         {
-            _playerData.AddMoveSpeed(0.1f * _playerData.PlayerLevel);
-            Debug.Log("강화 실패 보상: 이동속도 +0.1");
+            _playerData.AddMoveSpeed(0.05f * _playerData.PlayerLevel);
+            Debug.Log($"강화 실패 보상: 이동속도 {0.05f * _playerData.PlayerLevel}");
         }
         else
         {
             _playerData.AddRotateSpeed(1f * _playerData.PlayerLevel);
-            Debug.Log("강화 실패 보상: 회전속도 +1");
+            Debug.Log($"강화 실패 보상: 회전속도 {1f * _playerData.PlayerLevel}");
         }
 
         // 실패 강화 횟수 저장

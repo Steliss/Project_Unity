@@ -21,7 +21,6 @@ public class CreateBoss : MonoBehaviour
     private CSceneManager _sceneManager;
     private SaveData _saveData;
 
-    private bool test = false; 
 
     private void Awake()
     {
@@ -61,15 +60,6 @@ public class CreateBoss : MonoBehaviour
         {
             StartCoroutine(GameOver());
         }
-
-        //test
-        if(Input.GetKeyDown(KeyCode.O))
-        {
-            test = true;
-            CoroutineStart();
-        }
-
-
     }
 
     private IEnumerator GameOver()
@@ -122,7 +112,7 @@ public class CreateBoss : MonoBehaviour
 
     public void CoroutineStart()
     {
-        if (_playerData.Round == 3 || test)
+        if (_playerData.Round == 3)
         {
             RelicOwnedData relic = _saveData.GetRelic();
             _saveData.LoadRelic();
@@ -184,6 +174,7 @@ public class CreateBoss : MonoBehaviour
 
     private IEnumerator BossCutScene(Transform boss)
     {
+        _gameData.CurrentPhase = GameData.GamePhase.None;
         _playerBattle.FlagCanBattle = true;
         _bossCameraController.DollyCameraChange(boss, Vector3.one);
         yield return new WaitForSeconds(5f);
@@ -191,6 +182,7 @@ public class CreateBoss : MonoBehaviour
         _playerBattle.FlagCanBattle = false;
 
         _bossCameraController.PlayerCameraChange();
+        _gameData.CurrentPhase = GameData.GamePhase.BossBattle;
     }
 
 

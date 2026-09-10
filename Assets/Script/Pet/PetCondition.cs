@@ -1,6 +1,5 @@
 
 using UnityEngine;
-using UnityEngine.Playables;
 
 public class PetCondition : MonoBehaviour
 {
@@ -212,13 +211,7 @@ public class PetCondition : MonoBehaviour
     {
         battleTimer += Time.deltaTime;
 
-        if (!_flagBattle || !IsEnemyValid())
-        {
-            return;
-        }
         //Debug.Log("Æê ¹èÆ² ÁøÀÔ");
-
-        float toDamage = _playerData.PetAttackPower;
 
         if(battleTimer > 20f)
         {
@@ -227,6 +220,12 @@ public class PetCondition : MonoBehaviour
             return;
         }
 
+        if (!_flagBattle || !IsEnemyValid())
+        {
+            return;
+        }
+
+        float toDamage = _playerData.PetAttackPower;
 
         if (_flagFlying)
         {
@@ -422,11 +421,4 @@ public class PetCondition : MonoBehaviour
     {
         return _player.transform.position.y;
     }
-
-
-
-
-
-
-
 }

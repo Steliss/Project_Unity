@@ -15,6 +15,8 @@ public class FiledUI : MonoBehaviour
     [SerializeField] private PlayerUpgrade _playerUpgrade;
     [SerializeField] private UseItem _useItem;
 
+    [SerializeField] private float _bossSceneMoveTime = 20f;
+
     private CSceneManager _cSceneManager;
     private GameData _gameData;
     private ObjectData _objectData;
@@ -84,6 +86,7 @@ public class FiledUI : MonoBehaviour
     private void Update()
     {
         TopBarTextUpdate();
+        BossSceneMove();
     }
 
     private void TopBarTextUpdate()
@@ -280,6 +283,14 @@ public class FiledUI : MonoBehaviour
         }
     }
 
+    private void BossSceneMove()
+    {
+        if(_gameData.Timer > _bossSceneMoveTime && _gameData.CurrentPhase == GameData.GamePhase.BossBattle)
+        {
+            Debug.Log("test 시간 제한 씬이동");
+            _cSceneManager.LoadScene(ESceneId.BossRoom);
+        }
+    }
 
 
 }

@@ -5,23 +5,29 @@ public class PlayerBattle : MonoBehaviour
 {
 
     [SerializeField] private GameObject _player;
+    [SerializeField] private GameObject _uiPlayer;
 
-    // 레이캐스트로 찾은 애너미, 레이어를 활용 enemy만 찾게 설정
     [SerializeField] private LayerMask _enemyLayerMask;
 
-    // 데이터 생성&전달 
-    // 생성 끝나고 넣어주기 
+    [SerializeField] private ParticleSystem _castEffect;
+    [SerializeField] private Transform _gunFirePos;
+
+
     private GameData _gameData;
     private PlayerData _playerData;
     private ObjectData _objectData;
-    //private Enemy _enemy;
+
     private PlayerAnimation _playerAnimation;
+    private PlayerAnimation _uiPlayerAnimation;
+
+    private ParticleSystem _castInstance;
 
 
     private bool _flagPower = false;
     private bool _flagShoot = false;
     private bool _flagCanBattle = false;
     private bool _flagBossBattle = false;
+    private bool _flagFirstBattle = false;
 
     private float _distance = 0f;
     private float _attakDuration = 0f;
@@ -41,11 +47,17 @@ public class PlayerBattle : MonoBehaviour
             Log.LogNull(nameof(PlayerBattle), nameof(Start), nameof(_gameData));
         }
 
-        _playerAnimation = GetComponent<PlayerAnimation>();
+        _playerAnimation = _player.GetComponent<PlayerAnimation>();
         if (_playerAnimation == null)
         {
             Log.LogNull(nameof(PlayerBattle), nameof(Start), nameof(_playerAnimation));
             return;
+        }
+
+        _uiPlayerAnimation = _uiPlayer.GetComponent<PlayerAnimation>();
+        if (_uiPlayerAnimation == null)
+        {
+            Log.LogNull(nameof(PlayerBattle), nameof(Start), nameof(_uiPlayerAnimation));
         }
 
         _playerData = _gameData._PlayerData;
@@ -61,6 +73,7 @@ public class PlayerBattle : MonoBehaviour
             Log.LogNull(nameof(PlayerBattle), nameof(Start), nameof(_objectData));
             return;
         }
+        GunFireSetting();
 
     }
 
@@ -75,15 +88,14 @@ public class PlayerBattle : MonoBehaviour
         }
 
         // 새 적도 찾지 못했다면 이동과 공격 중단
-        if (!IsEnemyValid())
+        if (!IsEnemyValid() || _flagBossBattle)
         {
             return;
         }
 
+        SearchFirstTarget();
         PlayerMoving();
         Battle();
-
-
     }
 
 
@@ -103,7 +115,19 @@ public class PlayerBattle : MonoBehaviour
         _distance = 0f;
 
         _playerAnimation.PlayerShoot(false);
+        _uiPlayerAnimation.PlayerShoot(false);
     }
+
+    private void SearchFirstTarget()
+    {
+        if (_attakDuration > 1f && !_flagFirstBattle)
+        {
+            _flagFirstBattle = true;
+            ClearEnemy();
+        }
+    }
+
+
 
     // 레이캐스트 범위 안 적 발견 및 리스트에 순서대로 배치 
     // 적 생성하고 같이 돌아서 첫 파인딩이 불안한데 사소하니 넘김
@@ -151,6 +175,7 @@ public class PlayerBattle : MonoBehaviour
 
         _distance = Vector3.Distance(enemyPos, playerPos);
         _playerAnimation.PlayerMoving(_distance - _playerData.AttackRange, _playerData.MoveSpeed);
+        _uiPlayerAnimation.PlayerMoving(_distance - _playerData.AttackRange, _playerData.MoveSpeed);
 
         Quaternion targetRotation = Quaternion.LookRotation(directionToEnemy, Vector3.up);
         float remainingAngle = Quaternion.Angle(_player.transform.rotation, targetRotation);
@@ -183,7 +208,6 @@ public class PlayerBattle : MonoBehaviour
 
         // 이동
         _player.transform.position = Vector3.MoveTowards(playerPos, stopPosition, _playerData.MoveSpeed * Time.deltaTime);
-
     }
 
 
@@ -191,12 +215,8 @@ public class PlayerBattle : MonoBehaviour
 
     private void Battle()
     {
-        // 전투 모션 
-        _playerAnimation.PlayerShoot(_flagShoot);
 
-
-        // 
-        if (!IsEnemyValid() || !_flagCanBattle || _flagBossBattle)
+        if (!IsEnemyValid() || !_flagCanBattle)
         {
             return;
         }
@@ -234,6 +254,11 @@ public class PlayerBattle : MonoBehaviour
             Debug.Log($"치명타");
         }
 
+        // 전투 모션 
+        _playerAnimation.PlayerShoot(_flagShoot);
+        _uiPlayerAnimation.PlayerShoot(_flagShoot);
+
+        GunFireEffect();
         _target.TakeDamage(toDamage);
         _attakDuration = 0f;
 
@@ -243,8 +268,34 @@ public class PlayerBattle : MonoBehaviour
         }
     }
 
-    // 변수 들고가기 귀찮은데 카메라 관련?
+    /// <summary>
+    /// 총 이펙트 관련
+    /// </summary>
+    private void GunFireSetting()
+    {
+        if (_gunFirePos == null)
+        {
+            _gunFirePos = transform.Find("root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/Weapon_MachineGun/GunFirePos");
+        }
+        if (_gunFirePos == null)
+        {
+            Debug.Log("철자확인");
+        }
 
+        _castInstance = Instantiate(_castEffect, _gunFirePos);
+        _castInstance.transform.localPosition = Vector3.zero;
+        _castInstance.transform.localRotation = Quaternion.identity;
+
+        _castInstance.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+    }
+
+    private void GunFireEffect()
+    {
+        _castInstance.gameObject.SetActive(true);
+        _castInstance.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        _castInstance.Play(true);
+    }
 
 
 }
