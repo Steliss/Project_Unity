@@ -10,10 +10,10 @@ public class PlayerData
 {
     [SerializeField] private float _attackPower = 10f;
     [SerializeField] private float _attackSpeed = 3f;
-    [SerializeField] private float _attackRange = 3f;
+    [SerializeField] private float _attackRange = 5f;
     [SerializeField] private float _findRange = 100f;
-    [SerializeField] private float _moveSpeed = 1.2f;
-    [SerializeField] private float _rotateSpeed = 60f;
+    [SerializeField] private float _moveSpeed = 1.5f;
+    [SerializeField] private float _rotateSpeed = 90f;
     [SerializeField] private float _criticalChance = 0.1f;
     [SerializeField] private float _criticalDamageMultiplier = 1.5f;
     

@@ -21,6 +21,7 @@ public class FiledUI : MonoBehaviour
     private GameData _gameData;
     private ObjectData _objectData;
     private PlayerData _playerData;
+    private SoundManager _soundManager;
 
     private GameObject _upgradeUI;
     private GameObject _uiPlayerDisplay;
@@ -45,6 +46,7 @@ public class FiledUI : MonoBehaviour
     private TextMeshProUGUI _petAttackPower;
     private TextMeshProUGUI _DPSCheck;
     private TextMeshProUGUI _playerUpgradeButton;
+    private TextMeshProUGUI _upgradeCost;
 
     private int _previousUpgradeCoupon = -1;
     private int _previousChestLevel = -1;
@@ -71,6 +73,13 @@ public class FiledUI : MonoBehaviour
             Log.LogNull(nameof(FiledUI), nameof(Start));
         }
 
+        _soundManager = ManagerDontDestroy.Instance.SoundManager;
+        if (_soundManager == null)
+        {
+            Log.LogNull(nameof(FiledUI), nameof(Start));
+        }
+        _soundManager.BGMAudio.Stop();
+
         _objectData = _gameData._ObjectData;
         _playerData = _gameData._PlayerData;
 
@@ -87,6 +96,7 @@ public class FiledUI : MonoBehaviour
     {
         TopBarTextUpdate();
         BossSceneMove();
+        BGMPlay();
     }
 
     private void TopBarTextUpdate()
@@ -96,6 +106,31 @@ public class FiledUI : MonoBehaviour
         TimerTextUpdate();
         PowerTimer();
     }
+
+    private void BGMPlay()
+    {
+        if(_soundManager.BGMAudio.isPlaying)
+        {
+            return;
+        }
+
+        int rand = UnityEngine.Random.Range(0,3);
+
+        if(rand == 0)
+        {
+            _soundManager.BGMSoundPlay(SoundManager.BGM.Field1);
+        }
+        else if(rand == 1)
+        {
+            _soundManager.BGMSoundPlay(SoundManager.BGM.Field2);
+        }
+        else
+        {
+            _soundManager.BGMSoundPlay(SoundManager.BGM.Field3);
+        }
+    }
+
+
 
     private void BottomBarTextUpdate()
     {
@@ -208,18 +243,23 @@ public class FiledUI : MonoBehaviour
     {
         if (buttonType == "UseItem")
         {
+            _soundManager.SFXStartMenuPlay();
             OpenInventoryUI();
         }
         else if (buttonType == "BossScene")
         {
+            _soundManager.SFXStartMenuPlay();
             _cSceneManager.LoadScene(ESceneId.BossRoom);
         }
         else if (buttonType == "UpgradeUIOpen")
         {
+            _upgradeCost.text = $"소모 쿠폰값 : {(1 + _playerData.PlayerLevel * 2)}"; // *2 부분 플레이어업그레이드 _consumeCoupon 항목 값
+            _soundManager.SFXStartMenuPlay();
             OpenUpgradeUI();
         }
         else if (buttonType == "UpgradeUIButton")
         {
+            //  사운드 
             _playerUpgradeButton.text = $"성공 확률 : {_playerUpgrade.SuccessChance * 100:F5}";
             _playerUpgrade.PlayerUpgradeClick();
         }
@@ -271,12 +311,10 @@ public class FiledUI : MonoBehaviour
             _petAttackPower = transform.Find("BottomBar/UpgradeBackGround/Information/PetAttackPowerText").GetComponent<TextMeshProUGUI>();
             _DPSCheck = transform.Find("BottomBar/UpgradeBackGround/Information/DPSCheckText").GetComponent<TextMeshProUGUI>();
             _playerUpgradeButton = transform.Find("BottomBar/UpgradeBackGround/UpgradeText/UpgradeButton/UpgradeButtonText").GetComponent<TextMeshProUGUI>();
+
+            _upgradeCost = transform.Find("BottomBar/UpgradeBackGround/UpgradeText/CostText").GetComponent<TextMeshProUGUI>();
         }
 
-       //  catch (NullReferenceException)
-       // {
-       //     Log.LogNull(nameof(FiledUI), nameof(TextMeshSetting));
-       // }
         catch (NullReferenceException e)
         {
             Debug.LogException(e, this);
@@ -287,7 +325,6 @@ public class FiledUI : MonoBehaviour
     {
         if(_gameData.Timer > _bossSceneMoveTime && _gameData.CurrentPhase == GameData.GamePhase.BossBattle)
         {
-            Debug.Log("test 시간 제한 씬이동");
             _cSceneManager.LoadScene(ESceneId.BossRoom);
         }
     }

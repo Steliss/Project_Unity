@@ -75,7 +75,6 @@ public class CreateItem : MonoBehaviour
             Log.LogNull(nameof(CreateItem), nameof(Start), nameof(_gameData));
         }
 
-
         _objectData = _gameData._ObjectData;
         _playerData = _gameData._PlayerData;
         if (_objectData == null || _playerData == null)

@@ -10,9 +10,8 @@ public class PlayerUpgrade : MonoBehaviour
     [SerializeField] private float _successChanceMin = 0.1f;
     [SerializeField] private float _DecreaseChance = 0.15f;
 
-
     [Header("강화 관련")]
-    [SerializeField] private int _consumeCoupon = 2;            // 강화시 소모되는 플레이어레벨계수
+    [SerializeField] private int _consumeCoupon = 2;            // 강화시 소모되는 플레이어레벨계수 / 바꿀일 있음 필드 UI 고정값넣어놔서 확인
 
     //[SerializeField] private float _increaseFail = 1f;          // 실패시 고정 상승값
     [SerializeField] private float _increaseSuccessSet = 10f;   // 성공시 고정 상승값
@@ -151,9 +150,6 @@ public class PlayerUpgrade : MonoBehaviour
         _playerData.AddRotateSpeed(_addRotateSpeed);
 
         _playerData.AddPlayerLevel(1);
-
-        // 에니메이션 
-        // 애도 고민좀 해야겠네 이펙트만 줄지 에니메이션도 줄지 
 
         Debug.Log($"강화 성공 플레이어 레벨 : {_playerData.PlayerLevel}");
     }

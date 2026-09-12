@@ -7,15 +7,16 @@ public class BossUI : MonoBehaviour
 {
     [SerializeField] private Button FieldButton;
 
-    private CSceneManager _cSceneManager;
     private GameData _gameData;
+    private CSceneManager _cSceneManager;
+    private SoundManager _soundManager;
     private PlayerData _playerData;
-    private TextMeshProUGUI _timer;
     private GameObject _lossImage;
     private GameObject _WinImage;
     private GameObject _EndReport;
 
 
+    private TextMeshProUGUI _timer;
     private TextMeshProUGUI _playerLevel;
     private TextMeshProUGUI _attackPower;
     private TextMeshProUGUI _attackRange;
@@ -28,16 +29,24 @@ public class BossUI : MonoBehaviour
     private TextMeshProUGUI _petAttackPower;
     private TextMeshProUGUI _upgradeCoupon;
     private TextMeshProUGUI _totalDamage;
+    private TextMeshProUGUI _bossClearChance;
 
     private TextMeshProUGUI _title;
     private TextMeshProUGUI _relicName;
     private TextMeshProUGUI _relicEffect;
+
+    public TextMeshProUGUI BossClearChance { get => _bossClearChance; set => _bossClearChance = value; }
+
     void Start()
     {
         FieldButton.onClick.AddListener(() => OnButtonClick("Field"));
         _EndReport = transform.Find("EndReport").gameObject;
         _lossImage = transform.Find("EndReport/LossImage").gameObject;
         _WinImage = transform.Find("EndReport/WinImage").gameObject;
+
+        _soundManager = ManagerDontDestroy.Instance.SoundManager;
+        _soundManager.BGMAudio.Stop();
+        _soundManager.BGMSoundPlay(SoundManager.BGM.Boss);
 
         _gameData = ManagerDontDestroy.Instance.GameData;
         _cSceneManager = ManagerDontDestroy.Instance.SceneManager;
@@ -68,10 +77,11 @@ public class BossUI : MonoBehaviour
             _petAttackPower = transform.Find("EndReport/PetAttackPowerText").GetComponent<TextMeshProUGUI>();
             _upgradeCoupon = transform.Find("EndReport/UseTotalCouponText").GetComponent<TextMeshProUGUI>();
             _totalDamage = transform.Find("EndReport/TotalDamageText").GetComponent<TextMeshProUGUI>();
-
             _title = transform.Find("EndReport/TitleText").GetComponent<TextMeshProUGUI>();
             _relicName = transform.Find("EndReport/WinImage/RelicNameText").GetComponent<TextMeshProUGUI>();
             _relicEffect = transform.Find("EndReport/WinImage/RelicEffectText").GetComponent<TextMeshProUGUI>();
+
+            _bossClearChance = transform.Find("TopBarImage/BossClearChanceText").GetComponent<TextMeshProUGUI>();
         }
 
         catch (NullReferenceException)
@@ -79,6 +89,7 @@ public class BossUI : MonoBehaviour
             Log.LogNull(nameof(BossUI), nameof(TextMeshSetting));
         }
     }
+
 
     private void EndTextUpdate()
     {
@@ -105,8 +116,9 @@ public class BossUI : MonoBehaviour
 
     private void OnButtonClick(string buttonType)
     {
-        if (buttonType == "Field")
+        if (buttonType == "Field" && (_gameData.CurrentPhase == GameData.GamePhase.Farming))
         {
+            Debug.Log($"test : {_gameData.CurrentPhase}");
             _cSceneManager.LoadScene(ESceneId.Field);
         }
     }
@@ -138,10 +150,18 @@ public class BossUI : MonoBehaviour
 
     public void BattleEndUI(bool set, bool win, RelicOwnedData relic = null)
     {
-        EndTextUpdate();
-        Debug.Log($"test 가한 데미지 : {_playerData.TotalDamage}");
         _EndReport.SetActive(set);
-        if(win)
+        Debug.Log($"test 가한 데미지 : {_playerData.TotalDamage}");
+
+        if (!set)
+        {
+            // 끌때 갱신할 이유 없음 
+            return;
+        }
+
+        EndTextUpdate();
+
+        if (win)
         {
             _title.text = "승리!";
             RelicTextUpdate(relic);

@@ -11,11 +11,13 @@ public class PlayerBattle : MonoBehaviour
 
     [SerializeField] private ParticleSystem _castEffect;
     [SerializeField] private Transform _gunFirePos;
+    [SerializeField] private DamageLogUI _damageLogUI;
 
 
     private GameData _gameData;
     private PlayerData _playerData;
     private ObjectData _objectData;
+    private SoundManager _soundManager;
 
     private PlayerAnimation _playerAnimation;
     private PlayerAnimation _uiPlayerAnimation;
@@ -40,11 +42,11 @@ public class PlayerBattle : MonoBehaviour
 
     private void Start()
     {
-
+        _soundManager = ManagerDontDestroy.Instance.SoundManager;
         _gameData = ManagerDontDestroy.Instance.GameData;
-        if (_gameData == null)
+        if (_gameData == null || _soundManager == null)
         {
-            Log.LogNull(nameof(PlayerBattle), nameof(Start), nameof(_gameData));
+            Log.LogNull(nameof(PlayerBattle), nameof(Start));
         }
 
         _playerAnimation = _player.GetComponent<PlayerAnimation>();
@@ -73,6 +75,8 @@ public class PlayerBattle : MonoBehaviour
             Log.LogNull(nameof(PlayerBattle), nameof(Start), nameof(_objectData));
             return;
         }
+
+        _soundManager = ManagerDontDestroy.Instance.SoundManager;
         GunFireSetting();
 
     }
@@ -258,8 +262,11 @@ public class PlayerBattle : MonoBehaviour
         _playerAnimation.PlayerShoot(_flagShoot);
         _uiPlayerAnimation.PlayerShoot(_flagShoot);
 
+        _soundManager.SFXGunfirePlay();
         GunFireEffect();
         _target.TakeDamage(toDamage);
+        _damageLogUI.ShowDamage(_target.TargetTransform.position, toDamage, isCritical);
+        _damageLogUI.ShowLog(toDamage, _target.CurrentHP, isCritical);
         _attakDuration = 0f;
 
         if (!IsEnemyValid())

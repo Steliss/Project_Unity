@@ -10,6 +10,7 @@ public class ManagerDontDestroy : MonoBehaviour
     [SerializeField] private FadeInOut _fadeInOut;
     [SerializeField] private SaveData _saveData;
     [SerializeField] private RelicData _relicData;
+    [SerializeField] private SoundManager _soundManager; 
 
     public static ManagerDontDestroy Instance
     {
@@ -23,6 +24,7 @@ public class ManagerDontDestroy : MonoBehaviour
     public FadeInOut FadeInOut => _fadeInOut;
     public SaveData SaveData => _saveData;  
     public RelicData RelicData => _relicData;
+    public SoundManager SoundManager => _soundManager;
 
     private void Awake()
     {
@@ -42,7 +44,6 @@ public class ManagerDontDestroy : MonoBehaviour
         {
             _gameData = GetComponentInChildren<GameData>(true);
         }
-
         if (_gameData == null)
         {
             Log.LogNull(nameof(ManagerDontDestroy), nameof(Awake), nameof(_gameData));
@@ -52,7 +53,6 @@ public class ManagerDontDestroy : MonoBehaviour
         {
             _sceneManager = GetComponentInChildren<CSceneManager>(true);
         }
-
         if (_sceneManager == null)
         {
             Log.LogNull(nameof(ManagerDontDestroy), nameof(Awake), nameof(_sceneManager));
@@ -62,7 +62,6 @@ public class ManagerDontDestroy : MonoBehaviour
         {
             _rewardChoiceManager = GetComponentInChildren<RewardChoiceManager>(true);
         }
-
         if (_rewardChoiceManager == null)
         {
             Log.LogNull(nameof(ManagerDontDestroy), nameof(Awake), nameof(_rewardChoiceManager));
@@ -72,7 +71,6 @@ public class ManagerDontDestroy : MonoBehaviour
         {
             _fadeInOut = GetComponentInChildren<FadeInOut>(true);
         }
-
         if (_fadeInOut == null)
         {
             Log.LogNull(nameof(ManagerDontDestroy), nameof(Awake), nameof(_rewardChoiceManager));
@@ -82,7 +80,6 @@ public class ManagerDontDestroy : MonoBehaviour
         {
             _saveData = GetComponentInChildren<SaveData>(true);
         }
-
         if (_saveData == null)
         {
             Log.LogNull(nameof(ManagerDontDestroy), nameof(Awake), nameof(_saveData));
@@ -92,11 +89,20 @@ public class ManagerDontDestroy : MonoBehaviour
         {
             _relicData = GetComponentInChildren<RelicData>(true);
         }
-
         if (_relicData == null)
         {
             Log.LogNull(nameof(ManagerDontDestroy), nameof(Awake), nameof(_relicData));
         }
+
+        if (_soundManager == null)
+        {
+            _soundManager = GetComponentInChildren<SoundManager>(true);
+        }
+        if (_soundManager == null)
+        {
+            Log.LogNull(nameof(ManagerDontDestroy), nameof(Awake), nameof(_soundManager));
+        }
+
     }
 
 

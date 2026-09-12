@@ -27,6 +27,7 @@ public class PetCondition : MonoBehaviour
     private GameData _gameData;
     private PlayerBattle _playerBattle;
     private PetAnimation _petAnimation;
+    private SoundManager _soundManager;
 
     private IDamageable _target;
 
@@ -77,6 +78,7 @@ public class PetCondition : MonoBehaviour
 
     void Start()
     {
+        _soundManager = ManagerDontDestroy.Instance.SoundManager;
         _gameData = ManagerDontDestroy.Instance.GameData;
         _playerData = _gameData._PlayerData;
 
@@ -234,6 +236,7 @@ public class PetCondition : MonoBehaviour
 
             if (!_flagAnimation)
             {
+                _soundManager.SFXDrangonBlessPlay();
                 _petAnimation.PlayAnimation(PetAnimation.Animation.FireAttack);
 
                 _flagAnimation = true;
@@ -269,6 +272,7 @@ public class PetCondition : MonoBehaviour
                 if (!_flagAnimation)
                 {
                     rand = Random.Range(0, 2);
+                    _soundManager.SFXDrangonClawPlay();
                     _petAnimation.PlayAnimation(rand == 0 ? PetAnimation.Animation.PawR : PetAnimation.Animation.PawL);
                     _flagAnimation = true;
                 }

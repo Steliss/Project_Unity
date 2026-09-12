@@ -55,6 +55,9 @@ public class SaveData : MonoBehaviour
     public float CoeCriticalChance => _coeCriticalChance;
     public float CoeCriticalDamageMultiplier => _coeCriticalDamageMultiplier;
 
+    public List<RelicOwnedData> Relics => _saveData.Relics;
+    public int Points => _saveData.Points;
+
     private RelicSaveData _saveData = new RelicSaveData
     {
         Relics = new List<RelicOwnedData>
@@ -111,6 +114,7 @@ public class SaveData : MonoBehaviour
     private string SavePath => Path.Combine(Application.persistentDataPath, "relic.json");
     private RelicData _relicData;
 
+
     private void Start()
     {
         gameData = ManagerDontDestroy.Instance.GameData;
@@ -137,6 +141,15 @@ public class SaveData : MonoBehaviour
         Debug.Log($"포인트 확인 : {_saveData.Points}");
     }
 
+    private void Update()
+    {
+        // test
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            Debug.Log("test");
+            GetRelic();
+        }
+    }
 
     public RelicOwnedData GetRelic()
     {
@@ -370,7 +383,7 @@ public class SaveData : MonoBehaviour
         {
             _relicData.SetRelic00(relic.Level * _coeAttackPower);
             relic.Name = $"힘의 유물 {relic.Level}";
-            relic.Description = $"공격력이 {CoeAttackPower:F0} 증가합니다.";
+            relic.Description = $"공격력이 {CoeAttackPower * relic.Level:F0} 증가합니다.";
         }
 
         relic = _saveData.Relics[1];
@@ -378,7 +391,7 @@ public class SaveData : MonoBehaviour
         {
             _relicData.SetRelic01(relic.Level * _coeAttackSpeed);
             relic.Name = $"공격속도의 유물 {relic.Level}";
-            relic.Description = $"공격속도가 {CoeAttackSpeed:F0} 증가합니다.";
+            relic.Description = $"공격속도가 {CoeAttackSpeed * relic.Level:F0} 증가합니다.";
         }
 
         relic = _saveData.Relics[2];
@@ -386,7 +399,7 @@ public class SaveData : MonoBehaviour
         {
             _relicData.SetRelic02(relic.Level * _coeMoveSpeed);
             relic.Name = $"이동속도의 유물 {relic.Level}";
-            relic.Description = $"이동속도가 {_coeMoveSpeed:F0} 증가합니다.";
+            relic.Description = $"이동속도가 {_coeMoveSpeed * relic.Level:F0} 증가합니다.";
         }
 
         relic = _saveData.Relics[3];
@@ -394,7 +407,7 @@ public class SaveData : MonoBehaviour
         {
             _relicData.SetRelic03(relic.Level * _coeRotateSpeed);
             relic.Name = $"회전속도의 유물 {relic.Level}";
-            relic.Description = $"회전속도가 {_coeRotateSpeed:F0} 증가합니다.";
+            relic.Description = $"회전속도가 {_coeRotateSpeed * relic.Level:F0} 증가합니다.";
         }
 
         relic = _saveData.Relics[4];
@@ -402,7 +415,7 @@ public class SaveData : MonoBehaviour
         {
             _relicData.SetRelic04(relic.Level * _coeCriticalChance);
             relic.Name = $"치명타의 유물 {relic.Level}";
-            relic.Description = $"치명타확률이 {_coeCriticalChance:F0} 증가합니다.";
+            relic.Description = $"치명타확률이 {_coeCriticalChance * relic.Level * 100:F0}% 증가합니다.";
         }
 
         relic = _saveData.Relics[5];
@@ -410,7 +423,7 @@ public class SaveData : MonoBehaviour
         {
             _relicData.SetRelic05(relic.Level * _coeCriticalDamageMultiplier);
             relic.Name = $"치명타 계수의 유물 {relic.Level}";
-            relic.Description = $"치명타 계수가 {_coeCriticalDamageMultiplier:F0} 증가합니다.";
+            relic.Description = $"치명타 계수가 {_coeCriticalDamageMultiplier * relic.Level * 100:F2}% 증가합니다.";
         }
 
         SaveRelic();

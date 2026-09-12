@@ -3,14 +3,13 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour, IDamageable
 {
-    // 등장시 초기체력 
     [SerializeField] private CreateBoss _createBoss;
+    [SerializeField] private GameObject _player;
     [SerializeField] private Animator _animator;
 
+    // 등장시 초기체력 
     [SerializeField] private float _bossBaseHP = 10f;
     [SerializeField] private float _bossCoefficientHP = 50f;
-    // 봉인 확률 
-
 
     [Header("흔들림")]
     [SerializeField] private float _hitShake = 0.1f;
@@ -18,9 +17,11 @@ public class Boss : MonoBehaviour, IDamageable
     [SerializeField] private float _speedDecrease = 1f;
     [SerializeField] private float _shakeFrequency = 40f;
 
+    // 봉인 확률 
     [SerializeField, Range(0f, 1f)]    private float _deathChance = 0.1f;
     [SerializeField, Range(0f, 1f)]    private float _deathChanceIncrease = 0.1f;
 
+    [SerializeField] private BossUI _bossUI;
     private GameData _gameData;
 
     private Transform _shakeTarget;
@@ -59,6 +60,11 @@ public class Boss : MonoBehaviour, IDamageable
             Log.LogNull(nameof(Boss), nameof(Awake));
         }
 
+        if(_bossUI == null)
+        {
+            Log.LogNull(nameof(Boss), nameof(Awake), nameof(_bossUI));
+        }
+
         _shakeTarget = transform;
         _localPos = _shakeTarget.localPosition;
     }
@@ -76,7 +82,13 @@ public class Boss : MonoBehaviour, IDamageable
         _maxHP = _bossBaseHP + (_gameData._ObjectData.ChestLevel * _bossCoefficientHP);
         _currentHP = _maxHP;
 
+        BossClearChanceTextUpdate();
         int rand = Random.Range(0, HitMaterialIndex);
+    }
+
+    private void Update()
+    {
+        BossPos();
     }
 
     private void LateUpdate()
@@ -108,8 +120,14 @@ public class Boss : MonoBehaviour, IDamageable
             {
                 _currentHP = _maxHP;
                 _deathChance = Mathf.Clamp01(_deathChance + _deathChanceIncrease);
+                BossClearChanceTextUpdate();
             }
         }
+    }
+
+    private void BossPos()
+    {
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, _player.transform.rotation, 5f * Time.deltaTime);
     }
 
     private void BossDie()
@@ -122,7 +140,7 @@ public class Boss : MonoBehaviour, IDamageable
 
         _createBoss.CoroutineStart();
 
-        Debug.Log($"test {_gameData._PlayerData.Round}");
+        //Debug.Log($"test {_gameData._PlayerData.Round}");
     }
 
 
@@ -150,7 +168,10 @@ public class Boss : MonoBehaviour, IDamageable
         _shakeAmount = Mathf.MoveTowards(_shakeAmount, 0f, _speedDecrease * Time.deltaTime);
     }
 
-
+    private void BossClearChanceTextUpdate()
+    {
+        _bossUI.BossClearChance.text = $"보스 사냥 확률 : {_deathChance * 100}%";
+    }
 
 
 }

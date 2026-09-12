@@ -112,27 +112,32 @@ public class CreateBoss : MonoBehaviour
 
     public void CoroutineStart()
     {
-        if (_playerData.Round == 3)
+        Debug.Log($"test round : {_playerData.Round}");
+
+        if (_playerData.Round == 2)
         {
             RelicOwnedData relic = _saveData.GetRelic();
             _saveData.LoadRelic();
 
             StartCoroutine(CoroutineWin(relic));
-
-            return;
         }
-        StartCoroutine(RewardCoroutine());
-        StartCoroutine(AnimationCoroutine(new Vector3(0.6f, 0.3f, 0.6f)));
-        _sceneManager.LoadScene(ESceneId.Field);
+        else
+        {
+            StartCoroutine(RewardCoroutine());
+        }
+
     }
 
     private IEnumerator CoroutineWin(RelicOwnedData relic)
     {
+
         yield return StartCoroutine(AnimationCoroutine(new Vector3(0.3f, 0.2f, 0.3f)));
 
+        _gameData.CurrentPhase = GameData.GamePhase.None;
+
         _bossUI.BattleEndUI(true, true, relic);
-        //yield return new WaitForSeconds(5f);
         yield return new WaitUntil(() => Input.anyKeyDown);
+
         _bossUI.BattleEndUI(false, true);
 
         _playerData.ResetState();
@@ -142,11 +147,18 @@ public class CreateBoss : MonoBehaviour
     }
 
 
+
+
     private IEnumerator RewardCoroutine()
     {
+        yield return StartCoroutine(AnimationCoroutine(new Vector3(0.6f, 0.3f, 0.6f)));
+
         _rewardChoiceManager.OpenChoices();
 
-        yield return new WaitUntil(() => _rewardChoiceManager.IsSelecting);
+        // 보상 선택이 끝날 때까지 대기
+        yield return new WaitUntil(() => !_rewardChoiceManager.IsSelecting);
+
+        _sceneManager.LoadScene(ESceneId.Field);
 
     }
 
@@ -176,7 +188,7 @@ public class CreateBoss : MonoBehaviour
     {
         _gameData.CurrentPhase = GameData.GamePhase.None;
         _playerBattle.FlagCanBattle = true;
-        _bossCameraController.DollyCameraChange(boss, Vector3.one);
+        _bossCameraController.DollyCameraChange(boss, new Vector3(2f, 3f, 2f));
         yield return new WaitForSeconds(5f);
 
         _playerBattle.FlagCanBattle = false;
