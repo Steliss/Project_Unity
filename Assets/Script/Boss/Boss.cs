@@ -1,4 +1,4 @@
-
+ï»¿
 using UnityEngine;
 
 public class Boss : MonoBehaviour, IDamageable
@@ -6,20 +6,21 @@ public class Boss : MonoBehaviour, IDamageable
     [SerializeField] private CreateBoss _createBoss;
     [SerializeField] private GameObject _player;
     [SerializeField] private Animator _animator;
+    [SerializeField] private DamageLogUI _damageLogUI;
 
-    // µîÀå½Ã ÃÊ±âÃ¼·Â 
+    // ë“±ì¥ì‹œ ì´ˆê¸°ì²´ë ¥ 
     [SerializeField] private float _bossBaseHP = 10f;
     [SerializeField] private float _bossCoefficientHP = 50f;
 
-    [Header("Èçµé¸²")]
+    [Header("í”ë“¤ë¦¼")]
     [SerializeField] private float _hitShake = 0.1f;
     [SerializeField] private float _maxShake = 0.3f;
     [SerializeField] private float _speedDecrease = 1f;
     [SerializeField] private float _shakeFrequency = 40f;
 
-    // ºÀÀÎ È®·ü 
-    [SerializeField, Range(0f, 1f)]    private float _deathChance = 0.1f;
-    [SerializeField, Range(0f, 1f)]    private float _deathChanceIncrease = 0.1f;
+    // ë´‰ì¸ í™•ë¥  
+    [SerializeField, Range(0f, 1f)] private float _deathChance = 0.1f;
+    [SerializeField, Range(0f, 1f)] private float _deathChanceIncrease = 0.1f;
 
     [SerializeField] private BossUI _bossUI;
     private GameData _gameData;
@@ -40,7 +41,7 @@ public class Boss : MonoBehaviour, IDamageable
 
     private void Awake()
     {
-        // °ÔÀÓ µ¥ÀÌÅÍ ¹Ş¾Æ¿À±â 
+        // ê²Œì„ ë°ì´í„° ë°›ì•„ì˜¤ê¸° 
         _gameData = ManagerDontDestroy.Instance.GameData;
         if (_gameData == null)
         {
@@ -78,10 +79,11 @@ public class Boss : MonoBehaviour, IDamageable
             _shakeTarget.localPosition = _localPos;
         }
 
-        // ÀÏ´Ü ´Ü¼øÇÏ°Ô Ã³¸® ·¹º§´ç HP »ó½Â°î¼± ´Ù½Ã ¸¸µé±â. 
+        // ì¼ë‹¨ ë‹¨ìˆœí•˜ê²Œ ì²˜ë¦¬ ë ˆë²¨ë‹¹ HP ìƒìŠ¹ê³¡ì„  ë‹¤ì‹œ ë§Œë“¤ê¸°. 
         _maxHP = _bossBaseHP + (_gameData._ObjectData.ChestLevel * _bossCoefficientHP);
         _currentHP = _maxHP;
 
+        _deathChance = 0.3f - (_gameData._PlayerData.Round * 0.1f);
         BossClearChanceTextUpdate();
         int rand = Random.Range(0, HitMaterialIndex);
     }
@@ -107,8 +109,8 @@ public class Boss : MonoBehaviour, IDamageable
 
         _currentHP -= damage;
         _gameData._PlayerData.AddTotalDamage(damage);
-        Debug.Log($"°¡ÇÑ µ¥¹ÌÁö : {damage}");
-        Debug.Log($"³²Àº HP : {_currentHP}");
+        Debug.Log($"ê°€í•œ ë°ë¯¸ì§€ : {damage}");
+        Debug.Log($"ë‚¨ì€ HP : {_currentHP}");
 
         if (_currentHP <= 0f)
         {
@@ -120,6 +122,7 @@ public class Boss : MonoBehaviour, IDamageable
             {
                 _currentHP = _maxHP;
                 _deathChance = Mathf.Clamp01(_deathChance + _deathChanceIncrease);
+                _damageLogUI.AnyLog($"ì‚¬ëƒ¥ ì‹¤íŒ¨!");
                 BossClearChanceTextUpdate();
             }
         }
@@ -127,7 +130,16 @@ public class Boss : MonoBehaviour, IDamageable
 
     private void BossPos()
     {
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, _player.transform.rotation, 5f * Time.deltaTime);
+        Vector3 direction = _player.transform.position - transform.position;
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude <= 0.0001f)
+        {
+            return;
+        }
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 60f * Time.deltaTime);
     }
 
     private void BossDie()
@@ -170,7 +182,7 @@ public class Boss : MonoBehaviour, IDamageable
 
     private void BossClearChanceTextUpdate()
     {
-        _bossUI.BossClearChance.text = $"º¸½º »ç³É È®·ü : {_deathChance * 100}%";
+        _bossUI.BossClearChance.text = $"ë³´ìŠ¤ ì‚¬ëƒ¥ í™•ë¥  : {_deathChance * 100}%";
     }
 
 

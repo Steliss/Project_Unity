@@ -1,8 +1,8 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// ÄÚµå¿¡¼­ »ç¿ëÇÒ ¾À ½Äº°ÀÚ
+// ì½”ë“œì—ì„œ ì‚¬ìš©í•  ì”¬ ì‹ë³„ì
 public enum ESceneId
 {
     Menu,
@@ -10,7 +10,7 @@ public enum ESceneId
     BossRoom
 }
 
-// Inspector¿¡¼­ ¾À ID¿Í ÀÌ¸§À» ¿¬°áÇÏ±â À§ÇÑ µ¥ÀÌÅÍ
+// Inspectorì—ì„œ ì”¬ IDì™€ ì´ë¦„ì„ ì—°ê²°í•˜ê¸° ìœ„í•œ ë°ì´í„°
 [Serializable]
 public class SceneEntry
 {
@@ -20,7 +20,7 @@ public class SceneEntry
 
 public class CSceneCatalog : MonoBehaviour
 {
-    [Header("¾À ¸ñ·Ï")]
+    [Header("ì”¬ ëª©ë¡")]
     [SerializeField] private List<SceneEntry> _scenes = new List<SceneEntry>();
 
     private readonly Dictionary<ESceneId, string> _idToName = new Dictionary<ESceneId, string>();
@@ -38,19 +38,19 @@ public class CSceneCatalog : MonoBehaviour
 
             if (entry == null)
             {
-                Debug.LogWarning($"¾À ¸ñ·Ï {i}¹ø Ç×¸ñÀÌ ºñ¾î ÀÖ½À´Ï´Ù.");
+                Debug.LogWarning($"ì”¬ ëª©ë¡ {i}ë²ˆ í•­ëª©ì´ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤.");
                 continue;
             }
 
             if (string.IsNullOrEmpty(entry.sceneName))
             {
-                Debug.LogWarning($"{entry.Id}ÀÇ ¾À ÀÌ¸§ÀÌ ºñ¾î ÀÖ½À´Ï´Ù.");
+                Debug.LogWarning($"{entry.Id}ì˜ ì”¬ ì´ë¦„ì´ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤.");
                 continue;
             }
 
             if (_idToName.ContainsKey(entry.Id))
             {
-                Debug.LogWarning($"Áßº¹µÈ ¾À IDÀÔ´Ï´Ù: {entry.Id}");
+                Debug.LogWarning($"ì¤‘ë³µëœ ì”¬ IDì…ë‹ˆë‹¤: {entry.Id}");
                 continue;
             }
 
@@ -58,7 +58,7 @@ public class CSceneCatalog : MonoBehaviour
 
             if (!registeredNames.Add(name))
             {
-                Debug.LogWarning($"Áßº¹µÈ ¾À ÀÌ¸§ÀÔ´Ï´Ù: {name}");
+                Debug.LogWarning($"ì¤‘ë³µëœ ì”¬ ì´ë¦„ì…ë‹ˆë‹¤: {name}");
 
                 continue;
             }
@@ -66,7 +66,7 @@ public class CSceneCatalog : MonoBehaviour
             _idToName.Add(entry.Id, entry.sceneName);
         }
 
-        //Debug.Log($"¾À Ä«Å»·Î±× »ı¼º ¿Ï·á: {_idToName.Count}°³");
+        //Debug.Log($"ì”¬ ì¹´íƒˆë¡œê·¸ ìƒì„± ì™„ë£Œ: {_idToName.Count}ê°œ");
     }
 
     public bool TryGetSceneName(ESceneId id, out string sceneName)

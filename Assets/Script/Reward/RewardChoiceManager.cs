@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,7 +7,7 @@ public class RewardChoiceManager : MonoBehaviour
 {
     [SerializeField] private bool _testLog = false;
 
-    [Header("º¸»ó ¼±ÅÃ UI")]
+    [Header("ë³´ìƒ ì„ íƒ UI")]
     [SerializeField] private GameObject _rewardChoicePanel;
 
     [SerializeField] private Button[] _rewardButtons;
@@ -64,21 +64,6 @@ public class RewardChoiceManager : MonoBehaviour
 
     }
 
-    private void Update()
-    {
-        // Å×½ºÆ®¿ë
-        if (!_isSelecting)
-        {
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                OpenChoices();
-            }
-
-            return;
-        }
-
-    }
-
     public void ButtonSetting()
     {
         for (int i = 0; i < _rewardButtons.Length; i++)
@@ -94,20 +79,20 @@ public class RewardChoiceManager : MonoBehaviour
     {
         _rewardPool.Clear();
 
-        // ¿É¼Ç ¿©·¯°³ ¸¸µé±â + ÀÏ¹İ Èñ±Í ±¸ºĞ + ÇÃ·¹ÀÌ ÀÚÃ¼¸¦ ¹Ù²Ù´Â ¼±ÅÃÁö Ãß°¡ (¿ë ºÒ½î´Â°É ¿ÀºêÁ§Æ® + ÆÄ¹Ö ½Ã°£ Áõ°¡ + ÀÏÈ¸¼º º¸½º Ã¼·Â °¨¼Ò 
-        // ÀÏ¹İ Èñ±Í °ª ³ÖÀ»¶§ serialize or ±ø ³Ö±â °í¹Î 
+        // ì˜µì…˜ ì—¬ëŸ¬ê°œ ë§Œë“¤ê¸° + ì¼ë°˜ í¬ê·€ êµ¬ë¶„ + í”Œë ˆì´ ìì²´ë¥¼ ë°”ê¾¸ëŠ” ì„ íƒì§€ ì¶”ê°€ (ìš© ë¶ˆì˜ëŠ”ê±¸ ì˜¤ë¸Œì íŠ¸ + íŒŒë° ì‹œê°„ ì¦ê°€ + ì¼íšŒì„± ë³´ìŠ¤ ì²´ë ¥ ê°ì†Œ 
+        // ì¼ë°˜ í¬ê·€ ê°’ ë„£ì„ë•Œ serialize or ê¹¡ ë„£ê¸° ê³ ë¯¼ 
 
         _rewardPool.Add(new AttackPowerReward(10f, RewardSize.Small, false));
         _rewardPool.Add(new AttackPowerReward(50f, RewardSize.High, false));
-        _rewardPool.Add(new AttackSpeedReward(1f, RewardSize.Small, false));
-        _rewardPool.Add(new AttackSpeedReward(50f, RewardSize.High, false));
+        _rewardPool.Add(new AttackSpeedReward(0.05f, RewardSize.Small, false));
+        _rewardPool.Add(new AttackSpeedReward(1f, RewardSize.High, false));
         _rewardPool.Add(new AttackRangeReward(5f, RewardSize.Small, false));
 
-        _rewardPool.Add(new MoveSpeedReward(10f, RewardSize.None, false));
-        _rewardPool.Add(new RotateSpeedReward(10f, RewardSize.None, false));
+        _rewardPool.Add(new MoveSpeedReward(0.5f, RewardSize.None, false));
+        _rewardPool.Add(new RotateSpeedReward(5f, RewardSize.None, false));
 
-        _rewardPool.Add(new CriticalChanceReward(5f, RewardSize.Small, true));
-        _rewardPool.Add(new CriticalDamageReward(10f, RewardSize.Small, true));
+        _rewardPool.Add(new CriticalChanceReward(0.1f, RewardSize.Small, true));
+        _rewardPool.Add(new CriticalDamageReward(0.1f, RewardSize.Small, true));
     }
 
 
@@ -120,7 +105,7 @@ public class RewardChoiceManager : MonoBehaviour
 
         if (index < 0 || index >= _currentChoices.Count)
         {
-            Debug.LogWarning("À¯È¿ÇÏÁö ¾ÊÀº ¼±ÅÃÁö ¹øÈ£ÀÔ´Ï´Ù.");
+            Debug.LogWarning("ìœ íš¨í•˜ì§€ ì•Šì€ ì„ íƒì§€ ë²ˆí˜¸ì…ë‹ˆë‹¤.");
             return ;
         }
 
@@ -128,7 +113,7 @@ public class RewardChoiceManager : MonoBehaviour
 
         selectedReward.Apply(_playerData);
 
-        // ÀÏÈ¸¼º ¼±ÅÃÁö »èÁ¦
+        // ì¼íšŒì„± ì„ íƒì§€ ì‚­ì œ
         if (selectedReward.removeAfterSelect)
         {
             _rewardPool.Remove(selectedReward);
@@ -137,7 +122,7 @@ public class RewardChoiceManager : MonoBehaviour
 
         if (_testLog)
         {
-            Debug.Log($"{selectedReward.Name} ¼±ÅÃ ¿Ï·á\n" + $"{selectedReward.Description}");
+            Debug.Log($"{selectedReward.Name} ì„ íƒ ì™„ë£Œ\n" + $"{selectedReward.Description}");
         }
 
         CloseChoices();
@@ -150,7 +135,7 @@ public class RewardChoiceManager : MonoBehaviour
 
         //if (_isSelecting)
         //{
-        //    Debug.LogWarning("¼±ÅÃÁö°¡ ÀÌ¹Ì ¿­·Á ÀÖ½À´Ï´Ù");
+        //    Debug.LogWarning("ì„ íƒì§€ê°€ ì´ë¯¸ ì—´ë ¤ ìˆìŠµë‹ˆë‹¤");
         //    return;
         //}
 
@@ -164,14 +149,14 @@ public class RewardChoiceManager : MonoBehaviour
         {
             if (_testLog)
             {
-                Debug.Log("TestLog ³²Àº ¼±ÅÃÁö 3°³ ÀÌÇÏ");
+                Debug.Log("TestLog ë‚¨ì€ ì„ íƒì§€ 3ê°œ ì´í•˜");
             }
             return;
         }
 
         _currentChoices.Clear();
 
-        // ¿øº» º¸»ó ¸ñ·ÏÀ» ¼öÁ¤ÇÏÁö ¾Êµµ·Ï º¹»ç
+        // ì›ë³¸ ë³´ìƒ ëª©ë¡ì„ ìˆ˜ì •í•˜ì§€ ì•Šë„ë¡ ë³µì‚¬
         List<IReward> copydada = new List<IReward>(_rewardPool);
 
         for (int i = 0; i < 3; i++)
@@ -180,20 +165,20 @@ public class RewardChoiceManager : MonoBehaviour
 
             _currentChoices.Add(copydada[randomIndex]);
 
-            // °°Àº È­¸é¿¡¼­ µ¿ÀÏ º¸»óÀÌ ´Ù½Ã ³ª¿ÀÁö ¾Êµµ·Ï Á¦°Å
+            // ê°™ì€ í™”ë©´ì—ì„œ ë™ì¼ ë³´ìƒì´ ë‹¤ì‹œ ë‚˜ì˜¤ì§€ ì•Šë„ë¡ ì œê±°
             copydada.RemoveAt(randomIndex);
         }
 
         _rewardChoicePanel.SetActive(true);
 
-        // ÀÏ½ÃÁ¤Áö 
+        // ì¼ì‹œì •ì§€ 
         Time.timeScale = 0f;
 
         UpdateChoiceUI();
 
         if (_testLog)
         {
-            Debug.Log("===== º¸»óÀ» ¼±ÅÃÇÏ¼¼¿ä =====");
+            Debug.Log("===== ë³´ìƒì„ ì„ íƒí•˜ì„¸ìš” =====");
             for (int i = 0; i < _currentChoices.Count; i++)
             {
                 IReward reward = _currentChoices[i];
@@ -228,18 +213,18 @@ public class RewardChoiceManager : MonoBehaviour
         _currentChoices.Clear();
         _rewardChoicePanel.SetActive(false);
 
-        // ÀÏ½ÃÁ¤Áö ÇØÁ¦
+        // ì¼ì‹œì •ì§€ í•´ì œ
         Time.timeScale = 1f;
         _isSelecting = false;
 
         if (_testLog)
         {
-            Debug.Log("º¸»ó ¼±ÅÃÀÌ Á¾·áµÇ¾ú½À´Ï´Ù.");
+            Debug.Log("ë³´ìƒ ì„ íƒì´ ì¢…ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.");
         }
     }
 
     ///////////////////////////////////////
-    /// º¸»ó ¸ñ·Ï
+    /// ë³´ìƒ ëª©ë¡
     ///////////////////////////////////////
 
     private class AttackPowerReward : IReward
@@ -248,8 +233,8 @@ public class RewardChoiceManager : MonoBehaviour
         private readonly RewardSize _rewardSize;
         private readonly bool _removeAfterSelect; 
 
-        public string Name => $"°ø°İ·Â Áõ°¡ {SizeName()}";
-        public string Description => $"°ø°İ·ÂÀÌ {_value} ¸¸Å­ Áõ°¡ÇÕ´Ï´Ù.";
+        public string Name => $"ê³µê²©ë ¥ ì¦ê°€ {SizeName()}";
+        public string Description => $"ê³µê²©ë ¥ì´ {_value} ë§Œí¼ ì¦ê°€í•©ë‹ˆë‹¤.";
         public bool removeAfterSelect => _removeAfterSelect;
 
         public AttackPowerReward(float value, RewardSize rewardSize, bool removeAfterSelect)
@@ -264,13 +249,13 @@ public class RewardChoiceManager : MonoBehaviour
             switch (_rewardSize)
             {
                 case RewardSize.Small:
-                    return "(¼Ò)";
+                    return "(ì†Œ)";
 
                 case RewardSize.Middle:
-                    return "(Áß)";
+                    return "(ì¤‘)";
 
                 case RewardSize.High:
-                    return "(´ë)";
+                    return "(ëŒ€)";
 
                 default:
                     return string.Empty;
@@ -290,8 +275,8 @@ public class RewardChoiceManager : MonoBehaviour
         private readonly RewardSize _rewardSize;
         private readonly bool _removeAfterSelect;
 
-        public string Name => $"°ø°İ¼Óµµ {SizeName()}";
-        public string Description => $"°ø°İ·Â°¡ {_value} ¸¸Å­ Áõ°¡ÇÕ´Ï´Ù.";
+        public string Name => $"ê³µê²©ì†ë„ {SizeName()}";
+        public string Description => $"ê³µê²©ì†ë„ê°€ {_value} ë§Œí¼ ì¦ê°€í•©ë‹ˆë‹¤.";
         public bool removeAfterSelect => _removeAfterSelect;
 
         public AttackSpeedReward(float value, RewardSize rewardSize, bool removeAfterSelect)
@@ -306,13 +291,13 @@ public class RewardChoiceManager : MonoBehaviour
             switch (_rewardSize)
             {
                 case RewardSize.Small:
-                    return "(¼Ò)";
+                    return "(ì†Œ)";
 
                 case RewardSize.Middle:
-                    return "(Áß)";
+                    return "(ì¤‘)";
 
                 case RewardSize.High:
-                    return "(´ë)";
+                    return "(ëŒ€)";
 
                 default:
                     return string.Empty;
@@ -331,8 +316,8 @@ public class RewardChoiceManager : MonoBehaviour
         private readonly RewardSize _rewardSize;
         private readonly bool _removeAfterSelect;
 
-        public string Name => $"»ç°Å¸® {SizeName()}";
-        public string Description => $"»ç°Å¸®°¡ {_value} ¸¸Å­ Áõ°¡ÇÕ´Ï´Ù.";
+        public string Name => $"ì‚¬ê±°ë¦¬ {SizeName()}";
+        public string Description => $"ì‚¬ê±°ë¦¬ê°€ {_value} ë§Œí¼ ì¦ê°€í•©ë‹ˆë‹¤.";
         public bool removeAfterSelect => _removeAfterSelect;
 
         public AttackRangeReward(float value, RewardSize rewardSize, bool removeAfterSelect)
@@ -347,13 +332,13 @@ public class RewardChoiceManager : MonoBehaviour
             switch (_rewardSize)
             {
                 case RewardSize.Small:
-                    return "(¼Ò)";
+                    return "(ì†Œ)";
 
                 case RewardSize.Middle:
-                    return "(Áß)";
+                    return "(ì¤‘)";
 
                 case RewardSize.High:
-                    return "(´ë)";
+                    return "(ëŒ€)";
 
                 default:
                     return string.Empty;
@@ -372,8 +357,8 @@ public class RewardChoiceManager : MonoBehaviour
         private readonly RewardSize _rewardSize;
         private readonly bool _removeAfterSelect;
 
-        public string Name => $"È¸Àü¼Óµµ {SizeName()}";
-        public string Description => $"È¸Àü¼Óµµ°¡ {_value} ¸¸Å­ Áõ°¡ÇÕ´Ï´Ù.";
+        public string Name => $"íšŒì „ì†ë„ {SizeName()}";
+        public string Description => $"íšŒì „ì†ë„ê°€ {_value} ë§Œí¼ ì¦ê°€í•©ë‹ˆë‹¤.";
         public bool removeAfterSelect => _removeAfterSelect;
 
         public RotateSpeedReward(float value, RewardSize rewardSize, bool removeAfterSelect)
@@ -388,13 +373,13 @@ public class RewardChoiceManager : MonoBehaviour
             switch (_rewardSize)
             {
                 case RewardSize.Small:
-                    return "(¼Ò)";
+                    return "(ì†Œ)";
 
                 case RewardSize.Middle:
-                    return "(Áß)";
+                    return "(ì¤‘)";
 
                 case RewardSize.High:
-                    return "(´ë)";
+                    return "(ëŒ€)";
 
                 default:
                     return string.Empty;
@@ -414,8 +399,8 @@ public class RewardChoiceManager : MonoBehaviour
         private readonly RewardSize _rewardSize;
         private readonly bool _removeAfterSelect;
 
-        public string Name => $"ÀÌµ¿¼Óµµ Áõ°¡ {SizeName()}";
-        public string Description => $"ÀÌµ¿¼Óµµ°¡ {_value} ¸¸Å­ Áõ°¡ÇÕ´Ï´Ù.";
+        public string Name => $"ì´ë™ì†ë„ ì¦ê°€ {SizeName()}";
+        public string Description => $"ì´ë™ì†ë„ê°€ {_value} ë§Œí¼ ì¦ê°€í•©ë‹ˆë‹¤.";
         public bool removeAfterSelect => _removeAfterSelect;
 
         public MoveSpeedReward(float value, RewardSize rewardSize, bool removeAfterSelect)
@@ -430,13 +415,13 @@ public class RewardChoiceManager : MonoBehaviour
             switch (_rewardSize)
             {
                 case RewardSize.Small:
-                    return "(¼Ò)";
+                    return "(ì†Œ)";
 
                 case RewardSize.Middle:
-                    return "(Áß)";
+                    return "(ì¤‘)";
 
                 case RewardSize.High:
-                    return "(´ë)";
+                    return "(ëŒ€)";
 
                 default:
                     return string.Empty;
@@ -455,8 +440,8 @@ public class RewardChoiceManager : MonoBehaviour
         private readonly RewardSize _rewardSize;
         private readonly bool _removeAfterSelect;
 
-        public string Name => $"Å©¸®Æ¼ÄÃ È®·ü Áõ°¡ {SizeName()}";
-        public string Description => $"Å©¸®Æ¼ÄÃ È®·üÀÌ {_value} ¸¸Å­ Áõ°¡ÇÕ´Ï´Ù.";
+        public string Name => $"í¬ë¦¬í‹°ì»¬ í™•ë¥  ì¦ê°€ {SizeName()}";
+        public string Description => $"í¬ë¦¬í‹°ì»¬ í™•ë¥ ì´ {_value} ë§Œí¼ ì¦ê°€í•©ë‹ˆë‹¤.";
         public bool removeAfterSelect => _removeAfterSelect;
 
         public CriticalChanceReward(float value, RewardSize rewardSize, bool removeAfterSelect)
@@ -471,13 +456,13 @@ public class RewardChoiceManager : MonoBehaviour
             switch (_rewardSize)
             {
                 case RewardSize.Small:
-                    return "(¼Ò)";
+                    return "(ì†Œ)";
 
                 case RewardSize.Middle:
-                    return "(Áß)";
+                    return "(ì¤‘)";
 
                 case RewardSize.High:
-                    return "(´ë)";
+                    return "(ëŒ€)";
 
                 default:
                     return string.Empty;
@@ -496,8 +481,8 @@ public class RewardChoiceManager : MonoBehaviour
         private readonly RewardSize _rewardSize;
         private readonly bool _removeAfterSelect;
 
-        public string Name => $"Å©¸®Æ¼ÄÃ ¹èÀ² Áõ°¡ {SizeName()}";
-        public string Description => $"Å©¸®Æ¼ÄÃ ¹èÀ²ÀÌ {_value} ¸¸Å­ Áõ°¡ÇÕ´Ï´Ù.";
+        public string Name => $"í¬ë¦¬í‹°ì»¬ ë°°ìœ¨ ì¦ê°€ {SizeName()}";
+        public string Description => $"í¬ë¦¬í‹°ì»¬ ë°°ìœ¨ì´ {_value} ë§Œí¼ ì¦ê°€í•©ë‹ˆë‹¤.";
         public bool removeAfterSelect => _removeAfterSelect;
 
         public CriticalDamageReward(float value, RewardSize rewardSize, bool removeAfterSelect)
@@ -512,13 +497,13 @@ public class RewardChoiceManager : MonoBehaviour
             switch (_rewardSize)
             {
                 case RewardSize.Small:
-                    return "(¼Ò)";
+                    return "(ì†Œ)";
 
                 case RewardSize.Middle:
-                    return "(Áß)";
+                    return "(ì¤‘)";
 
                 case RewardSize.High:
-                    return "(´ë)";
+                    return "(ëŒ€)";
 
                 default:
                     return string.Empty;

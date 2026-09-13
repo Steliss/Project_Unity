@@ -1,9 +1,9 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class Log : MonoBehaviour
 {
     /// <summary>
-    /// string ´ë½Å nameof() ¾µ°Í 
+    /// string ëŒ€ì‹  nameof() ì“¸ê²ƒ 
     /// </summary>
     /// <param name="className"></param>
     /// <param name="methodName"></param>
@@ -12,11 +12,11 @@ public class Log : MonoBehaviour
     {
         if(targetName == null)
         {
-            Debug.LogError($"[{className}] / [{methodName}] ÀÎ½ºÆåÅÍ nullÀÔ´Ï´Ù.");
+            Debug.LogError($"[{className}] / [{methodName}] ì¸ìŠ¤í™í„° nullì…ë‹ˆë‹¤.");
         }
         else
         {
-            Debug.LogError($"[{className}] / [{methodName}]  {targetName}ÀÌ nullÀÔ´Ï´Ù.");
+            Debug.LogError($"[{className}] / [{methodName}]  {targetName}ì´ nullì…ë‹ˆë‹¤.");
         }
 
     }

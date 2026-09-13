@@ -1,10 +1,10 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
-    // ¿¡´Ï¸ŞÀÌÅÍ
+    // ì—ë‹ˆë©”ì´í„°
 
-    [Header("ÂüÁ¶")]
+    [Header("ì°¸ì¡°")]
     [SerializeField] private Animator _animator;
 
     public enum Animation
@@ -54,17 +54,17 @@ public class PlayerAnimation : MonoBehaviour
 
         if (stopDistance <= 0f)
         {
-            // ¸ñÇ¥ À§Ä¡
+            // ëª©í‘œ ìœ„ì¹˜
             speed01 = 0f;
         }
         else if (stopDistance > moveSpeed)
         {
-            // ³²Àº °Å¸®°¡ ÀÌµ¿¼Óµµº¸´Ù Å­
+            // ë‚¨ì€ ê±°ë¦¬ê°€ ì´ë™ì†ë„ë³´ë‹¤ í¼
             speed01 = 1f;
         }
         else
         {
-            // ¸ñÇ¥ À§Ä¡¿Í °¡±î¿ò
+            // ëª©í‘œ ìœ„ì¹˜ì™€ ê°€ê¹Œì›€
             speed01 = 0.5f;
         }
 

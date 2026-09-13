@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class GameData : MonoBehaviour
 {
@@ -10,8 +10,8 @@ public class GameData : MonoBehaviour
         GameOver
     }
 
-    [SerializeField] private float _farmingTime = 60f;   // 10ºĞ
-    [SerializeField] private float _bossTime = 20f;      // 2ºĞ 30ÃÊ
+    [SerializeField] private float _farmingTime = 60f;   // 10ë¶„
+    [SerializeField] private float _bossTime = 20f;      // 2ë¶„ 30ì´ˆ
 
     private GamePhase _currentPhase;
 
@@ -69,10 +69,10 @@ public class GameData : MonoBehaviour
 
     private void GameTimer()
     {
-        // ÆÄ¹Ö½Ã°£  : 10ºĞ
-        // º¸½ºÀâ´Â½Ã°£ : 2ºĞ30ÃÊ
+        // íŒŒë°ì‹œê°„  : 10ë¶„
+        // ë³´ìŠ¤ì¡ëŠ”ì‹œê°„ : 2ë¶„30ì´ˆ
 
-        // ½Ã°£¾È¿¡ º¸½º ¸øÀâÀ¸¸é °ÔÀÓ ¿À¹ö <= ¸Ş´º ÀÌµ¿ 
+        // ì‹œê°„ì•ˆì— ë³´ìŠ¤ ëª»ì¡ìœ¼ë©´ ê²Œì„ ì˜¤ë²„ <= ë©”ë‰´ ì´ë™ 
 
         if(_currentPhase == GamePhase.None || _currentPhase == GamePhase.GameOver)
         {
@@ -105,7 +105,7 @@ public class GameData : MonoBehaviour
         _currentPhase = GamePhase.BossBattle;
         _timer = 0f;
 
-        Debug.Log("º¸½ºÀü Å¸ÀÌ¸Ó");
+        Debug.Log("ë³´ìŠ¤ì „ íƒ€ì´ë¨¸");
     }
 
     public void EndBossBattle()
@@ -119,7 +119,7 @@ public class GameData : MonoBehaviour
 
     private void GameOver()
     {
-        // ÆäÀÌÁî¸¸ º¯È­ Ã³¸®´Â CreateBoss¿¡¼­ ½Â¸®Á¶°Ç°ú °°ÀÌ
+        // í˜ì´ì¦ˆë§Œ ë³€í™” ì²˜ë¦¬ëŠ” CreateBossì—ì„œ ìŠ¹ë¦¬ì¡°ê±´ê³¼ ê°™ì´
         _currentPhase = GamePhase.GameOver;
         _timer = 0f;
     }

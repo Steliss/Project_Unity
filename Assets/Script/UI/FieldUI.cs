@@ -1,4 +1,5 @@
-using System;
+ï»¿using System;
+using System.Drawing;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,7 @@ public class FiledUI : MonoBehaviour
     [SerializeField] private Toggle informationChangeToggle;
     [SerializeField] private PlayerUpgrade _playerUpgrade;
     [SerializeField] private UseItem _useItem;
+    [SerializeField] private DamageLogUI _damageLogUI;
 
     [SerializeField] private float _bossSceneMoveTime = 20f;
 
@@ -50,6 +52,7 @@ public class FiledUI : MonoBehaviour
 
     private int _previousUpgradeCoupon = -1;
     private int _previousChestLevel = -1;
+    private float _bossLogTimer = 0f;
 
     private bool _flagInformationChangeToggle;
 
@@ -97,6 +100,14 @@ public class FiledUI : MonoBehaviour
         TopBarTextUpdate();
         BossSceneMove();
         BGMPlay();
+
+        // test & cheat
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            Debug.Log(_objectData.PlayerUpgrade);
+            _objectData.AddPlayerUpgrade(100);
+            _damageLogUI.AnyLog($"<color=yellow>ì¹˜íŠ¸ì ìš© í”Œë ˆì´ì–´ ê°•í™” ì¿ í° 100ê°œ ì§€ê¸‰</color>");
+        }
     }
 
     private void TopBarTextUpdate()
@@ -134,18 +145,18 @@ public class FiledUI : MonoBehaviour
 
     private void BottomBarTextUpdate()
     {
-        _playerLevel.text = $"ÇÃ·¹ÀÌ¾î ·¹º§ : {_playerData.PlayerLevel}";
-        _attackPower.text = $"°ø°İ·Â : {_playerData.AttackPower}";
-        _attackRange.text = $"»ç°Å¸® : {_playerData.AttackRange}";
-        _attackSpeed.text = $"°ø°İ ¼Óµµ : {_playerData.AttackSpeed}";
-        _criticalChance.text = $"Ä¡¸íÅ¸ È®·ü : {_playerData.CriticalChance}";
-        _criticalDamageMultiplier.text = $"Ä¡¸íÅ¸ ¹èÀ² : {_playerData.CriticalDamageMultiplier}";
-        _moveSpeed.text = $"ÀÌµ¿¼Óµµ : {_playerData.MoveSpeed}";
-        _rotateSpeed.text = $"È¸Àü¼Óµµ : {_playerData.RotateSpeed}";
-        _petLevel.text = $"Æê ·¹º§ : {_playerData.PetLevel}";
-        _petAttackPower.text = $"Æê °ø°İ·Â : {_playerData.PetAttackPower}";
+        _playerLevel.text = $"í”Œë ˆì´ì–´ ë ˆë²¨ : {_playerData.PlayerLevel}";
+        _attackPower.text = $"ê³µê²©ë ¥ : {_playerData.AttackPower}";
+        _attackRange.text = $"ì‚¬ê±°ë¦¬ : {_playerData.AttackRange}";
+        _attackSpeed.text = $"ê³µê²© ì†ë„ : {_playerData.AttackSpeed:F2}";
+        _criticalChance.text = $"ì¹˜ëª…íƒ€ í™•ë¥  : {_playerData.CriticalChance * 100:F2}";
+        _criticalDamageMultiplier.text = $"ì¹˜ëª…íƒ€ ë°°ìœ¨ : {_playerData.CriticalDamageMultiplier * 100:F2}";
+        _moveSpeed.text = $"ì´ë™ì†ë„ : {_playerData.MoveSpeed}";
+        _rotateSpeed.text = $"íšŒì „ì†ë„ : {_playerData.RotateSpeed}";
+        _petLevel.text = $"í« ë ˆë²¨ : {_playerData.PetLevel}";
+        _petAttackPower.text = $"í« ê³µê²©ë ¥ : {_playerData.PetAttackPower}";
 
-        // °ø°İ¼ÓµµºÎºĞ ¹Ù²î´ÂÀÏ ÀÖÀ½ 10f ´ë½Å ÇÃ·¹ÀÌ¾î/Æê¿¡¼­ º¯¼ö ¸¸µé¾î¼­ ³¯¸®±â
+        // ê³µê²©ì†ë„ë¶€ë¶„ ë°”ë€ŒëŠ”ì¼ ìˆìŒ 10f ëŒ€ì‹  í”Œë ˆì´ì–´/í«ì—ì„œ ë³€ìˆ˜ ë§Œë“¤ì–´ì„œ ë‚ ë¦¬ê¸°
         float dps = _playerData.AttackPower * (_playerData.AttackSpeed / 10f) * (1f + _playerData.CriticalChance * (_playerData.CriticalDamageMultiplier - 1f)) + _playerData.PetAttackPower / 10f;
 
         _DPSCheck.text = $"DPS : {dps:F1}";
@@ -156,7 +167,7 @@ public class FiledUI : MonoBehaviour
         if(_useItem.FlagPotionTimer)
         {
             _powerTimer.SetActive(true);
-            _powerTimeText.text = $"³²Àº ½Ã°£ : {_useItem.PowerTimer:F2}";
+            _powerTimeText.text = $"ë‚¨ì€ ì‹œê°„ : {_useItem.PowerTimer:F1}";
         }
         else
         {
@@ -199,7 +210,7 @@ public class FiledUI : MonoBehaviour
         }
 
         _previousUpgradeCoupon = currentUpgradeCoupon;
-        _upgradeCoupon.text = $"°­È­ ÄíÆù: {currentUpgradeCoupon}";
+        _upgradeCoupon.text = $"ê°•í™” ì¿ í°: {currentUpgradeCoupon}";
     }
     private void LevelTextUpdate()
     {
@@ -216,7 +227,7 @@ public class FiledUI : MonoBehaviour
         }
 
         _previousChestLevel = currentChestLevel;
-        _chestLevel.text = $" »óÀÚ ·¹º§: {currentChestLevel}";
+        _chestLevel.text = $" ìƒì ë ˆë²¨: {currentChestLevel}";
     }
     private void OnToggleChanged(bool toggle)
     {
@@ -226,14 +237,14 @@ public class FiledUI : MonoBehaviour
         {
             _uiPlayerDisplay.SetActive(true);
             _informationDisplay.SetActive(false);
-            Debug.Log($"±â´É È°¼ºÈ­ : {_flagInformationChangeToggle}");
+            Debug.Log($"ê¸°ëŠ¥ í™œì„±í™” : {_flagInformationChangeToggle}");
         }
         else
         {
             BottomBarTextUpdate();
             _uiPlayerDisplay.SetActive(false);
             _informationDisplay.SetActive(true);
-            Debug.Log($"±â´É ºñÈ°¼ºÈ­ : {_flagInformationChangeToggle}");
+            Debug.Log($"ê¸°ëŠ¥ ë¹„í™œì„±í™” : {_flagInformationChangeToggle}");
         }
     }
 
@@ -253,15 +264,16 @@ public class FiledUI : MonoBehaviour
         }
         else if (buttonType == "UpgradeUIOpen")
         {
-            _upgradeCost.text = $"¼Ò¸ğ ÄíÆù°ª : {(1 + _playerData.PlayerLevel * 2)}"; // *2 ºÎºĞ ÇÃ·¹ÀÌ¾î¾÷±×·¹ÀÌµå _consumeCoupon Ç×¸ñ °ª
+            _upgradeCost.text = $"ì†Œëª¨ ì¿ í°ê°’ : {(_playerData.UpgradeCost)}";
             _soundManager.SFXStartMenuPlay();
             OpenUpgradeUI();
         }
         else if (buttonType == "UpgradeUIButton")
         {
-            //  »ç¿îµå 
-            _playerUpgradeButton.text = $"¼º°ø È®·ü : {_playerUpgrade.SuccessChance * 100:F5}";
+            _soundManager.SFXStartMenuPlay();
             _playerUpgrade.PlayerUpgradeClick();
+            _playerUpgradeButton.text = $"ì„±ê³µ í™•ë¥  : {_playerUpgrade.SuccessChance * 100:F5}";
+            _upgradeCost.text = $"ì†Œëª¨ ì¿ í°ê°’ : {(_playerData.UpgradeCost)}";
         }
     }
 
@@ -287,7 +299,7 @@ public class FiledUI : MonoBehaviour
             return;
         }
 
-        _playerUpgradeButton.text = $"¼º°ø È®·ü : {_playerUpgrade.SuccessChance * 100:F5}";
+        _playerUpgradeButton.text = $"ì„±ê³µ í™•ë¥  : {_playerUpgrade.SuccessChance * 100:F5}";
         _upgradeUI.SetActive(!_upgradeUI.activeSelf);
     }
 
@@ -323,9 +335,25 @@ public class FiledUI : MonoBehaviour
 
     private void BossSceneMove()
     {
-        if(_gameData.Timer > _bossSceneMoveTime && _gameData.CurrentPhase == GameData.GamePhase.BossBattle)
+        if(_gameData.CurrentPhase == GameData.GamePhase.BossBattle)
         {
-            _cSceneManager.LoadScene(ESceneId.BossRoom);
+            if(_gameData.Timer > _bossSceneMoveTime)
+            {
+                _cSceneManager.LoadScene(ESceneId.BossRoom);
+            }
+
+            _bossLogTimer += Time.deltaTime;
+
+            if (_bossLogTimer >= 1f)
+            {
+                _bossLogTimer -= 1f;
+
+                _damageLogUI.AnyLog("<color=red>ë³´ìŠ¤ ë“±ì¥ ì´ë™í•´ì•¼í•©ë‹ˆë‹¤</color>");
+            }
+        }
+        else
+        {
+            _bossLogTimer = 0f;
         }
     }
 

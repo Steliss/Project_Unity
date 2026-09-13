@@ -1,9 +1,9 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    // ¿Àµğ¿À ¼Ò½º´Â ¿©±â¿¡ Å¬¸³Àº Àú±â¿¡ 
-    // ¿©±â¼­ ÇÕÃÄ¼­ °ø°³ ÇÔ¼ö·Î ³»º¸³»¼­ Àç»ı
+    // ì˜¤ë””ì˜¤ ì†ŒìŠ¤ëŠ” ì—¬ê¸°ì— í´ë¦½ì€ ì €ê¸°ì— 
+    // ì—¬ê¸°ì„œ í•©ì³ì„œ ê³µê°œ í•¨ìˆ˜ë¡œ ë‚´ë³´ë‚´ì„œ ì¬ìƒ
 
 
     [SerializeField] private AudioSource _bgmAudio;
@@ -55,7 +55,8 @@ public class SoundManager : MonoBehaviour
 
             case BGM.Title:
                 _bgmAudio.loop = true;
-                _bgmAudio.PlayOneShot(_bgmSound.TitleBGM);
+                _bgmAudio.clip = _bgmSound.TitleBGM;
+                _bgmAudio.Play();
                 break;
 
             case BGM.Field1:
@@ -75,7 +76,8 @@ public class SoundManager : MonoBehaviour
 
             case BGM.Boss:
                 _bgmAudio.loop = true;
-                _bgmAudio.PlayOneShot(_bgmSound.BossBGM);
+                _bgmAudio.clip = _bgmSound.BossBGM;
+                _bgmAudio.Play();
                 break;
 
             default:

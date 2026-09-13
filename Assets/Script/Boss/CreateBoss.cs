@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using UnityEngine;
 
 public class CreateBoss : MonoBehaviour
@@ -64,13 +64,21 @@ public class CreateBoss : MonoBehaviour
 
     private IEnumerator GameOver()
     {
-        //Debug.Log("¡¶«—Ω√∞£ √ ∞˙ / ∞‘¿” ø¿πˆ");
+        //Debug.Log("Ï†úÌïúÏãúÍ∞Ñ Ï¥àÍ≥º / Í≤åÏûÑ Ïò§Î≤Ñ");
 
-        // «√∑π¿ÃæÓ æ÷¥œ∏ﬁ¿Ãº« æ÷µµ ∫–±‚ 
-        _playerAnimation.PlayAnimation(PlayerAnimation.Animation.tDieB);
-        yield return new WaitForSeconds(3f);
+        int rand = Random.Range(0, 2);
 
-        // ∆–πË UI => ¡°ºˆ π◊ ≈Î∞Ë (Ω¬∏Ææ¿µµ ∞°æﬂ«œ≥◊?)
+        if (rand == 0)
+        {
+            _playerAnimation.PlayAnimation(PlayerAnimation.Animation.tDieF);
+            yield return new WaitForSeconds(3f);
+        }
+        else
+        {
+            _playerAnimation.PlayAnimation(PlayerAnimation.Animation.tDieB);
+            yield return new WaitForSeconds(3f);
+        }
+
         _bossUI.BattleEndUI(true, false);
 
         _player.SetActive(false);
@@ -79,7 +87,7 @@ public class CreateBoss : MonoBehaviour
         yield return new WaitUntil(() => Input.anyKeyDown);
         _bossUI.BattleEndUI(false, false);
 
-        // «√∑π¿ÃæÓ µ•¿Ã≈Õ √ ±‚»≠ ≈∏¿Ã∏”¥¬ gamedataø°º≠ √≥∏Æ 
+        // ÌîåÎ†àÏù¥Ïñ¥ Îç∞Ïù¥ÌÑ∞ Ï¥àÍ∏∞Ìôî ÌÉÄÏù¥Î®∏Îäî gamedataÏóêÏÑú Ï≤òÎ¶¨ 
         _playerData.ResetState();
         _objectData.ResetState();
 
@@ -96,7 +104,7 @@ public class CreateBoss : MonoBehaviour
 
         GameObject _currentBoss = Boss[_playerData.Round];
 
-        // ¿ÃπÃ ªÏæ∆ ¿÷¥¬ ∫∏Ω∫∞° ¿÷¿∏∏È ¡ﬂ∫π º“»Ø πÊ¡ˆ
+        // Ïù¥ÎØ∏ ÏÇ¥ÏïÑ ÏûàÎäî Î≥¥Ïä§Í∞Ä ÏûàÏúºÎ©¥ Ï§ëÎ≥µ ÏÜåÌôò Î∞©ÏßÄ
         if (_currentBoss.activeSelf)
         {
             return;
@@ -105,7 +113,7 @@ public class CreateBoss : MonoBehaviour
         _currentBoss.transform.position = _spawnPoint;
         _currentBoss.SetActive(true);
 
-        // ƒ⁄∑Á∆æ ƒ´∏ﬁ∂Û ø¢º« 
+        // ÏΩîÎ£®Ìã¥ Ïπ¥Î©îÎùº ÏóëÏÖò 
         StartCoroutine(BossCutScene(_currentBoss.transform));
 
     }
@@ -117,7 +125,12 @@ public class CreateBoss : MonoBehaviour
         if (_playerData.Round == 2)
         {
             RelicOwnedData relic = _saveData.GetRelic();
+            RelicType selectedType = relic.Type;
+
             _saveData.LoadRelic();
+
+            // Î°úÎìú ÌõÑ Ïù¥Î¶Ñ¬∑ÏÑ§Î™ÖÏù¥ Í∞±Ïã†Îêú Í∞ùÏ≤¥Î°ú Îã§Ïãú Î∞õÍ∏∞
+            relic = _saveData.GetOwnedRelic(selectedType);
 
             StartCoroutine(CoroutineWin(relic));
         }
@@ -155,7 +168,7 @@ public class CreateBoss : MonoBehaviour
 
         _rewardChoiceManager.OpenChoices();
 
-        // ∫∏ªÛ º±≈√¿Ã ≥°≥Ø ∂ß±Ó¡ˆ ¥Î±‚
+        // Î≥¥ÏÉÅ ÏÑ†ÌÉùÏù¥ ÎÅùÎÇ† ÎïåÍπåÏßÄ ÎåÄÍ∏∞
         yield return new WaitUntil(() => !_rewardChoiceManager.IsSelecting);
 
         _sceneManager.LoadScene(ESceneId.Field);
@@ -164,22 +177,32 @@ public class CreateBoss : MonoBehaviour
 
     private IEnumerator AnimationCoroutine(Vector3 offSet)
     {
-        // offset = ∫Ò¿≤
+        // offset = ÎπÑÏú®
         _bossCameraController.DollyCameraChange(_player.transform, offSet);
+        _playerAnimation.PlayerShoot(false);
 
         _playerAnimation.PlayAnimation(PlayerAnimation.Animation.tPutGun);
         yield return new WaitForSeconds(3f);
 
-        // Ω∫∏∂¿œ ∫–±‚ √ﬂ∞°
-        _playerAnimation.PlayAnimation(PlayerAnimation.Animation.tGreeting);
-        yield return new WaitForSeconds(2f);
+        int rand = Random.Range(0, 2);
+
+        if(rand == 0)
+        {
+            _playerAnimation.PlayAnimation(PlayerAnimation.Animation.tSmile);
+            yield return new WaitForSeconds(2f);
+        }
+        else
+        {
+            _playerAnimation.PlayAnimation(PlayerAnimation.Animation.tGreeting);
+            yield return new WaitForSeconds(2f);
+        }
 
         _playerAnimation.PlayAnimation(PlayerAnimation.Animation.tTakeGun);
         yield return new WaitForSeconds(4f);
 
         _playerAnimation.PlayAnimation(PlayerAnimation.Animation.tReload);
         yield return new WaitForSeconds(5f);
-        // æ÷¥œ∏ﬁ¿Ãº« ¡æ∑· »ƒ æ¿ ¿Ãµø
+        // Ïï†ÎãàÎ©îÏù¥ÏÖò Ï¢ÖÎ£å ÌõÑ Ïî¨ Ïù¥Îèô
 
         _gameData.EndBossBattle();
     }

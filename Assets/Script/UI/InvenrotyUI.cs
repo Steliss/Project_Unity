@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +12,7 @@ public class InvenrotyUI : MonoBehaviour
     [SerializeField] private CreateItem _createItem;
     [SerializeField] private UseItem _useItem;
 
-    // ¸®½ºÆ® µé°í¿Í¼­ ¸®½ºÆ® ±âÀÔÇÏ±â,
+    // ë¦¬ìŠ¤íŠ¸ ë“¤ê³ ì™€ì„œ ë¦¬ìŠ¤íŠ¸ ê¸°ìž…í•˜ê¸°,
     private List<GameObject> _objInventoryList = new List<GameObject>();
     private Dictionary<GameObject, Sprite> _obInventoryDiction = new Dictionary<GameObject, Sprite>();
     private List<GameObject> _keyList;
@@ -34,7 +34,7 @@ public class InvenrotyUI : MonoBehaviour
 
         for (int i = 0; i < _inventoryImage.Length; i++)
         {
-            // index¸¦ ÅëÇÑ ÀúÀåÀÌ ¾øÀ¸¸é i¸¦ °¡¸£Å°±â¿¡ [i]°¡ ÀüºÎ °°Àº°É °¡¸£Å°°ÔµÊ
+            // indexë¥¼ í†µí•œ ì €ìž¥ì´ ì—†ìœ¼ë©´ ië¥¼ ê°€ë¥´í‚¤ê¸°ì— [i]ê°€ ì „ë¶€ ê°™ì€ê±¸ ê°€ë¥´í‚¤ê²Œë¨
             int index = i;
             _inventoryImage[i].GetComponent<Button>().onClick.AddListener(() => InventoryClick(index));
         }
@@ -60,7 +60,7 @@ public class InvenrotyUI : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("TestLog : Å° ¶Ç´Â Æ÷¼Ç ¸ñ·Ï¿¡ ¾ø´Â ¾ÆÀÌÅÛ");
+            Debug.LogWarning("TestLog : í‚¤ ë˜ëŠ” í¬ì…˜ ëª©ë¡ì— ì—†ëŠ” ì•„ì´í…œ");
             return;
         }
 
@@ -80,7 +80,7 @@ public class InvenrotyUI : MonoBehaviour
 
     private void InventoryUpdate()
     {
-        // null Ç×¸ñÀÌ ÀÖÀ¸¸é Á¦°Å
+        // null í•­ëª©ì´ ìžˆìœ¼ë©´ ì œê±°
         _objInventoryList.RemoveAll(obj => obj == null);
 
         for (int i = 0; i < _inventoryImage.Length; i++)
@@ -111,7 +111,7 @@ public class InvenrotyUI : MonoBehaviour
 
         if (!_obInventoryDiction.TryGetValue(item, out Sprite icon))
         {
-            Debug.Log("TestLog : µñ¼Å³Ê¸®¿¡ ÇØ´ç ¾ÆÀÌÅÛ ¾øÀ½");
+            Debug.Log("TestLog : ë”•ì…”ë„ˆë¦¬ì— í•´ë‹¹ ì•„ì´í…œ ì—†ìŒ");
             return; 
         }
 
@@ -121,7 +121,7 @@ public class InvenrotyUI : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("TestLog : ÀÏÄ¡ÇÏ´Â ¾ÆÀÌÅÛ ¾øÀ½");
+            Debug.LogWarning("TestLog : ì¼ì¹˜í•˜ëŠ” ì•„ì´í…œ ì—†ìŒ");
         }
     }
 }

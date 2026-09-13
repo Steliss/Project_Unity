@@ -1,4 +1,4 @@
-using Cinemachine;
+ï»¿using Cinemachine;
 using UnityEngine;
 
 public class BossCameraController : MonoBehaviour
@@ -90,7 +90,7 @@ public class BossCameraController : MonoBehaviour
         transposer.m_BindingMode = CinemachineTransposer.BindingMode.WorldSpace;
         transposer.m_FollowOffset = offSet;
 
-        // ÀÌÀü Ä«¸Ş¶ó »óÅÂÀÇ ¿µÇâÀ» ÃÊ±âÈ­
+        // ì´ì „ ì¹´ë©”ë¼ ìƒíƒœì˜ ì˜í–¥ì„ ì´ˆê¸°í™”
         _playerCamera.PreviousStateIsValid = false;
 
         _playerCamera.Priority = 20;

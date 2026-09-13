@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyMatarialChange : MonoBehaviour
@@ -10,7 +10,7 @@ public class EnemyMatarialChange : MonoBehaviour
 
 
 
-    // ·£´õ Àû¿ë
+    // ëœë” ì ìš©
     public void ApplyMaterial(int materialIndex, SkinnedMeshRenderer _skinnedMeshRenderer)
     {
 

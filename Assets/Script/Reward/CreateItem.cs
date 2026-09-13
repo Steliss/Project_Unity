@@ -1,9 +1,10 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class CreateItem : MonoBehaviour
 {
     [SerializeField] private InvenrotyUI _inventory;
+    [SerializeField] private DamageLogUI _damageLogUI;
 
     private enum ItemType
     {
@@ -13,18 +14,24 @@ public class CreateItem : MonoBehaviour
         PlayerUpgrade,  // int
         PetUpgrade      // int
 
-        // °­È­ ¼º°ø Áõ°­Á¦ Ãß°¡ ÇÒ ¼ö ÀÖÀ½ ³ªÁß¿¡ ½Ãµµ 
+        // ê°•í™” ì„±ê³µ ì¦ê°•ì œ ì¶”ê°€ í•  ìˆ˜ ìˆìŒ ë‚˜ì¤‘ì— ì‹œë„ 
     }
 
 
-    [Header("Å° ½ºÆù")]
+    [Header("í‚¤ ìŠ¤í°")]
     [SerializeField] GameObject _goKey = null;
     [SerializeField] private int _keyCount = 5;
 
-    [Header("°­È­ Æ÷¼Ç ½ºÆù")]
+    [Header("ê°•í™” í¬ì…˜ ìŠ¤í°")]
     [SerializeField] GameObject _goPotion = null;
     [SerializeField] private int _potionCount = 5;
     [SerializeField] private float _potionTimer = 15f;
+
+    [Header("ê°•í™” í¬ì…˜ ìŠ¤í°")]
+    [SerializeField] private int _dropCouponInfra = 10; // ê¸°ë³¸ ë“œë
+    [SerializeField] private int _dropCouponRate = 5;  // ê³„ìˆ˜
+    [SerializeField] private int _PetdropCouponInfra = 1; // ê¸°ë³¸ ë“œë
+    [SerializeField] private int _PetdropCouponRate = 5;  // ê³„ìˆ˜
 
     private readonly Queue<GameObject> _keyQueue = new Queue<GameObject>();
     private readonly List<GameObject> _keyList = new List<GameObject>();
@@ -54,7 +61,7 @@ public class CreateItem : MonoBehaviour
         }
     }
 
-    [Header("È®·ü Weight ¼³Á¤")]
+    [Header("í™•ë¥  Weight ì„¤ì •")]
     [SerializeField, Min(0)] private int _noneWeight = 30;
     [SerializeField, Min(0)] private int _keyWeight = 5;
     [SerializeField, Min(0)] private int _potionWeight = 1;
@@ -93,7 +100,7 @@ public class CreateItem : MonoBehaviour
         ItemWeightSetting();
         KeySetting();
         PotionSetting();
-        Debug.Log("TestLog : ¾ÆÀÌÅÛ ¼¼ÆÃ ¿Ï·á");
+        //Debug.Log("TestLog : ì•„ì´í…œ ì„¸íŒ… ì™„ë£Œ");
     }
 
     private void Update()
@@ -101,7 +108,7 @@ public class CreateItem : MonoBehaviour
         PotionToPool();
     }
 
-    // °¡ÁßÄ¡ ¼¼ÆÃ || QA ¶§ ´Ùµë±â 
+    // ê°€ì¤‘ì¹˜ ì„¸íŒ… || QA ë•Œ ë‹¤ë“¬ê¸° 
     private void ItemWeightSetting()
     {
         _itemWeightRandoms = new ItemWeightRandom[]
@@ -117,7 +124,7 @@ public class CreateItem : MonoBehaviour
 
 
     // =========================================================
-    // Å°, Æ÷¼Ç Ç® ¼¼ÆÃ 
+    // í‚¤, í¬ì…˜ í’€ ì„¸íŒ… 
     // =========================================================
 
     private void KeySetting()
@@ -160,7 +167,7 @@ public class CreateItem : MonoBehaviour
         }
     }
 
-    // Æ÷¼Ç µå¶ø
+    // í¬ì…˜ ë“œë
     private void DropPotion(Vector3 dropPosition)
     {
         if (_potionQueue.Count == 0)
@@ -169,7 +176,7 @@ public class CreateItem : MonoBehaviour
         }
         if(_potionQueue.Count == 0)
         {
-            Debug.Log($"{nameof(CreateItem)} : {nameof(DropPotion)}" + " Æ÷¼Ç »ı¼º ½ÇÆĞ");
+            Debug.Log($"{nameof(CreateItem)} : {nameof(DropPotion)}" + " í¬ì…˜ ìƒì„± ì‹¤íŒ¨");
             return;
         }
 
@@ -183,12 +190,12 @@ public class CreateItem : MonoBehaviour
         _inventory.InventoryAdd(potion);
     }
 
-    // Ç®À» ´õ »ı¼º
+    // í’€ì„ ë” ìƒì„±
     private void MorePotion()
     {
         if (_goPotion == null)
         {
-            Debug.Log($"{nameof(CreateItem)} : {nameof(MorePotion)}" + " Æ÷¼Ç ÇÁ¸®ÆÕ È®ÀÎ");
+            Debug.Log($"{nameof(CreateItem)} : {nameof(MorePotion)}" + " í¬ì…˜ í”„ë¦¬íŒ¹ í™•ì¸");
             return;
         }
 
@@ -204,12 +211,12 @@ public class CreateItem : MonoBehaviour
     }
 
 
-    // »ç¿ë½Ã Ç®·Î ¹İÈ¯
+    // ì‚¬ìš©ì‹œ í’€ë¡œ ë°˜í™˜
     public void UsePowerPotion()
     {
         if (_potionList.Count == 0)
         {
-            Debug.Log("»ç¿ëÇÒ Æ÷¼ÇÀÌ ¾ø½À´Ï´Ù.");
+            Debug.Log("ì‚¬ìš©í•  í¬ì…˜ì´ ì—†ìŠµë‹ˆë‹¤.");
             return;
         }
 
@@ -237,7 +244,7 @@ public class CreateItem : MonoBehaviour
         ReturnPotionToPool(potion);
     }
 
-    // Á¦ÇÑ ½Ã°£ÀÌ ³¡³­ Æ÷¼ÇÀ» Ç®·Î ¹İÈ¯
+    // ì œí•œ ì‹œê°„ì´ ëë‚œ í¬ì…˜ì„ í’€ë¡œ ë°˜í™˜
     private void PotionToPool()
     {
         for (int i = _potionList.Count - 1; i >= 0; i--)
@@ -246,7 +253,7 @@ public class CreateItem : MonoBehaviour
 
             if (!_potionDiction.ContainsKey(potion))
             {
-                Debug.LogWarning($"{potion.name}ÀÇ ½Ã°£ Á¤º¸°¡ ¾ø½À´Ï´Ù.");
+                Debug.LogWarning($"{potion.name}ì˜ ì‹œê°„ ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤.");
 
                 _potionList.RemoveAt(i);
                 continue;
@@ -263,7 +270,7 @@ public class CreateItem : MonoBehaviour
         }
     }
 
-    // Ç®·Î µ¹¸®±â 
+    // í’€ë¡œ ëŒë¦¬ê¸° 
     public void ReturnPotionToPool(GameObject potion)
     {
         _potionList.Remove(potion);
@@ -278,35 +285,38 @@ public class CreateItem : MonoBehaviour
 
 
     // =========================================================
-    //  ¾ÆÀÌÅÛ µå¶ø
+    //  ì•„ì´í…œ ë“œë
     // =========================================================
     public void ItemDrop(Vector3 dropPosition)
     {
         ItemType selectedItem = RandomItem();
 
-        Debug.Log($"°á°ú: {selectedItem}");
+        Debug.Log($"ê²°ê³¼: {selectedItem}");
 
         switch (selectedItem)
         {
             case ItemType.None:
+                _damageLogUI.AnyLog("ì”í•´ì†ì—ëŠ” ì•„ë¬´ê²ƒë„ ì—†ìŠµë‹ˆë‹¤");
                 break;
 
             case ItemType.Key:
                 DropKey(dropPosition);
+                _damageLogUI.AnyLog("ì”í•´ì†ì—ì„œ ì—´ì‡ ë¥¼ ì°¾ì•˜ìŠµë‹ˆë‹¤");
                 break;
 
             case ItemType.Powerpotion:
                 DropPotion(dropPosition);
+                _damageLogUI.AnyLog("ì”í•´ì†ì—ì„œ ì—˜ë¦­ì„œë¥¼ ì°¾ì•˜ìŠµë‹ˆë‹¤");
                 break;
 
             case ItemType.PlayerUpgrade:
-                DropPlayerUpgrade();
-                Debug.Log($"UpgradeCoupon °³¼ö : {_objectData.PlayerUpgrade}");
+                DropPlayerUpgrade(out int coupon);
+                _damageLogUI.AnyLog($"ì”í•´ì†ì—ì„œ ê°•í™” ì¿ í° {coupon}ë¥¼ ì°¾ì•˜ìŠµë‹ˆë‹¤ ");
                 break;
 
             case ItemType.PetUpgrade:
-                DropPetUpgrade();
-                Debug.Log($"PetUpgradeCoupon °³¼ö : {_objectData.PetUpgrade}");
+                DropPetUpgrade(out int petcoupon);
+                _damageLogUI.AnyLog($"ì”í•´ì†ì—ì„œ í« ê°•í™” ì¿ í° {petcoupon}ë¥¼ ì°¾ì•˜ìŠµë‹ˆë‹¤ ");
                 break;
 
             default:
@@ -316,7 +326,7 @@ public class CreateItem : MonoBehaviour
 
     private ItemType RandomItem()
     {
-        // °¡ÁßÄ¡ ·£´ı ¹æ½Ä µå¶ø
+        // ê°€ì¤‘ì¹˜ ëœë¤ ë°©ì‹ ë“œë
         int totalWeight = 0;
 
         foreach (ItemWeightRandom itemData in _itemWeightRandoms)
@@ -329,7 +339,7 @@ public class CreateItem : MonoBehaviour
 
         if (totalWeight <= 0)
         {
-            Debug.LogWarning("¼³Á¤µÈ °¡ÁßÄ¡°¡ ¾ø½À´Ï´Ù.");
+            Debug.LogWarning("ì„¤ì •ëœ ê°€ì¤‘ì¹˜ê°€ ì—†ìŠµë‹ˆë‹¤.");
             return ItemType.None;
         }
 
@@ -351,13 +361,13 @@ public class CreateItem : MonoBehaviour
             }
         }
 
-        // È¤½Ã ¸ğ¸£´Ï 
+        // í˜¹ì‹œ ëª¨ë¥´ë‹ˆ 
         return ItemType.None;
     }
 
 
     // =========================================================
-    // Å° µå¶ø
+    // í‚¤ ë“œë
     // =========================================================
 
     private void DropKey(Vector3 dropPosition)
@@ -370,6 +380,7 @@ public class CreateItem : MonoBehaviour
 
         GameObject key = _keyQueue.Dequeue();
 
+        dropPosition.y += 3f;
         key.transform.position = dropPosition;
         key.SetActive(true);
 
@@ -386,7 +397,8 @@ public class CreateItem : MonoBehaviour
 
         ItemWeightSetting();
 
-        Debug.Log($"»óÀÚ ·¹º§ : {_objectData.ChestLevel}");
+        _damageLogUI.AnyLog($"<color=yellow>ì¶©ë¶„í•œ ì—´ì‡ ê°€ ëª¨ì—¬ ìƒìì˜ ë ˆë²¨ì´ ì˜¤ë¦…ë‹ˆë‹¤</color>");
+        Debug.Log($"ìƒì ë ˆë²¨ : {_objectData.ChestLevel}");
     }
 
 
@@ -406,24 +418,25 @@ public class CreateItem : MonoBehaviour
 
 
     // =========================================================
-    // ¾÷±×·¹ÀÌµå ÄíÆù µå¶ø 
+    // ì—…ê·¸ë ˆì´ë“œ ì¿ í° ë“œë 
     // =========================================================
 
-    private void DropPlayerUpgrade()
+    private void DropPlayerUpgrade(out int coupon)
     {
-        // ±âº» µå¶ø + »óÀÚ ·¹º§¿¡ µû¸¥ Ãß°¡ µå¶ø. °íÁ¤ ¼öÄ¡ ÀÎ½ºÆåÅÍ·Î ³ªÁß¿¡ »©±â 
-        _objectData.AddPlayerUpgrade(1 + _objectData.ChestLevel * 3);
+        coupon = _dropCouponInfra + _objectData.ChestLevel * _dropCouponRate;
+        _objectData.AddPlayerUpgrade(coupon);
     }
 
 
     // =========================================================
-    // ¾÷±×·¹ÀÌµå ÄíÆù µå¶ø 
+    // ì—…ê·¸ë ˆì´ë“œ ì¿ í° ë“œë 
     // =========================================================
 
-    private void DropPetUpgrade()
+    private void DropPetUpgrade(out int coupon)
     {
-        // ±âº» µå¶ø + »óÀÚ ·¹º§¿¡ µû¸¥ Ãß°¡ µå¶ø. °íÁ¤ ¼öÄ¡ ÀÎ½ºÆåÅÍ·Î ³ªÁß¿¡ »©±â 
-        _objectData.AddPetUpgrade(1 + _objectData.ChestLevel * 3);
+        // ê¸°ë³¸ ë“œë + ìƒì ë ˆë²¨ì— ë”°ë¥¸ ì¶”ê°€ ë“œë. ê³ ì • ìˆ˜ì¹˜ ì¸ìŠ¤í™í„°ë¡œ ë‚˜ì¤‘ì— ë¹¼ê¸° 
+        coupon = _PetdropCouponInfra + _objectData.ChestLevel * _PetdropCouponRate;
+        _objectData.AddPetUpgrade(coupon);
     }
 
 

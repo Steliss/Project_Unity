@@ -1,16 +1,16 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class DamageLogUI : MonoBehaviour
 {
-    [Header("µ¥¹ÌÁö ÅØ½ºÆ®")]
+    [Header("ë°ë¯¸ì§€ í…ìŠ¤íŠ¸")]
     [SerializeField] private TextMeshProUGUI _damageText;
     [SerializeField] private int _damageTextCount = 5;
     [SerializeField] private float _damageTextTimer = 5f;
     [SerializeField] private float _heightOffset = 2f;
 
-    [Header("·Î±× ÅØ½ºÆ®")]
+    [Header("ë¡œê·¸ í…ìŠ¤íŠ¸")]
     [SerializeField] private TextMeshProUGUI _logText;
     [SerializeField] private RectTransform _logContent;
     [SerializeField] private int _logCount = 10;
@@ -56,7 +56,7 @@ public class DamageLogUI : MonoBehaviour
         _damageTextRoot = root.GetComponent<RectTransform>();
         _damageTextRoot.SetParent(transform, false);
 
-        // ºÎ¸ğ UI ÀüÃ¼ ¿µ¿ª¿¡ ¸ÂÃß±â
+        // ë¶€ëª¨ UI ì „ì²´ ì˜ì—­ì— ë§ì¶”ê¸°
         _damageTextRoot.anchorMin = Vector2.zero;
         _damageTextRoot.anchorMax = Vector2.one;
         _damageTextRoot.offsetMin = Vector2.zero;
@@ -75,12 +75,12 @@ public class DamageLogUI : MonoBehaviour
 
             _damageTextQueue.Enqueue(text);
 
-            // ´ë±â »óÅÂÀÌ¹Ç·Î ³²Àº ½Ã°£Àº 0
+            // ëŒ€ê¸° ìƒíƒœì´ë¯€ë¡œ ë‚¨ì€ ì‹œê°„ì€ 0
             _damageTextDictionTime.Add(text, 0f);
         }
     }
 
-    // Á¦ÇÑ ½Ã°£ÀÌ ³¡³­ ÅØ½ºÆ®¸¦ Ç®·Î ¹İÈ¯
+    // ì œí•œ ì‹œê°„ì´ ëë‚œ í…ìŠ¤íŠ¸ë¥¼ í’€ë¡œ ë°˜í™˜
     private void DamageTextToPool()
     {
         for (int i = _damageTextList.Count - 1; i >= 0; i--)
@@ -89,7 +89,7 @@ public class DamageLogUI : MonoBehaviour
 
             if (!_damageTextDictionTime.ContainsKey(text))
             {
-                Debug.LogWarning($"{text.name}ÀÇ ½Ã°£ Á¤º¸°¡ ¾ø½À´Ï´Ù.");
+                Debug.LogWarning($"{text.name}ì˜ ì‹œê°„ ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤.");
 
                 ReturnDamageTextToPool(text);
                 continue;
@@ -106,7 +106,7 @@ public class DamageLogUI : MonoBehaviour
         }
     }
 
-    // ÅØ½ºÆ®¸¦ Ç®·Î ¹İÈ¯
+    // í…ìŠ¤íŠ¸ë¥¼ í’€ë¡œ ë°˜í™˜
     public void ReturnDamageTextToPool(TextMeshProUGUI text)
     {
         if (!_damageTextList.Remove(text))
@@ -126,16 +126,16 @@ public class DamageLogUI : MonoBehaviour
 
     public void ShowDamage(Vector3 hitPosition, float damage, bool isCritical)
     {
-        // Àû ¸Ó¸® À§ÀÇ À§Ä¡¸¦ È­¸é ÁÂÇ¥·Î º¯È¯
+        // ì  ë¨¸ë¦¬ ìœ„ì˜ ìœ„ì¹˜ë¥¼ í™”ë©´ ì¢Œí‘œë¡œ ë³€í™˜
         Vector3 screenPosition = _MainCamera.WorldToScreenPoint(hitPosition + Vector3.up * _heightOffset);
 
-        // Ä«¸Ş¶ó µÚ¿¡ ÀÖ´Â ´ë»óÀº Ç¥½ÃÇÏÁö ¾ÊÀ½
+        // ì¹´ë©”ë¼ ë’¤ì— ìˆëŠ” ëŒ€ìƒì€ í‘œì‹œí•˜ì§€ ì•ŠìŒ
         if (screenPosition.z <= 0f)
         {
             return;
         }
 
-        // ´ë±â ÁßÀÎ ÅØ½ºÆ®°¡ ¾øÀ¸¸é °¡Àå ¿À·¡µÈ ÅØ½ºÆ® ¹İÈ¯
+        // ëŒ€ê¸° ì¤‘ì¸ í…ìŠ¤íŠ¸ê°€ ì—†ìœ¼ë©´ ê°€ì¥ ì˜¤ë˜ëœ í…ìŠ¤íŠ¸ ë°˜í™˜
         if (_damageTextQueue.Count == 0)
         {
             if (_damageTextList.Count == 0)
@@ -148,24 +148,24 @@ public class DamageLogUI : MonoBehaviour
 
         TextMeshProUGUI text = _damageTextQueue.Dequeue();
 
-        // ¸ÂÀº À§Ä¡ ÀúÀå
+        // ë§ì€ ìœ„ì¹˜ ì €ì¥
         _damageTextDictionPos[text] = hitPosition + Vector3.up * _heightOffset;
 
-        // È­¸é ÁÂÇ¥¸¦ ºÎ¸ğ UIÀÇ ·ÎÄÃ ÁÂÇ¥·Î º¯È¯
+        // í™”ë©´ ì¢Œí‘œë¥¼ ë¶€ëª¨ UIì˜ ë¡œì»¬ ì¢Œí‘œë¡œ ë³€í™˜
         RectTransformUtility.ScreenPointToLocalPointInRectangle(_damageTextRoot, screenPosition, null, out Vector2 uiPosition);
 
-        // ºÎ¸ğÀÇ ÇÇ¹şÀ» ±âÁØÀ¸·Î À§Ä¡ ÁöÁ¤
+        // ë¶€ëª¨ì˜ í”¼ë²—ì„ ê¸°ì¤€ìœ¼ë¡œ ìœ„ì¹˜ ì§€ì •
         text.rectTransform.anchorMin = _damageTextRoot.pivot;
         text.rectTransform.anchorMax = _damageTextRoot.pivot;
         text.rectTransform.pivot = new Vector2(Random.Range(0.3f, 0.8f), Random.Range(0.3f, 0.8f));
         text.rectTransform.anchoredPosition = uiPosition;
 
-        // ¼ıÀÚ¿Í Ä¡¸íÅ¸ Ç¥Çö
+        // ìˆ«ìì™€ ì¹˜ëª…íƒ€ í‘œí˜„
         text.text = $"{damage:0}";
         text.color = isCritical ? Color.yellow : Color.green;
         text.rectTransform.localScale = Vector3.one * (isCritical ? 1.3f : 1f);
 
-        // Ç¥½Ã ¸ñ·Ï¿¡ µî·ÏÇÏ°í ³²Àº ½Ã°£ ÃÊ±âÈ­
+        // í‘œì‹œ ëª©ë¡ì— ë“±ë¡í•˜ê³  ë‚¨ì€ ì‹œê°„ ì´ˆê¸°í™”
         _damageTextList.Add(text);
         _damageTextDictionTime[text] = _damageTextTimer;
 
@@ -179,7 +179,7 @@ public class DamageLogUI : MonoBehaviour
 
         if (_logQueue.Count >= _logCount)
         {
-            // °¡Àå ¿À·¡µÈ ÅØ½ºÆ® Àç»ç¿ë
+            // ê°€ì¥ ì˜¤ë˜ëœ í…ìŠ¤íŠ¸ ì¬ì‚¬ìš©
             text = _logQueue.Dequeue();
         }
         else
@@ -187,18 +187,23 @@ public class DamageLogUI : MonoBehaviour
             text = Instantiate(_logText, _logContent);
         }
         
+        if(HP < 0)
+        {
+            HP = 0; 
+        }
+
         if(iscritical)
         {
-            text.text = $"Àû¿¡°Ô <color=yellow>{damage}</color> ÇÇÇØ¸¦ ÀÔÈ÷°í HP´Â <color=red>{HP}</color>ÀÔ´Ï´Ù";
+            text.text = $"ì ì—ê²Œ <color=yellow>{damage:F0}</color> í”¼í•´ë¥¼ ì…íˆê³  HPëŠ” <color=red>{HP:F0}</color>ì…ë‹ˆë‹¤";
         }
         else
         {
-            text.text = $"Àû¿¡°Ô <color=green>{damage}</color> ÇÇÇØ¸¦ ÀÔÈ÷°í HP´Â <color=red>{HP}</color>ÀÔ´Ï´Ù";
+            text.text = $"ì ì—ê²Œ <color=green>{damage:F0}</color> í”¼í•´ë¥¼ ì…íˆê³  HPëŠ” <color=red>{HP:F0}</color>ì…ë‹ˆë‹¤";
         }
 
         text.gameObject.SetActive(true);
 
-        // È­¸é¿¡¼­µµ °¡Àå ¾Æ·¡·Î ÀÌµ¿
+        // í™”ë©´ì—ì„œë„ ê°€ì¥ ì•„ë˜ë¡œ ì´ë™
         text.transform.SetAsLastSibling();
         _logQueue.Enqueue(text);
     }
@@ -220,7 +225,7 @@ public class DamageLogUI : MonoBehaviour
 
         text.gameObject.SetActive(true);
 
-        // È­¸é¿¡¼­µµ °¡Àå ¾Æ·¡·Î ÀÌµ¿
+        // í™”ë©´ì—ì„œë„ ê°€ì¥ ì•„ë˜ë¡œ ì´ë™
         text.transform.SetAsLastSibling();
         _logQueue.Enqueue(text);
     }
@@ -232,7 +237,7 @@ public class DamageLogUI : MonoBehaviour
             Vector3 worldPosition = _damageTextDictionPos[text];
             Vector3 screenPosition = _MainCamera.WorldToScreenPoint(worldPosition);
 
-            // Ä«¸Ş¶ó µÚ·Î ³Ñ¾î°¡¸é ¼û±â±â
+            // ì¹´ë©”ë¼ ë’¤ë¡œ ë„˜ì–´ê°€ë©´ ìˆ¨ê¸°ê¸°
             text.enabled = screenPosition.z > 0f;
 
             if (!text.enabled)

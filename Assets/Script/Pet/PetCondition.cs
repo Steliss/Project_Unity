@@ -1,26 +1,27 @@
-
+ï»¿
 using UnityEngine;
 
 public class PetCondition : MonoBehaviour
 {
     [SerializeField] private GameObject _player = null;
+    [SerializeField] private DamageLogUI _damageLogUI;
 
-    // °øÀü ¼³Á¤
+    // ê³µì „ ì„¤ì •
     [SerializeField] private float _orbitRadius = 3f;
     [SerializeField] private float _orbitSpeed = 12f;
     [SerializeField] private float _rotateSpeed = 240f;
 
-    // ºñÇà ¼³Á¤
+    // ë¹„í–‰ ì„¤ì •
     [SerializeField] private float _flyingHeight = 4f;
     [SerializeField] private float _floatingHeight = 2f;
     [SerializeField] private float _floatingSpeed = 2f;
 
-    // Áö»ó ¹× Âø·ú ¼³Á¤
+    // ì§€ìƒ ë° ì°©ë¥™ ì„¤ì •
     //[SerializeField] private LayerMask _groundLayer;
     //[SerializeField] private float _groundCheckDistance = 10f;
     [SerializeField] private float _landingSpeed = 3f;
 
-    // º¹±Í ¼³Á¤
+    // ë³µê·€ ì„¤ì •
     [SerializeField] private float _teleportDistance = 20f;
 
     private PlayerData _playerData;
@@ -91,7 +92,7 @@ public class PetCondition : MonoBehaviour
 
         _petCondition = Condition.Move;
 
-        // À§Ä¡ ÃÊ±â°ª ³Ö¾îÁÖ±â. 
+        // ìœ„ì¹˜ ì´ˆê¸°ê°’ ë„£ì–´ì£¼ê¸°. 
     }
 
     private bool IsEnemyValid()
@@ -119,9 +120,9 @@ public class PetCondition : MonoBehaviour
     }
 
 
-    // ¾ÆÀÌµé ¸ğ¼Ç Æ®¸®°Å 
-    // ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ıÈÄ ¹«ºùÀ¸·Î 
-    // ³¯°í ÀÖ´Ù¸é ¶¥À¸·Î ³»¸®±â
+    // ì•„ì´ë“¤ ëª¨ì…˜ íŠ¸ë¦¬ê±° 
+    // ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒí›„ ë¬´ë¹™ìœ¼ë¡œ 
+    // ë‚ ê³  ìˆë‹¤ë©´ ë•…ìœ¼ë¡œ ë‚´ë¦¬ê¸°
     private void DragonIdle()
     {
         if (_player == null || _petCondition != Condition.Idle || _flagBattle)
@@ -213,12 +214,12 @@ public class PetCondition : MonoBehaviour
     {
         battleTimer += Time.deltaTime;
 
-        //Debug.Log("Æê ¹èÆ² ÁøÀÔ");
+        //Debug.Log("í« ë°°í‹€ ì§„ì…");
 
         if(battleTimer > 20f)
         {
             DragonBattleConditionClear();
-            Debug.Log("Æê ¹èÆ² Å¸ÀÓ ÃÊ°ú");
+            Debug.Log("í« ë°°í‹€ íƒ€ì„ ì´ˆê³¼");
             return;
         }
 
@@ -231,7 +232,7 @@ public class PetCondition : MonoBehaviour
 
         if (_flagFlying)
         {
-            // ½Ã°£³ª¸é ÇÃ·¹ÀÌ¾îÃ³·³ ºÃÀ»¶§ °ø°İÇÏ±â·Î ¹Ù²Ù±â
+            // ì‹œê°„ë‚˜ë©´ í”Œë ˆì´ì–´ì²˜ëŸ¼ ë´¤ì„ë•Œ ê³µê²©í•˜ê¸°ë¡œ ë°”ê¾¸ê¸°
             PetLookRotate(_target.TargetTransform.position);
 
             if (!_flagAnimation)
@@ -242,20 +243,21 @@ public class PetCondition : MonoBehaviour
                 _flagAnimation = true;
                 animationTimer = 0f;
             }
-            // Å¬¸®¾î Àü¿¡ µô·¹ÀÌ ½Ã°£ ÁÖ±â
+            // í´ë¦¬ì–´ ì „ì— ë”œë ˆì´ ì‹œê°„ ì£¼ê¸°
             animationTimer += Time.deltaTime;
 
             if (animationTimer > 1f)
             {
                 _target.TakeDamage(toDamage);
+                _damageLogUI.ShowLog(toDamage, _target.CurrentHP, false);
                 DragonBattleConditionClear();
             }
 
         }
-        // Áö»ó
+        // ì§€ìƒ
         else
         {
-            //¶¥ÀÏ¶§ 
+            //ë•…ì¼ë•Œ 
             Vector3 normal = (_target.TargetTransform.position - transform.position).normalized;
             Vector3 tarpos = _target.TargetTransform.position - normal * 1f;
             tarpos.y = GroundHeight();
@@ -264,7 +266,7 @@ public class PetCondition : MonoBehaviour
 
 
 
-            // °ø°İ 
+            // ê³µê²© 
             if ((transform.position - tarpos).sqrMagnitude <= 0.01f)
             {
                 int rand = -1;
@@ -281,6 +283,7 @@ public class PetCondition : MonoBehaviour
                 if (animationTimer > 1f)
                 {
                     _target.TakeDamage(toDamage);
+                    _damageLogUI.ShowLog(toDamage, _target.CurrentHP, false);
                     DragonBattleConditionClear();
                 }
             }
@@ -315,8 +318,8 @@ public class PetCondition : MonoBehaviour
             _petCondition = Condition.Move;
         }
 
-        Debug.Log("Battle Clear");
-        Debug.Log($"pet cpondition : {_petCondition}");
+        //Debug.Log("Battle Clear");
+        //Debug.Log($"pet cpondition : {_petCondition}");
     }
 
 
@@ -332,11 +335,11 @@ public class PetCondition : MonoBehaviour
 
         Vector3 playerPosition = _player.transform.position;
 
-        // ÇÃ·¹ÀÌ¾î °Å¸® °è»ê 
+        // í”Œë ˆì´ì–´ ê±°ë¦¬ ê³„ì‚° 
         float distance = (transform.position - playerPosition).sqrMagnitude;
         float teleportDistance = _teleportDistance * _teleportDistance;
 
-        // ¸Ö¾îÁö¸é ÇÃ·¹ÀÌ¾î ÁÖº¯À¸·Î Áï½Ã º¹±Í
+        // ë©€ì–´ì§€ë©´ í”Œë ˆì´ì–´ ì£¼ë³€ìœ¼ë¡œ ì¦‰ì‹œ ë³µê·€
         if (distance > teleportDistance)
         {
             transform.position = playerPosition + Vector3.up * _flyingHeight;
@@ -344,12 +347,12 @@ public class PetCondition : MonoBehaviour
         }
 
 
-        // ½Ã°£¿¡ µû¸¥ °øÀü°¢µµ 
+        // ì‹œê°„ì— ë”°ë¥¸ ê³µì „ê°ë„ 
         _orbitAngle = Mathf.Repeat(_orbitAngle + _orbitSpeed * Time.deltaTime, 360f);   
 
         float angleRadian = _orbitAngle * Mathf.Deg2Rad;
 
-        // È¸Àü À§Ä¡°ª ¸¸µé°í ´ëÀÔ
+        // íšŒì „ ìœ„ì¹˜ê°’ ë§Œë“¤ê³  ëŒ€ì…
         Vector3 orbitOffset = new Vector3(Mathf.Cos(angleRadian), 0f, Mathf.Sin(angleRadian)) * _orbitRadius;
         tarPos = playerPosition + orbitOffset;
 
@@ -363,7 +366,7 @@ public class PetCondition : MonoBehaviour
 
         if (_flagFlying)
         {
-            // ³¯°í ÀÖ´Ù¸é YÃà ³ôÀÌ Á¶Àı
+            // ë‚ ê³  ìˆë‹¤ë©´ Yì¶• ë†’ì´ ì¡°ì ˆ
             float floatingOffset = Mathf.Sin(Time.time * _floatingSpeed) * _floatingHeight;
             tarPos.y = playerPosition.y + _flyingHeight + floatingOffset;
             //
@@ -386,7 +389,7 @@ public class PetCondition : MonoBehaviour
 
     private void DragonPetLanding()
     {
-        // ÀÌ Âø·ú ÇÔ¼ö 
+        // ì´ ì°©ë¥™ í•¨ìˆ˜ 
         Vector3 landingPos = tarPos;
         float groundHeight = GroundHeight();
         landingPos.y = _flagFlying ? groundHeight : groundHeight + _flyingHeight;
@@ -402,7 +405,7 @@ public class PetCondition : MonoBehaviour
 
             _flagFlying = !_flagFlying;
             _flagLanding = false;
-            //Debug.Log("ÀÌÂø·ú ¿Ï·á");
+            //Debug.Log("ì´ì°©ë¥™ ì™„ë£Œ");
         }
     }
 

@@ -1,20 +1,20 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Serialization;
 using System.Collections.Generic;
 
 
 // =========================================================
-// Attribute : ÇÊµå³ª Å¬·¡½º µî¿¡ Ãß°¡ÀûÀÎ Á¤º¸¸¦ ºÎ¿©ÇÏ±â À§ÇØ »ç¿ë
+// Attribute : í•„ë“œë‚˜ í´ë˜ìŠ¤ ë“±ì— ì¶”ê°€ì ì¸ ì •ë³´ë¥¼ ë¶€ì—¬í•˜ê¸° ìœ„í•´ ì‚¬ìš©
 // =========================================================
 
-// Inspector¿¡¼­ ReadOnly·Î Ç¥½ÃÇÒ ÇÊµåÀÓÀ» ³ªÅ¸³»´Â Attribute
+// Inspectorì—ì„œ ReadOnlyë¡œ í‘œì‹œí•  í•„ë“œì„ì„ ë‚˜íƒ€ë‚´ëŠ” Attribute
 public class ReadOnlyAttribute : PropertyAttribute
 {
 }
 
 
-// Inspector¿¡¼­ ÇÊµåÀÇ Ç¥½Ã ÀÌ¸§À» ÁöÁ¤ÇÏ±â À§ÇÑ Attribute
+// Inspectorì—ì„œ í•„ë“œì˜ í‘œì‹œ ì´ë¦„ì„ ì§€ì •í•˜ê¸° ìœ„í•œ Attribute
 public class RenameAttribute : PropertyAttribute
 {
     public string NewName { get; private set; }
@@ -27,119 +27,119 @@ public class RenameAttribute : PropertyAttribute
 
 
 // =========================================================
-// Socket Setting : AnimationEvent ¸í·ÉÀ» ¿¬°áÇÏ±â À§ÇÑ Á¤º¸¸¦ ÀúÀåÇÏ´Â Å¬·¡½º
+// Socket Setting : AnimationEvent ëª…ë ¹ì„ ì—°ê²°í•˜ê¸° ìœ„í•œ ì •ë³´ë¥¼ ì €ì¥í•˜ëŠ” í´ë˜ìŠ¤
 // =========================================================
 
-// Unity°¡ ÇØ´ç Å¬·¡½ºÀÇ ÇÊµå¸¦ Á÷·ÄÈ­ÇÏ¿© Inspector¿¡¼­ °ü¸®ÇÒ ¼ö ÀÖµµ·Ï ÇÔ
+// Unityê°€ í•´ë‹¹ í´ë˜ìŠ¤ì˜ í•„ë“œë¥¼ ì§ë ¬í™”í•˜ì—¬ Inspectorì—ì„œ ê´€ë¦¬í•  ìˆ˜ ìˆë„ë¡ í•¨
 [System.Serializable]
 public class SocketSetting
 {
-    // ¼ÒÄÏÀÇ ÀÌ¸§ ÀúÀå. ValidateWeaponSlots()¿¡¼­ ParentConstraintÀÇ Source ÀÌ¸§À» °¡Á®¿Í ÀÚµ¿À¸·Î ³ÖÀ½
+    // ì†Œì¼“ì˜ ì´ë¦„ ì €ì¥. ValidateWeaponSlots()ì—ì„œ ParentConstraintì˜ Source ì´ë¦„ì„ ê°€ì ¸ì™€ ìë™ìœ¼ë¡œ ë„£ìŒ
     [ReadOnly]
     public string name;
 
-    // AnimationEvent¿¡¼­ SocketÀ» ¼±ÅÃÇÏ±â À§ÇØ »ç¿ëÇÏ´Â ¸í·É ¹®ÀÚ¿­
+    // AnimationEventì—ì„œ Socketì„ ì„ íƒí•˜ê¸° ìœ„í•´ ì‚¬ìš©í•˜ëŠ” ëª…ë ¹ ë¬¸ìì—´
     [Rename("Animation Event String Name")]
     public string eventStringName;
 
-    // Á÷·ÄÈ­´Â ÇÏÁö¸¸ Inspector¿¡´Â Ç¥½ÃÇÏÁö ¾Ê°Ú´Ù
-    // ParentConstraintÀÇ ¸î ¹øÂ° SourceÀÎÁö ¿©ºÎ 
+    // ì§ë ¬í™”ëŠ” í•˜ì§€ë§Œ Inspectorì—ëŠ” í‘œì‹œí•˜ì§€ ì•Šê² ë‹¤
+    // ParentConstraintì˜ ëª‡ ë²ˆì§¸ Sourceì¸ì§€ ì—¬ë¶€ 
     [HideInInspector]
     public int sourceIndex;
 }
 
 
 // =========================================================
-// Weapon Slot // ¹«±âÀÇ ¼ÒÄÏ ÀüÈ¯À» ÇÏ±â À§ÇØ ÇÊ¿äÇÑ Á¤º¸¸¦ ÇÑ ¹­À½À¸·Î °ü¸®ÇÏ´Â µ¥ÀÌÅÍ Å¬·¡½º
+// Weapon Slot // ë¬´ê¸°ì˜ ì†Œì¼“ ì „í™˜ì„ í•˜ê¸° ìœ„í•´ í•„ìš”í•œ ì •ë³´ë¥¼ í•œ ë¬¶ìŒìœ¼ë¡œ ê´€ë¦¬í•˜ëŠ” ë°ì´í„° í´ë˜ìŠ¤
 // =========================================================
 
 [System.Serializable]
 public class WeaponSlot
 {
-    // ¹«±â ½½·ÔÀÇ ±¸ºĞÀ» À§ÇÑ ÀÌ¸§ 
+    // ë¬´ê¸° ìŠ¬ë¡¯ì˜ êµ¬ë¶„ì„ ìœ„í•œ ì´ë¦„ 
     [Rename("Name & Debug")]
     public string name = "New Weapon";
 
-    // ÀÎ½ºÆåÅÍ »çÀÌ¿¡ ¿©¹é ºÎ¿© 
+    // ì¸ìŠ¤í™í„° ì‚¬ì´ì— ì—¬ë°± ë¶€ì—¬ 
     [Space(5)]
 
-    // ½ÇÁ¦ ¹«±â ¼ÒÄÏ ÀüÈ¯ÀÇ ÇÙ½É ÂüÁ¶
+    // ì‹¤ì œ ë¬´ê¸° ì†Œì¼“ ì „í™˜ì˜ í•µì‹¬ ì°¸ì¡°
     [Rename("Parent Constraint Target")]
     public ParentConstraint weaponConstraint;
 
 
     [Space(5)]
 
-    // ParentConstraint ¿¬°áÀ» ²÷±â À§ÇÑ Animation Event ¸í·É ¹®ÀÚ¿­
+    // ParentConstraint ì—°ê²°ì„ ëŠê¸° ìœ„í•œ Animation Event ëª…ë ¹ ë¬¸ìì—´
     [Rename("Constraint Cut OFF Event String")]
     public string dropCommand = "Drop_Weapon";
 
 
     [Space(5)]
 
-    // SocketSettingÀ» °¡Áö°í ÀÖ´Â ¸®½ºÆ® (ÆÈ µî Çã¸®)
+    // SocketSettingì„ ê°€ì§€ê³  ìˆëŠ” ë¦¬ìŠ¤íŠ¸ (íŒ” ë“± í—ˆë¦¬)
     [Rename("Socket Settings(Animation Event)")]
     public List<SocketSetting> socketSettings = new List<SocketSetting>();
 }
 
 
 // =========================================================
-// IK : IK¸¦ ¾î¶² Transform¿¡, ¾î´À Á¤µµÀÇ Weight·Î Àû¿ëÇÒÁö ÀúÀåÇÏ´Â ¼³Á¤ µ¥ÀÌÅÍ / IK´Â Æ÷ÀÎÆ® ³¡
+// IK : IKë¥¼ ì–´ë–¤ Transformì—, ì–´ëŠ ì •ë„ì˜ Weightë¡œ ì ìš©í• ì§€ ì €ì¥í•˜ëŠ” ì„¤ì • ë°ì´í„° / IKëŠ” í¬ì¸íŠ¸ ë
 // =========================================================
 
 [System.Serializable]
 public class SupportIKConfig
 {
-    // ÇØ´ç IK ¼³Á¤À» ½ÇÁ¦·Î »ç¿ëÇÒÁö °áÁ¤ÇÏ´Â °ª
+    // í•´ë‹¹ IK ì„¤ì •ì„ ì‹¤ì œë¡œ ì‚¬ìš©í• ì§€ ê²°ì •í•˜ëŠ” ê°’
     [Rename("Use Support IK")]
     public bool useIK = false;
 
-    // ¾î´À ¼ÕÀÌ³ª ¹ßÀÇ IK¸¦ Á¦¾îÇÒ °ÍÀÎÁö ÁöÁ¤ÇÏ´Â enum
+    // ì–´ëŠ ì†ì´ë‚˜ ë°œì˜ IKë¥¼ ì œì–´í•  ê²ƒì¸ì§€ ì§€ì •í•˜ëŠ” enum
     [Rename("IK Avatar Goal")]
     public AvatarIKGoal ikHand = AvatarIKGoal.LeftHand;
 
-    // ¼ÕÀÌ µû¶ó°¥ ¸ñÇ¥ Transform
+    // ì†ì´ ë”°ë¼ê°ˆ ëª©í‘œ Transform
     [Rename("Target Transform")]
     public Transform ikTarget;
 
-    // IK°¡ ¸ñÇ¥ TransformÀ» ¾ó¸¶³ª °­ÇÏ°Ô µû¶ó°¥Áö °áÁ¤ÇÏ´Â ÃÖ´ë Weight
+    // IKê°€ ëª©í‘œ Transformì„ ì–¼ë§ˆë‚˜ ê°•í•˜ê²Œ ë”°ë¼ê°ˆì§€ ê²°ì •í•˜ëŠ” ìµœëŒ€ Weight
     [Range(0f, 1f)]
     [Rename("IK Max Weight")]
     public float ikWeight = 1f;
 
 
     [Space(5)]
-    // Animation Event¿¡¼­ ¾î¶² IK ¼³Á¤À» Á¦¾îÇÒÁö ±¸ºĞÇÏ±â À§ÇÑ ÀÌ¸§
+    // Animation Eventì—ì„œ ì–´ë–¤ IK ì„¤ì •ì„ ì œì–´í• ì§€ êµ¬ë¶„í•˜ê¸° ìœ„í•œ ì´ë¦„
     [Rename("IK Command ID")]
     [FormerlySerializedAs("commandID")]
     public string commandId = "CustomPart";
 
-    // ½ÇÁ¦·Î Animator¿¡ Àû¿ëµÇ°í ÀÖ´Â IK Weight
+    // ì‹¤ì œë¡œ Animatorì— ì ìš©ë˜ê³  ìˆëŠ” IK Weight
     [HideInInspector]
     public float currentWeight = 0f;
 
-    // ÇöÀç IK°¡ µµ´ŞÇÏ·Á°í ÇÏ´Â ¸ñÇ¥ Weight
+    // í˜„ì¬ IKê°€ ë„ë‹¬í•˜ë ¤ê³  í•˜ëŠ” ëª©í‘œ Weight
     [HideInInspector]
     public float targetWeight = 0f;
 }
 
 
 // =========================================================
-// Prop : ¾Ö´Ï¸ŞÀÌ¼Ç ÀÌº¥Æ®¸¦ ÅëÇØ Æ¯Á¤ GameObject¸¦ ÄÑ°Å³ª ²ô±â À§ÇÑ ¼³Á¤ Á¤º¸¸¦ ÀúÀåÇÏ´Â Å¬·¡½º
+// Prop : ì• ë‹ˆë©”ì´ì…˜ ì´ë²¤íŠ¸ë¥¼ í†µí•´ íŠ¹ì • GameObjectë¥¼ ì¼œê±°ë‚˜ ë„ê¸° ìœ„í•œ ì„¤ì • ì •ë³´ë¥¼ ì €ì¥í•˜ëŠ” í´ë˜ìŠ¤
 // =========================================================
 
 [System.Serializable]
 public class PropEvent
 {
-    // È°¼º ´ë»ó
+    // í™œì„± ëŒ€ìƒ
     public GameObject targetObject;
 
-    // È°¼ºÈ­ÇÏ±â À§ÇÑ AnimationEvent ¸í·É ¹®ÀÚ¿­
+    // í™œì„±í™”í•˜ê¸° ìœ„í•œ AnimationEvent ëª…ë ¹ ë¬¸ìì—´
     [Rename("Active ON String")]
     [FormerlySerializedAs("active_on")]
     public string activeOn;
 
-    // ºñÈ°¼ºÈ­ÇÏ±â À§ÇÑ AnimationEvent ¸í·É ¹®ÀÚ¿­
+    // ë¹„í™œì„±í™”í•˜ê¸° ìœ„í•œ AnimationEvent ëª…ë ¹ ë¬¸ìì—´
     [Rename("Active OFF String")]
     [FormerlySerializedAs("active_off")]
     public string activeOff;
@@ -152,10 +152,10 @@ public class PropEvent
 
 public class Character_Weapon_Controller : MonoBehaviour
 {
-    #region ³»ºÎ º¯¼ö
+    #region ë‚´ë¶€ ë³€ìˆ˜
     // =====================================================
-    // Event Prefix : Animation Event ¸í·É ¹®ÀÚ¿­ÀÇ °øÅë Á¢µÎ»ç¸¦ ÇÑ °÷¿¡¼­ °ü¸®ÇÏ±â À§ÇÑ °ª 
-    // ¹®ÀÚ¿­ »ó¼ö¸¦ ÅëÇÑ º¯°æ ºÒ°¡
+    // Event Prefix : Animation Event ëª…ë ¹ ë¬¸ìì—´ì˜ ê³µí†µ ì ‘ë‘ì‚¬ë¥¼ í•œ ê³³ì—ì„œ ê´€ë¦¬í•˜ê¸° ìœ„í•œ ê°’ 
+    // ë¬¸ìì—´ ìƒìˆ˜ë¥¼ í†µí•œ ë³€ê²½ ë¶ˆê°€
     // =====================================================
 
     private const string SOCKET_PREFIX = "To_";
@@ -166,28 +166,28 @@ public class Character_Weapon_Controller : MonoBehaviour
 
 
     // =====================================================
-    // Inspector : Inspector¿¡¼­ »ç¿ëÀÚ°¡ ¼³Á¤ÇÒ µ¥ÀÌÅÍ¸¦ ¸ğ¾ÆµĞ °Í
+    // Inspector : Inspectorì—ì„œ ì‚¬ìš©ìê°€ ì„¤ì •í•  ë°ì´í„°ë¥¼ ëª¨ì•„ë‘” ê²ƒ
     // =====================================================
 
     [Space(5)]
-    // µğ¹ö±× ·Î±×¸¦ Ãâ·ÂÇÒÁö ¸»Áö¸¦ °áÁ¤ÇÏ´Â ½ºÀ§Ä¡
+    // ë””ë²„ê·¸ ë¡œê·¸ë¥¼ ì¶œë ¥í• ì§€ ë§ì§€ë¥¼ ê²°ì •í•˜ëŠ” ìŠ¤ìœ„ì¹˜
     [Rename("Show Debug Log")]
     public bool showDebugLog = false;
 
 
     [Space(10)]
-    // ¸Ó½Å°Ç »ç¿ë, ¾È»ç¿ë¿©ºÎ 
+    // ë¨¸ì‹ ê±´ ì‚¬ìš©, ì•ˆì‚¬ìš©ì—¬ë¶€ 
     public List<WeaponSlot> weaponSlots = new List<WeaponSlot>();
 
 
     [Space(10)]
-    // IK ¼³Á¤µéÀ» ¿©·¯ °³ µî·ÏÇÏ´Â ¸®½ºÆ® // ¿Ş¼Õ 
+    // IK ì„¤ì •ë“¤ì„ ì—¬ëŸ¬ ê°œ ë“±ë¡í•˜ëŠ” ë¦¬ìŠ¤íŠ¸ // ì™¼ì† 
     [Rename("IK Settings(Humanoid)")]
     public List<SupportIKConfig> supportIKSettings = new List<SupportIKConfig>();
 
 
     [Space(10)]
-    // È°¼ºÈ­/ºñÈ°¼ºÈ­ÇÒ Prop ¼³Á¤µéÀ» ¿©·¯ °³ µî·ÏÇÏ´Â ¸®½ºÆ® // ÃÑ¿¡´Ş¸° ÅºÃ¢, ÅºÃ¢
+    // í™œì„±í™”/ë¹„í™œì„±í™”í•  Prop ì„¤ì •ë“¤ì„ ì—¬ëŸ¬ ê°œ ë“±ë¡í•˜ëŠ” ë¦¬ìŠ¤íŠ¸ // ì´ì—ë‹¬ë¦° íƒ„ì°½, íƒ„ì°½
     [Rename("Prop Active Settings")]
     public List<PropEvent> propEvents = new List<PropEvent>();
 
@@ -195,7 +195,7 @@ public class Character_Weapon_Controller : MonoBehaviour
     #endregion
 
     // =====================================================
-    // Awake : animator ÀúÀå
+    // Awake : animator ì €ì¥
     // =====================================================
 
     private void Awake()
@@ -205,57 +205,57 @@ public class Character_Weapon_Controller : MonoBehaviour
 
 
     // =====================================================
-    // OnValidate : Inspector ¼³Á¤ º¯°æÀ» ¹Ù·Î Àû¿ëÇÏ±â À§ÇÔ. ÇØ´ç ½ºÅ©¸³Æ®¿¡¼± Editor¿¡¼­ °ªÀÌ º¯°æµÇ°Å³ª °ËÁõµÉ ¶§ Socket°ú Prop ¼³Á¤À» ÀÚµ¿ Á¤¸®
+    // OnValidate : Inspector ì„¤ì • ë³€ê²½ì„ ë°”ë¡œ ì ìš©í•˜ê¸° ìœ„í•¨. í•´ë‹¹ ìŠ¤í¬ë¦½íŠ¸ì—ì„  Editorì—ì„œ ê°’ì´ ë³€ê²½ë˜ê±°ë‚˜ ê²€ì¦ë  ë•Œ Socketê³¼ Prop ì„¤ì •ì„ ìë™ ì •ë¦¬
     // =====================================================
 
     private void OnValidate()
     {
-        // Editor¿¡¼­ µ¥ÀÌÅÍ¸¦ Á¤¸®ÇÏ±â À§ÇÑ ±â´ÉÀ¸·Î »ç¿ëÇØ¼­ ÇÃ·¹ÀÌ Áß¿£ ¸®ÅÏ
+        // Editorì—ì„œ ë°ì´í„°ë¥¼ ì •ë¦¬í•˜ê¸° ìœ„í•œ ê¸°ëŠ¥ìœ¼ë¡œ ì‚¬ìš©í•´ì„œ í”Œë ˆì´ ì¤‘ì—” ë¦¬í„´
         if (Application.isPlaying)
         {
             return;
         }
 
-        // WeaponSlot / ParentConstraint / SocketSetting Á¤¸®
+        // WeaponSlot / ParentConstraint / SocketSetting ì •ë¦¬
         ValidateWeaponSlots();
-        // PropEventÀÇ ¸í·É ¹®ÀÚ¿­ Á¤¸®
+        // PropEventì˜ ëª…ë ¹ ë¬¸ìì—´ ì •ë¦¬
         ValidatePropEvents();
     }
 
 
     // =====================================================
-    // Weapon Slot Validate : WeaponSlot / ParentConstraint / SocketSetting Á¤¸®
+    // Weapon Slot Validate : WeaponSlot / ParentConstraint / SocketSetting ì •ë¦¬
     // =====================================================
 
     private void ValidateWeaponSlots()
     {
-        // weaponSlots ¸®½ºÆ® ÀÚÃ¼°¡ Á¸ÀçÇÏ´ÂÁö °Ë»ç
+        // weaponSlots ë¦¬ìŠ¤íŠ¸ ìì²´ê°€ ì¡´ì¬í•˜ëŠ”ì§€ ê²€ì‚¬
         if (weaponSlots == null)
         {
             return;
         }
 
-        // weaponSlots¿¡ µî·ÏµÈ ¸ğµç ¹«±â¸¦ ÇÏ³ª¾¿ È®ÀÎ
+        // weaponSlotsì— ë“±ë¡ëœ ëª¨ë“  ë¬´ê¸°ë¥¼ í•˜ë‚˜ì”© í™•ì¸
         foreach (WeaponSlot slot in weaponSlots)
         {
-            // WeaponSlotÀº Á¸ÀçÇÏÁö¸¸ ParentConstraint°¡ ¿¬°áµÇÁö ¾ÊÀº °æ¿ì
+            // WeaponSlotì€ ì¡´ì¬í•˜ì§€ë§Œ ParentConstraintê°€ ì—°ê²°ë˜ì§€ ì•Šì€ ê²½ìš°
             if (slot.weaponConstraint == null)
             {
                 continue;
             }
 
 
-            // Parent ConstraintÀÇ Source °³¼ö¿Í SocketSetting List Å©±â µ¿±âÈ­
-            // ParentConstraint.sourceCount´Â ÇöÀç Constraint¿¡ µî·ÏµÇ¾î ÀÖ´Â SourceÀÇ °³¼ö
+            // Parent Constraintì˜ Source ê°œìˆ˜ì™€ SocketSetting List í¬ê¸° ë™ê¸°í™”
+            // ParentConstraint.sourceCountëŠ” í˜„ì¬ Constraintì— ë“±ë¡ë˜ì–´ ìˆëŠ” Sourceì˜ ê°œìˆ˜
             int sourceCount = slot.weaponConstraint.sourceCount;
 
-            // SocketSettingÀÌ ºÎÁ·ÇÑ °æ¿ì »õ °´Ã¼ »ı¼º
+            // SocketSettingì´ ë¶€ì¡±í•œ ê²½ìš° ìƒˆ ê°ì²´ ìƒì„±
             while (slot.socketSettings.Count < sourceCount)
             {
                 slot.socketSettings.Add(new SocketSetting());
             }
 
-            // SocketSettingÀÌ ³Ê¹« ¸¹Àº °æ¿ì °´Ã¼ »èÁ¦
+            // SocketSettingì´ ë„ˆë¬´ ë§ì€ ê²½ìš° ê°ì²´ ì‚­ì œ
             while (slot.socketSettings.Count > sourceCount)
             {
                 slot.socketSettings.RemoveAt(slot.socketSettings.Count - 1);
@@ -263,25 +263,25 @@ public class Character_Weapon_Controller : MonoBehaviour
 
 
             // ---------------------------------------------
-            // Source Á¤º¸ ÀúÀå
+            // Source ì •ë³´ ì €ì¥
             // ---------------------------------------------
 
             for (int i = 0; i < sourceCount; i++)
             {
                 ConstraintSource source = slot.weaponConstraint.GetSource(i);
 
-                // Source¿¡ Transform ¿¬°á È®ÀÎ ÈÄ ÀÖÀ¸¸é ¿ÀºêÁ§Æ® ÀÌ¸§, ºñ¾î ÀÖÀ¸¸é "None"
+                // Sourceì— Transform ì—°ê²° í™•ì¸ í›„ ìˆìœ¼ë©´ ì˜¤ë¸Œì íŠ¸ ì´ë¦„, ë¹„ì–´ ìˆìœ¼ë©´ "None"
                 string sourceName = source.sourceTransform != null ? source.sourceTransform.name : "None";
 
-                // Source °³¼ö¿Í socketSettings.Count¸¦ ¸ÂÃèÀ½À¸·Î ÀÎµ¦½º·Î È°¿ë
+                // Source ê°œìˆ˜ì™€ socketSettings.Countë¥¼ ë§ì·„ìŒìœ¼ë¡œ ì¸ë±ìŠ¤ë¡œ í™œìš©
                 SocketSetting setting = slot.socketSettings[i];
 
                 setting.name = sourceName;
                 setting.sourceIndex = i;
 
 
-                // Event StringÀÌ ºñ¾îÀÖÀ¸¸é ÀÚµ¿ »ı¼º
-                // ÀÌº¥Æ®ÀÇ string°ú parameterÀÇ ÀÌ¸§ÀÌ ¸Â¾Æ¾ß Á¤»ó ÀÛµ¿
+                // Event Stringì´ ë¹„ì–´ìˆìœ¼ë©´ ìë™ ìƒì„±
+                // ì´ë²¤íŠ¸ì˜ stringê³¼ parameterì˜ ì´ë¦„ì´ ë§ì•„ì•¼ ì •ìƒ ì‘ë™
                 if (string.IsNullOrEmpty(setting.eventStringName))
                 {
                     setting.eventStringName = SOCKET_PREFIX + sourceName;
@@ -292,7 +292,7 @@ public class Character_Weapon_Controller : MonoBehaviour
 
 
     // =====================================================
-    // Prop Validate : PropEventÀÇ ¸í·É ¹®ÀÚ¿­ Á¤¸®
+    // Prop Validate : PropEventì˜ ëª…ë ¹ ë¬¸ìì—´ ì •ë¦¬
     // =====================================================
 
     private void ValidatePropEvents()
@@ -313,7 +313,7 @@ public class Character_Weapon_Controller : MonoBehaviour
                 continue;
             }
 
-            // ºñ¾îÀÖÀ¸¸é ÀÚµ¿ »ı¼º
+            // ë¹„ì–´ìˆìœ¼ë©´ ìë™ ìƒì„±
             if (string.IsNullOrEmpty(prop.activeOn))
             {
                 prop.activeOn = ACTIVE_ON_PREFIX + prop.targetObject.name;
@@ -329,8 +329,8 @@ public class Character_Weapon_Controller : MonoBehaviour
 
 
     // =====================================================
-    // Animation Event : Animation Event¿¡¼­ ³Ñ¾î¿Â ¹®ÀÚ¿­ ¸í·É°ú ¾Ö´Ï¸ŞÀÌ¼Ç Å¬¸³ ÀÌ¸§À» ²¨³»¼­, ½ÇÁ¦ ¸í·É Ã³¸® ÇÔ¼ö·Î ³Ñ±è
-    // Animation Event¿¡¼­ ¸Å¼­µå È£ÃâÀ» À§ÇØ ¿­¾îµÒ
+    // Animation Event : Animation Eventì—ì„œ ë„˜ì–´ì˜¨ ë¬¸ìì—´ ëª…ë ¹ê³¼ ì• ë‹ˆë©”ì´ì…˜ í´ë¦½ ì´ë¦„ì„ êº¼ë‚´ì„œ, ì‹¤ì œ ëª…ë ¹ ì²˜ë¦¬ í•¨ìˆ˜ë¡œ ë„˜ê¹€
+    // Animation Eventì—ì„œ ë§¤ì„œë“œ í˜¸ì¶œì„ ìœ„í•´ ì—´ì–´ë‘ 
     // =====================================================
 
     public void SwitchSocket(AnimationEvent animEvent)
@@ -340,25 +340,25 @@ public class Character_Weapon_Controller : MonoBehaviour
             return;
         }
 
-        // ½ÇÁ¦ ¸í·É ¹®ÀÚ¿­À» °¡Á®¿È 
+        // ì‹¤ì œ ëª…ë ¹ ë¬¸ìì—´ì„ ê°€ì ¸ì˜´ 
         string triggerName = animEvent.stringParameter;
 
-        // ¹æ¾î ÄÚµå null°ª ´ëºñ 
-        string clipName = "¾Ë ¼ö ¾ø´Â ¾Ö´Ï¸ŞÀÌ¼Ç";
+        // ë°©ì–´ ì½”ë“œ nullê°’ ëŒ€ë¹„ 
+        string clipName = "ì•Œ ìˆ˜ ì—†ëŠ” ì• ë‹ˆë©”ì´ì…˜";
 
-        // ½ÇÁ¦ Animation ClipÀÌ Á¸ÀçÇÑ´Ù¸é ÀÌ¸§À» ¹Ù²Ş
+        // ì‹¤ì œ Animation Clipì´ ì¡´ì¬í•œë‹¤ë©´ ì´ë¦„ì„ ë°”ê¿ˆ
         if (animEvent.animatorClipInfo.clip != null)
         {
             clipName = animEvent.animatorClipInfo.clip.name;
         }
 
-        // ½ÇÁ¦ ¸í·É Ã³¸® Èå¸§À¸·Î Àü´Ş Prop -> IK -> Socket
+        // ì‹¤ì œ ëª…ë ¹ ì²˜ë¦¬ íë¦„ìœ¼ë¡œ ì „ë‹¬ Prop -> IK -> Socket
         PerformSocketSwitch(triggerName, clipName);
     }
 
 
     // =====================================================
-    // Script Á÷Á¢ È£Ãâ : Animation Event°¡ ¾Æ´Ï¶ó ´Ù¸¥ C# ½ºÅ©¸³Æ®¿¡¼­ ¹®ÀÚ¿­ ¸í·ÉÀ» Á÷Á¢ ½ÇÇàÇÏ°í ½ÍÀ» ¶§ »ç¿ëÇÏ´Â ÁøÀÔÁ¡
+    // Script ì§ì ‘ í˜¸ì¶œ : Animation Eventê°€ ì•„ë‹ˆë¼ ë‹¤ë¥¸ C# ìŠ¤í¬ë¦½íŠ¸ì—ì„œ ë¬¸ìì—´ ëª…ë ¹ì„ ì§ì ‘ ì‹¤í–‰í•˜ê³  ì‹¶ì„ ë•Œ ì‚¬ìš©í•˜ëŠ” ì§„ì…ì 
     // =====================================================
 
     public void SwitchSocketByString(string triggerEventName)
@@ -368,7 +368,7 @@ public class Character_Weapon_Controller : MonoBehaviour
 
 
     // =====================================================
-    // Animation Event Command ºĞ¸® : Àü´Ş¹ŞÀº ÇÏ³ªÀÇ ¹®ÀÚ¿­ ¾È¿¡ ¿©·¯ ¸í·ÉÀÌ µé¾î ÀÖÀ» °æ¿ì ÀÌ¸¦ ºĞ¸®ÇØ¼­ ÇÏ³ª¾¿ Ã³¸®
+    // Animation Event Command ë¶„ë¦¬ : ì „ë‹¬ë°›ì€ í•˜ë‚˜ì˜ ë¬¸ìì—´ ì•ˆì— ì—¬ëŸ¬ ëª…ë ¹ì´ ë“¤ì–´ ìˆì„ ê²½ìš° ì´ë¥¼ ë¶„ë¦¬í•´ì„œ í•˜ë‚˜ì”© ì²˜ë¦¬
     // =====================================================
 
     private void PerformSocketSwitch(string triggerEventName, string sourceInfo)
@@ -379,7 +379,7 @@ public class Character_Weapon_Controller : MonoBehaviour
         }
 
 
-        // ¿©·¯ ¸í·É µ¿½Ã ½ÇÇà ±â´É À¯Áö. ¿¹: To_MainHand,IK_ON_Mag
+        // ì—¬ëŸ¬ ëª…ë ¹ ë™ì‹œ ì‹¤í–‰ ê¸°ëŠ¥ ìœ ì§€. ì˜ˆ: To_MainHand,IK_ON_Mag
         string[] commands = triggerEventName.Split(',');
 
 
@@ -393,51 +393,51 @@ public class Character_Weapon_Controller : MonoBehaviour
                 continue;
             }
 
-            // ÇÏ³ªÀÇ ¸í·ÉÀ» Prop ¡æ IK ¡æ Weapon/Socket Áß ¾îµğ¿¡¼­ Ã³¸®ÇÒÁö ºĞ¹è
+            // í•˜ë‚˜ì˜ ëª…ë ¹ì„ Prop â†’ IK â†’ Weapon/Socket ì¤‘ ì–´ë””ì—ì„œ ì²˜ë¦¬í• ì§€ ë¶„ë°°
             ProcessSingleCommand(command, sourceInfo);
         }
     }
 
 
     // =====================================================
-    // Command ºĞ¹è : ¸í·É ÇÏ³ª¸¦ ¹Ş¾Æ¼­ ¾î¶² Á¾·ùÀÇ ¸í·ÉÀÎÁö ¼ø¼­´ë·Î ÆÇº°ÇÏ°í, ½ÇÁ¦ Ã³¸® ÇÔ¼ö·Î ³Ñ±â´Â ¿ªÇÒ
+    // Command ë¶„ë°° : ëª…ë ¹ í•˜ë‚˜ë¥¼ ë°›ì•„ì„œ ì–´ë–¤ ì¢…ë¥˜ì˜ ëª…ë ¹ì¸ì§€ ìˆœì„œëŒ€ë¡œ íŒë³„í•˜ê³ , ì‹¤ì œ ì²˜ë¦¬ í•¨ìˆ˜ë¡œ ë„˜ê¸°ëŠ” ì—­í• 
     // =====================================================
 
     private void ProcessSingleCommand(string command, string sourceInfo)
     {
-        // Propºñ±³
+        // Propë¹„êµ
         if (TryProcessProp(command, sourceInfo))
         {
             return;
         }
 
-        // IK ºñ±³
+        // IK ë¹„êµ
         if (TryProcessIK(command, sourceInfo))
         {
             return;
         }
 
-        // ¼ÒÄÏ ºñ±³ 
+        // ì†Œì¼“ ë¹„êµ 
         if (TryProcessWeapon(command, sourceInfo))
         {
             return;
         }
 
-        // ·Î±× 
+        // ë¡œê·¸ 
         if (showDebugLog)
         {
-            Debug.LogWarning($"[Command] " + $"µî·ÏµÇÁö ¾ÊÀº ¸í·É : " + $"{command}");
+            Debug.LogWarning($"[Command] " + $"ë“±ë¡ë˜ì§€ ì•Šì€ ëª…ë ¹ : " + $"{command}");
         }
     }
 
 
     // =====================================================
-    // Prop : PropÀÇ ON/OFF ¸í·ÉÀÎÁö È®ÀÎ ÈÄ È°¼ºÈ­ ¹× ºñÈ°¼ºÈ­ 
+    // Prop : Propì˜ ON/OFF ëª…ë ¹ì¸ì§€ í™•ì¸ í›„ í™œì„±í™” ë° ë¹„í™œì„±í™” 
     // =====================================================
 
     private bool TryProcessProp(string command, string sourceInfo)
     {
-        // Prop ¼³Á¤ ¸®½ºÆ®°¡ ¾øÀ¸¸é Ã³¸®ÇÏÁö ¸øÇÏ¹Ç·Î false ¹İÈ¯
+        // Prop ì„¤ì • ë¦¬ìŠ¤íŠ¸ê°€ ì—†ìœ¼ë©´ ì²˜ë¦¬í•˜ì§€ ëª»í•˜ë¯€ë¡œ false ë°˜í™˜
         if (propEvents == null)
         {
             return false;
@@ -452,7 +452,7 @@ public class Character_Weapon_Controller : MonoBehaviour
             }
 
 
-            // ÇöÀç µé¾î¿Â °ª°ú ÀÌ PropÀÇ ON ¹®ÀÚ¿­ÀÌ °°ÀºÁö È®ÀÎ
+            // í˜„ì¬ ë“¤ì–´ì˜¨ ê°’ê³¼ ì´ Propì˜ ON ë¬¸ìì—´ì´ ê°™ì€ì§€ í™•ì¸
             if (IsSameCommand(command, prop.activeOn))
             {
                 prop.targetObject.SetActive(true);
@@ -465,7 +465,7 @@ public class Character_Weapon_Controller : MonoBehaviour
                 return true;
             }
 
-            // ¶È°°À½
+            // ë˜‘ê°™ìŒ
             if (IsSameCommand(command, prop.activeOff))
             {
                 prop.targetObject.SetActive(false);
@@ -479,14 +479,14 @@ public class Character_Weapon_Controller : MonoBehaviour
             }
         }
 
-        // ¸®½ºÆ® ³¡±îÁö È®ÀÎÈÄ ÀÏÄ¡ PropÀÌ ¾øÀ»½Ã 
+        // ë¦¬ìŠ¤íŠ¸ ëê¹Œì§€ í™•ì¸í›„ ì¼ì¹˜ Propì´ ì—†ì„ì‹œ 
         return false;
     }
 
 
     // =====================================================
-    // IK : ¼ÕÀÇ IK¸¦ ¾î¶² Transform¿¡, ¾î´À Á¤µµÀÇ Weight·Î Àû¿ëÇÒÁö ÀúÀåÇÏ´Â ¼³Á¤ µ¥ÀÌÅÍ
-    // targetWeight¸¦ º¯°æÇÏ°í ½ÇÁ¦ IK À§Ä¡/È¸Àü Àû¿ëÀº OnAnimatorIK()¿¡¼­ Ã³¸®
+    // IK : ì†ì˜ IKë¥¼ ì–´ë–¤ Transformì—, ì–´ëŠ ì •ë„ì˜ Weightë¡œ ì ìš©í• ì§€ ì €ì¥í•˜ëŠ” ì„¤ì • ë°ì´í„°
+    // targetWeightë¥¼ ë³€ê²½í•˜ê³  ì‹¤ì œ IK ìœ„ì¹˜/íšŒì „ ì ìš©ì€ OnAnimatorIK()ì—ì„œ ì²˜ë¦¬
     // =====================================================
 
     private bool TryProcessIK(string command, string sourceInfo)
@@ -496,7 +496,7 @@ public class Character_Weapon_Controller : MonoBehaviour
             return false;
         }
 
-        // Ã³¸® »óÅÂ ÀúÀå¿ë bool
+        // ì²˜ë¦¬ ìƒíƒœ ì €ì¥ìš© bool
         bool handled = false;
 
 
@@ -507,11 +507,11 @@ public class Character_Weapon_Controller : MonoBehaviour
                 continue;
             }
 
-            // ÇÊ¿äÇÑ ¹®ÀÚ¿­ »ı¼º
+            // í•„ìš”í•œ ë¬¸ìì—´ ìƒì„±
             string offCommand = IK_OFF_PREFIX + ik.commandId;
             string onCommand = IK_ON_PREFIX + ik.commandId;
 
-            // ¹®ÀÚ¿­ ºñ±³ OffÀÏ¶§
+            // ë¬¸ìì—´ ë¹„êµ Offì¼ë•Œ
             if (IsSameCommand(command, offCommand))
             {
                 ik.targetWeight = 0f;
@@ -524,7 +524,7 @@ public class Character_Weapon_Controller : MonoBehaviour
                 handled = true;
             }
 
-            // ¹®ÀÚ¿­ ºñ±³ OnÀÏ¶§
+            // ë¬¸ìì—´ ë¹„êµ Onì¼ë•Œ
             else if (IsSameCommand(command, onCommand))
             {
                 ik.targetWeight = ik.ikWeight;
@@ -538,13 +538,13 @@ public class Character_Weapon_Controller : MonoBehaviour
             }
         }
 
-        // »óÅÂ ¹İÈ¯
+        // ìƒíƒœ ë°˜í™˜
         return handled;
     }
 
 
     // =====================================================
-    // Weapon / Socket : ½ÇÁ¦ Socket ÀüÈ¯
+    // Weapon / Socket : ì‹¤ì œ Socket ì „í™˜
     // =====================================================
 
     private bool TryProcessWeapon(string command, string sourceInfo)
@@ -554,7 +554,7 @@ public class Character_Weapon_Controller : MonoBehaviour
             return false;
         }
 
-        // Ã³¸® »óÅÂ ÀúÀå¿ë bool
+        // ì²˜ë¦¬ ìƒíƒœ ì €ì¥ìš© bool
         bool handled = false;
 
 
@@ -575,7 +575,7 @@ public class Character_Weapon_Controller : MonoBehaviour
                 slot.weaponConstraint.constraintActive = false;
 
 
-                // Drop ½Ã IK ÀüºÎ ÇØÁ¦
+                // Drop ì‹œ IK ì „ë¶€ í•´ì œ
                 ReleaseAllIK();
 
 
@@ -591,22 +591,22 @@ public class Character_Weapon_Controller : MonoBehaviour
                 continue;
             }
 
-            // ¼ÒÄÏ °Ë»ö ÀÎµ¦½º 
+            // ì†Œì¼“ ê²€ìƒ‰ ì¸ë±ìŠ¤ 
             int targetIndex = -1;
 
 
             foreach (SocketSetting setting in slot.socketSettings)
             {
-                // ¸í·ÉÀÌ¸§ÀÌ ¾ø´Â Socket
+                // ëª…ë ¹ì´ë¦„ì´ ì—†ëŠ” Socket
                 if (string.IsNullOrEmpty(setting.eventStringName))
                 {
                     continue;
                 }
 
-                // Animation Event ¸í·É°ú SocketSettingÀÇ ¹®ÀÚ¿­ È®ÀÎ
+                // Animation Event ëª…ë ¹ê³¼ SocketSettingì˜ ë¬¸ìì—´ í™•ì¸
                 if (IsSameCommand(setting.eventStringName.Trim(), command))
                 {
-                    // ValidateWeaponSlots()¿¡¼­ ÀúÀåÇØµĞ ParentConstraint Source ÀÎµ¦½º¸¦ °¡Á®¿È
+                    // ValidateWeaponSlots()ì—ì„œ ì €ì¥í•´ë‘” ParentConstraint Source ì¸ë±ìŠ¤ë¥¼ ê°€ì ¸ì˜´
                     targetIndex = setting.sourceIndex;
                     break;
                 }
@@ -617,10 +617,10 @@ public class Character_Weapon_Controller : MonoBehaviour
                 continue;
             }
 
-            // Constraint ²¸Á³À»¶§¸¦ ´ëºñ ´Ù½Ã È°¼ºÈ­
+            // Constraint ê»´ì¡Œì„ë•Œë¥¼ ëŒ€ë¹„ ë‹¤ì‹œ í™œì„±í™”
             slot.weaponConstraint.constraintActive = true;
 
-            // ParentConstraintÀÇ Source °³¼ö¸¦ °¡Á®¿È
+            // ParentConstraintì˜ Source ê°œìˆ˜ë¥¼ ê°€ì ¸ì˜´
             int sourceCount = slot.weaponConstraint.sourceCount;
 
 
@@ -628,10 +628,10 @@ public class Character_Weapon_Controller : MonoBehaviour
             {
                 ConstraintSource source = slot.weaponConstraint.GetSource(i);
 
-                // ¼±ÅÃµÈ Socket¸¸ Weight 1, ³ª¸ÓÁö´Â 0
+                // ì„ íƒëœ Socketë§Œ Weight 1, ë‚˜ë¨¸ì§€ëŠ” 0
                 source.weight = i == targetIndex ? 1f : 0f;
 
-                // GetSource(i)·Î °¡Á®¿Â ConstraintSource´Â °ªÀ» ¼öÁ¤ÇÑ µÚ ´Ù½Ã SetSource()·Î ParentConstraint¿¡ ¹İ¿µ
+                // GetSource(i)ë¡œ ê°€ì ¸ì˜¨ ConstraintSourceëŠ” ê°’ì„ ìˆ˜ì •í•œ ë’¤ ë‹¤ì‹œ SetSource()ë¡œ ParentConstraintì— ë°˜ì˜
                 slot.weaponConstraint.SetSource(i, source);
             }
 
@@ -650,7 +650,7 @@ public class Character_Weapon_Controller : MonoBehaviour
 
 
     // =====================================================
-    // ¸ğµç IK ÇØÁ¦ : ÇöÀç µî·ÏµÈ ¸ğµç IKÀÇ ¸ñÇ¥ Weight¸¦ 0À¸·Î ¸¸µë
+    // ëª¨ë“  IK í•´ì œ : í˜„ì¬ ë“±ë¡ëœ ëª¨ë“  IKì˜ ëª©í‘œ Weightë¥¼ 0ìœ¼ë¡œ ë§Œë“¬
     // =====================================================
 
     private void ReleaseAllIK()
@@ -669,8 +669,8 @@ public class Character_Weapon_Controller : MonoBehaviour
 
 
     // =====================================================
-    // Command ¹®ÀÚ¿­ ºñ±³ : µÎ ¸í·É ¹®ÀÚ¿­ÀÌ °°ÀºÁö ºñ±³ ´ë¼Ò¹®ÀÚ ¹«½Ã
-    // ±âÁ¸ ÄÚµå´Â °°Àº ÇÔ¼öÀÇ ¹İº¹À¸·Î »õ·Î ¸¸µé¾îÁÜ
+    // Command ë¬¸ìì—´ ë¹„êµ : ë‘ ëª…ë ¹ ë¬¸ìì—´ì´ ê°™ì€ì§€ ë¹„êµ ëŒ€ì†Œë¬¸ì ë¬´ì‹œ
+    // ê¸°ì¡´ ì½”ë“œëŠ” ê°™ì€ í•¨ìˆ˜ì˜ ë°˜ë³µìœ¼ë¡œ ìƒˆë¡œ ë§Œë“¤ì–´ì¤Œ
     // =====================================================
 
     private bool IsSameCommand(string commandA, string commandB)
@@ -680,10 +680,10 @@ public class Character_Weapon_Controller : MonoBehaviour
 
 
     // =====================================================
-    // Animator IK : ¸ñÇ¥ IK±îÁöÀÇ ÀÌµ¿
+    // Animator IK : ëª©í‘œ IKê¹Œì§€ì˜ ì´ë™
     // =====================================================
 
-    // OnAnimatorIK : Unity°¡ AnimatorÀÇ IK¸¦ °è»êÇÏ´Â ½ÃÁ¡¿¡ È£ÃâÇÏ´Â »ı¸íÁÖ±â ¸Ş¼­µå
+    // OnAnimatorIK : Unityê°€ Animatorì˜ IKë¥¼ ê³„ì‚°í•˜ëŠ” ì‹œì ì— í˜¸ì¶œí•˜ëŠ” ìƒëª…ì£¼ê¸° ë©”ì„œë“œ
     private void OnAnimatorIK(int layerIndex)
     {
         if (animator == null || supportIKSettings == null)
@@ -694,25 +694,25 @@ public class Character_Weapon_Controller : MonoBehaviour
 
         foreach (SupportIKConfig ik in supportIKSettings)
         {
-            // »ç¿ëÇÒ IK³ª ¸ñÇ¥°¡ ¾øÀ½
+            // ì‚¬ìš©í•  IKë‚˜ ëª©í‘œê°€ ì—†ìŒ
             if (!ik.useIK || ik.ikTarget == null)
             {
                 continue;
             }
 
-            // IK º¸°£À» ÅëÇÑ ÀÚ¿¬½º·¯¿î ¿òÁ÷ÀÓ ±¸Çö 
+            // IK ë³´ê°„ì„ í†µí•œ ìì—°ìŠ¤ëŸ¬ìš´ ì›€ì§ì„ êµ¬í˜„ 
             ik.currentWeight = Mathf.Lerp(ik.currentWeight, ik.targetWeight, Time.deltaTime * 15f);
 
-            // ÇØ´ç ¼ÕÀÌ IK À§Ä¡(Position)¿¡ ¾ó¸¶³ª ¿µÇâÀ» ÁÙÁö
+            // í•´ë‹¹ ì†ì´ IK ìœ„ì¹˜(Position)ì— ì–¼ë§ˆë‚˜ ì˜í–¥ì„ ì¤„ì§€
             animator.SetIKPositionWeight(ik.ikHand, ik.currentWeight);
 
-            // È¸Àü(Rotation)ÀÇ IK ¿µÇâµµ
+            // íšŒì „(Rotation)ì˜ IK ì˜í–¥ë„
             animator.SetIKRotationWeight(ik.ikHand, ik.currentWeight);
 
-            // ½ÇÁ¦ IKÀÇ ¸ñÇ¥ À§Ä¡¸¦ ÁöÁ¤ ikTarget Æ÷Áö¼ÇÀ¸·Î ÁöÁ¤
+            // ì‹¤ì œ IKì˜ ëª©í‘œ ìœ„ì¹˜ë¥¼ ì§€ì • ikTarget í¬ì§€ì…˜ìœ¼ë¡œ ì§€ì •
             animator.SetIKPosition(ik.ikHand, ik.ikTarget.position);
 
-            // ¸ñÇ¥ È¸Àüµµ ikTargetÀÇ È¸ÀüÀ¸·Î ¼³Á¤ 
+            // ëª©í‘œ íšŒì „ë„ ikTargetì˜ íšŒì „ìœ¼ë¡œ ì„¤ì • 
             animator.SetIKRotation(ik.ikHand, ik.ikTarget.rotation);
         }
     }

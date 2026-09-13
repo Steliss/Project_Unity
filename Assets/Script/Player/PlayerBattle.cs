@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 
 public class PlayerBattle : MonoBehaviour
@@ -84,14 +84,14 @@ public class PlayerBattle : MonoBehaviour
 
     private void Update()
     {
-        // Á×°Å³ª Ç®·Î µ¹¾Æ°£ Àû ÂüÁ¶ Á¦°Å
+        // ì£½ê±°ë‚˜ í’€ë¡œ ëŒì•„ê°„ ì  ì°¸ì¡° ì œê±°
         if (!IsEnemyValid() && _gameData.CurrentPhase != GameData.GamePhase.None)
         {
             ClearEnemy();
             EnemyFind();
         }
 
-        // »õ Àûµµ Ã£Áö ¸øÇß´Ù¸é ÀÌµ¿°ú °ø°İ Áß´Ü
+        // ìƒˆ ì ë„ ì°¾ì§€ ëª»í–ˆë‹¤ë©´ ì´ë™ê³¼ ê³µê²© ì¤‘ë‹¨
         if (!IsEnemyValid() || _flagBossBattle)
         {
             return;
@@ -108,7 +108,7 @@ public class PlayerBattle : MonoBehaviour
         return _target != null && _target.CurrentHP > 0f && !_target.FlagIsDead;
     }
 
-    // ÆêÀÌ Á×¿´À»¶§ »óÅÂ ÃÊ±âÈ­
+    // í«ì´ ì£½ì˜€ì„ë•Œ ìƒíƒœ ì´ˆê¸°í™”
     private void ClearEnemy()
     {
         _target = null;
@@ -133,8 +133,8 @@ public class PlayerBattle : MonoBehaviour
 
 
 
-    // ·¹ÀÌÄ³½ºÆ® ¹üÀ§ ¾È Àû ¹ß°ß ¹× ¸®½ºÆ®¿¡ ¼ø¼­´ë·Î ¹èÄ¡ 
-    // Àû »ı¼ºÇÏ°í °°ÀÌ µ¹¾Æ¼­ Ã¹ ÆÄÀÎµùÀÌ ºÒ¾ÈÇÑµ¥ »ç¼ÒÇÏ´Ï ³Ñ±è
+    // ë ˆì´ìºìŠ¤íŠ¸ ë²”ìœ„ ì•ˆ ì  ë°œê²¬ ë° ë¦¬ìŠ¤íŠ¸ì— ìˆœì„œëŒ€ë¡œ ë°°ì¹˜ 
+    // ì  ìƒì„±í•˜ê³  ê°™ì´ ëŒì•„ì„œ ì²« íŒŒì¸ë”©ì´ ë¶ˆì•ˆí•œë° ì‚¬ì†Œí•˜ë‹ˆ ë„˜ê¹€
     private void EnemyFind()
     {
         Collider[] detectedColliders = Physics.OverlapSphere(_player.transform.position, _playerData.FindRange, _enemyLayerMask);
@@ -173,7 +173,7 @@ public class PlayerBattle : MonoBehaviour
         Vector3 playerPos = _player.transform.position;
         Vector3 enemyPos = _target.TargetTransform.position;
 
-        // ¹æÇâ °è»ê
+        // ë°©í–¥ ê³„ì‚°
         Vector3 directionToEnemy = (enemyPos - playerPos).normalized;
         directionToEnemy.y = 0f;
 
@@ -184,7 +184,7 @@ public class PlayerBattle : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(directionToEnemy, Vector3.up);
         float remainingAngle = Quaternion.Angle(_player.transform.rotation, targetRotation);
 
-        // À¯È¿ÇÑ ¹æÇâÀÌ ¾øÀ¸¸é Ã³¸®ÇÏÁö ¾ÊÀ½
+        // ìœ íš¨í•œ ë°©í–¥ì´ ì—†ìœ¼ë©´ ì²˜ë¦¬í•˜ì§€ ì•ŠìŒ
         if (directionToEnemy.sqrMagnitude <= 0.0001f)
         {
             return;
@@ -192,7 +192,7 @@ public class PlayerBattle : MonoBehaviour
 
         if (remainingAngle > 5f)
         {
-            // ¾ÆÁ÷ ÀûÀ» ¹Ù¶óº¸Áö ¾ÊÀ¸¹Ç·Î È¸Àü
+            // ì•„ì§ ì ì„ ë°”ë¼ë³´ì§€ ì•Šìœ¼ë¯€ë¡œ íšŒì „
             _player.transform.rotation = Quaternion.RotateTowards(_player.transform.rotation, targetRotation, _playerData.RotateSpeed * Time.deltaTime);
             _flagCanBattle = false;
             return;
@@ -200,17 +200,17 @@ public class PlayerBattle : MonoBehaviour
 
         _flagCanBattle = true;
 
-        // »ç°Å¸® ¾ÈÀÌ¶ó¸é ÀÌµ¿ÇÏÁö ¾ÊÀ½
+        // ì‚¬ê±°ë¦¬ ì•ˆì´ë¼ë©´ ì´ë™í•˜ì§€ ì•ŠìŒ
         if (_distance <= _playerData.AttackRange)
         {
             return;
         }
 
-        // Àû¿¡°Ô¼­ ÇÃ·¹ÀÌ¾î ¹æÇâÀ¸·Î »ç°Å¸®¹İ ¸¸Å­ ÀÌµ¿ 
+        // ì ì—ê²Œì„œ í”Œë ˆì´ì–´ ë°©í–¥ìœ¼ë¡œ ì‚¬ê±°ë¦¬ë°˜ ë§Œí¼ ì´ë™ 
         Vector3 stopPosition = enemyPos - directionToEnemy * (_playerData.AttackRange * 0.5f);
         stopPosition.y = 0f;
 
-        // ÀÌµ¿
+        // ì´ë™
         _player.transform.position = Vector3.MoveTowards(playerPos, stopPosition, _playerData.MoveSpeed * Time.deltaTime);
     }
 
@@ -227,17 +227,17 @@ public class PlayerBattle : MonoBehaviour
 
         _attakDuration += Time.deltaTime;
 
-        // »ç°Å¸® ¹ÛÀÌ¸é ¸®ÅÏ
+        // ì‚¬ê±°ë¦¬ ë°–ì´ë©´ ë¦¬í„´
         if (_distance > _playerData.AttackRange)
         {
             _flagShoot = false;
             return;
         }
 
-        // ÆÄ¿ö ¾÷ÀÇ °æ¿ì 
+        // íŒŒì›Œ ì—…ì˜ ê²½ìš° 
         float duration = _flagPower ? 1f : 10f;
 
-        // °ø°İ ÁÖ±â°¡ ¾È‰çÀ½ ¸®ÅÏ  
+        // ê³µê²© ì£¼ê¸°ê°€ ì•ˆë¬ìŒ ë¦¬í„´  
         if (_attakDuration * _playerData.AttackSpeed < duration)
         {
             return;
@@ -245,28 +245,28 @@ public class PlayerBattle : MonoBehaviour
 
         _flagShoot = true;
 
-        // µ¥¹ÌÁö °è»ê 
+        // ë°ë¯¸ì§€ ê³„ì‚° 
         float toDamage = _playerData.AttackPower;
 
-        // Å©¸® ±¸Çö
+        // í¬ë¦¬ êµ¬í˜„
         bool isCritical = Random.value < _playerData.CriticalChance;
 
         if (isCritical)
         {
             toDamage *= _playerData.CriticalDamageMultiplier;
 
-            Debug.Log($"Ä¡¸íÅ¸");
+            //Debug.Log($"ì¹˜ëª…íƒ€");
         }
 
-        // ÀüÅõ ¸ğ¼Ç 
+        // ì „íˆ¬ ëª¨ì…˜ 
         _playerAnimation.PlayerShoot(_flagShoot);
         _uiPlayerAnimation.PlayerShoot(_flagShoot);
 
         _soundManager.SFXGunfirePlay();
         GunFireEffect();
-        _target.TakeDamage(toDamage);
         _damageLogUI.ShowDamage(_target.TargetTransform.position, toDamage, isCritical);
-        _damageLogUI.ShowLog(toDamage, _target.CurrentHP, isCritical);
+        _damageLogUI.ShowLog(toDamage, _target.CurrentHP - toDamage, isCritical);
+        _target.TakeDamage(toDamage);
         _attakDuration = 0f;
 
         if (!IsEnemyValid())
@@ -276,7 +276,7 @@ public class PlayerBattle : MonoBehaviour
     }
 
     /// <summary>
-    /// ÃÑ ÀÌÆåÆ® °ü·Ã
+    /// ì´ ì´í™íŠ¸ ê´€ë ¨
     /// </summary>
     private void GunFireSetting()
     {
@@ -286,7 +286,7 @@ public class PlayerBattle : MonoBehaviour
         }
         if (_gunFirePos == null)
         {
-            Debug.Log("Ã¶ÀÚÈ®ÀÎ");
+            Debug.Log("ì² ìí™•ì¸");
         }
 
         _castInstance = Instantiate(_castEffect, _gunFirePos);

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -93,25 +93,25 @@ public class BossUI : MonoBehaviour
 
     private void EndTextUpdate()
     {
-        _playerLevel.text = $"ÇÃ·¹ÀÌ¾î ·¹º§ : {_playerData.PlayerLevel}";
-        _attackPower.text = $"°ø°İ·Â : {_playerData.AttackPower}";
-        _attackRange.text = $"»ç°Å¸® : {_playerData.AttackRange}";
-        _attackSpeed.text = $"°ø°İ ¼Óµµ : {_playerData.AttackSpeed}";
-        _criticalChance.text = $"Ä¡¸íÅ¸ È®·ü : {_playerData.CriticalChance}";
-        _criticalDamageMultiplier.text = $"Ä¡¸íÅ¸ ¹èÀ² : {_playerData.CriticalDamageMultiplier}";
-        _moveSpeed.text = $"ÀÌµ¿¼Óµµ : {_playerData.MoveSpeed}";
-        _rotateSpeed.text = $"È¸Àü¼Óµµ : {_playerData.RotateSpeed}";
-        _petLevel.text = $"Æê ·¹º§ : {_playerData.PetLevel}";
-        _petAttackPower.text = $"Æê °ø°İ·Â : {_playerData.PetAttackPower}";
-        _upgradeCoupon.text = $"ÃÑ ÄíÆù»ç¿ë·® : {_playerData.TotalUseCoupon}";
-        _totalDamage.text = $"°¡ÇÑ µ¥¹ÌÁö : {_playerData.TotalDamage}";
+        _playerLevel.text = $"í”Œë ˆì´ì–´ ë ˆë²¨ : {_playerData.PlayerLevel}";
+        _attackPower.text = $"ê³µê²©ë ¥ : {_playerData.AttackPower:F0}";
+        _attackRange.text = $"ì‚¬ê±°ë¦¬ : {_playerData.AttackRange:F0}";
+        _attackSpeed.text = $"ê³µê²© ì†ë„ : {_playerData.AttackSpeed:F0}";
+        _criticalChance.text = $"ì¹˜ëª…íƒ€ í™•ë¥  : {_playerData.CriticalChance * 100:F2}";
+        _criticalDamageMultiplier.text = $"ì¹˜ëª…íƒ€ ë°°ìœ¨ : {_playerData.CriticalDamageMultiplier * 100:F2}";
+        _moveSpeed.text = $"ì´ë™ì†ë„ : {_playerData.MoveSpeed:F2}";
+        _rotateSpeed.text = $"íšŒì „ì†ë„ : {_playerData.RotateSpeed:F0}";
+        _petLevel.text = $"í« ë ˆë²¨ : {_playerData.PetLevel}";
+        _petAttackPower.text = $"í« ê³µê²©ë ¥ : {_playerData.PetAttackPower}";
+        _upgradeCoupon.text = $"ì´ ì¿ í°ì‚¬ìš©ëŸ‰ : {_playerData.TotalUseCoupon}";
+        _totalDamage.text = $"ê°€í•œ ë°ë¯¸ì§€ : {_playerData.TotalDamage:F0}";
 
     }
 
     private void RelicTextUpdate(RelicOwnedData relic)
     {
         _relicName.text = $"{relic.Name}";
-        _relicEffect.text = $"À¯¹° Á¤º¸ : {relic.Description}";
+        _relicEffect.text = $"ìœ ë¬¼ ì •ë³´ : {relic.Description}";
     }
 
     private void OnButtonClick(string buttonType)
@@ -151,11 +151,11 @@ public class BossUI : MonoBehaviour
     public void BattleEndUI(bool set, bool win, RelicOwnedData relic = null)
     {
         _EndReport.SetActive(set);
-        Debug.Log($"test °¡ÇÑ µ¥¹ÌÁö : {_playerData.TotalDamage}");
+        Debug.Log($"test ê°€í•œ ë°ë¯¸ì§€ : {_playerData.TotalDamage}");
 
         if (!set)
         {
-            // ²ø¶§ °»½ÅÇÒ ÀÌÀ¯ ¾øÀ½ 
+            // ëŒë•Œ ê°±ì‹ í•  ì´ìœ  ì—†ìŒ 
             return;
         }
 
@@ -163,7 +163,7 @@ public class BossUI : MonoBehaviour
 
         if (win)
         {
-            _title.text = "½Â¸®!";
+            _title.text = "ìŠ¹ë¦¬!";
             RelicTextUpdate(relic);
             _lossImage.SetActive(false);
             _WinImage.SetActive(true);
@@ -171,7 +171,7 @@ public class BossUI : MonoBehaviour
         }
         else
         {
-            _title.text = "ÆĞ¹è!";
+            _title.text = "íŒ¨ë°°!";
             _lossImage.SetActive(true);
             _WinImage.SetActive(false);
         }

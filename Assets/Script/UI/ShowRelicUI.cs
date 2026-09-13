@@ -1,4 +1,4 @@
-using TMPro;
+ï»¿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -64,7 +64,7 @@ public class ShowRelicUI : MonoBehaviour
             _scrollRect.verticalNormalizedPosition = value;
         });
 
-        // ¸¶¿ì½º ÈÙÀÌ³ª µå·¡±×·Î ½ºÅ©·ÑÇØµµ ½½¶óÀÌ´õ À§Ä¡¸¦ ¸ÂÃã
+        // ë§ˆìš°ìŠ¤ íœ ì´ë‚˜ ë“œë˜ê·¸ë¡œ ìŠ¤í¬ë¡¤í•´ë„ ìŠ¬ë¼ì´ë” ìœ„ì¹˜ë¥¼ ë§ì¶¤
         _scrollRect.onValueChanged.AddListener(position =>
         {
             _slider.SetValueWithoutNotify(position.y);
@@ -83,12 +83,12 @@ public class ShowRelicUI : MonoBehaviour
         UpdateRelicUI();
         _relicUI.SetActive(true);
 
-        // È°¼ºÈ­µÈ À¯¹° °³¼ö¿¡ ¸ÂÃç ÄÜÅÙÃ÷ Å©±â °»½Å
+        // í™œì„±í™”ëœ ìœ ë¬¼ ê°œìˆ˜ì— ë§ì¶° ì½˜í…ì¸  í¬ê¸° ê°±ì‹ 
         Canvas.ForceUpdateCanvases();
         LayoutRebuilder.ForceRebuildLayoutImmediate(_scrollRect.content);
         Canvas.ForceUpdateCanvases();
 
-        // ¿­ ¶§ ¸Ç À§¿¡¼­ ½ÃÀÛ
+        // ì—´ ë•Œ ë§¨ ìœ„ì—ì„œ ì‹œì‘
         _scrollRect.StopMovement();
         _scrollRect.verticalNormalizedPosition = 1f;
         _slider.SetValueWithoutNotify(1f);
@@ -107,7 +107,7 @@ public class ShowRelicUI : MonoBehaviour
             _relicSlots[i].SetActive(false);
         }
 
-        _pointsText.text = $"Æ÷ÀÎÆ® : {_saveData.Points}";
+        _pointsText.text = $"í¬ì¸íŠ¸ : {_saveData.Points}";
 
         foreach (RelicOwnedData relic in _saveData.Relics)
         {

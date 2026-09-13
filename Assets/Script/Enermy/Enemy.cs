@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public interface IDamageable
 {
@@ -19,13 +19,13 @@ public class Enemy : MonoBehaviour , IDamageable
     [SerializeField] private float _enemyBaseHP = 10f;
     [SerializeField] private float _enemyCoefficientHP = 50f;
 
-    [Header("Áß·Â")]
+    [Header("ì¤‘ë ¥")]
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private float _groundCheckDistance = 10f;
     [SerializeField] private float _gravity = 3f;
     [SerializeField] private float _groundOffset = 0.01f;
 
-    [Header("Èçµé¸²")]
+    [Header("í”ë“¤ë¦¼")]
     [SerializeField] private float _hitShake = 0.1f;
     [SerializeField] private float _maxShake = 0.3f;
     [SerializeField] private float _speedDecrease = 1f;
@@ -53,7 +53,7 @@ public class Enemy : MonoBehaviour , IDamageable
 
     private void Awake()
     {
-        // °ÔÀÓ µ¥ÀÌÅÍ ¹Ş¾Æ¿À±â 
+        // ê²Œì„ ë°ì´í„° ë°›ì•„ì˜¤ê¸° 
         _gameData = ManagerDontDestroy.Instance.GameData;
         if (_gameData == null)
         {
@@ -97,7 +97,7 @@ public class Enemy : MonoBehaviour , IDamageable
             _shakeTarget.localPosition = _localPos;
         }
 
-        // ÀÏ´Ü ´Ü¼øÇÏ°Ô Ã³¸® ·¹º§´ç HP »ó½Â°î¼± ´Ù½Ã ¸¸µé±â. 
+        // ì¼ë‹¨ ë‹¨ìˆœí•˜ê²Œ ì²˜ë¦¬ ë ˆë²¨ë‹¹ HP ìƒìŠ¹ê³¡ì„  ë‹¤ì‹œ ë§Œë“¤ê¸°. 
         _maxHP = _enemyBaseHP + (_gameData._ObjectData.ChestLevel * _enemyCoefficientHP);
         _currentHP = _maxHP;
 
@@ -140,8 +140,8 @@ public class Enemy : MonoBehaviour , IDamageable
 
         _currentHP -= damage;
         _gameData._PlayerData.AddTotalDamage(damage);
-        Debug.Log($"°¡ÇÑ µ¥¹ÌÁö : {damage}");
-        Debug.Log($"³²Àº HP : {_currentHP}");
+        //Debug.Log($"ê°€í•œ ë°ë¯¸ì§€ : {damage}");
+        //Debug.Log($"ë‚¨ì€ HP : {_currentHP}");
 
         if (_currentHP <= 0f)
         {
@@ -154,7 +154,7 @@ public class Enemy : MonoBehaviour , IDamageable
         }
     }
 
-    // ¿¡´Ï¸ŞÀÌ¼Ç È£Ãâ
+    // ì—ë‹ˆë©”ì´ì…˜ í˜¸ì¶œ
     private void DieAnimation()
     {
         if (_animator == null)
@@ -165,13 +165,13 @@ public class Enemy : MonoBehaviour , IDamageable
         _animator.SetTrigger("tEggCrack");
     }
 
-    // Animation Event¿¡¼­ È£Ãâ
+    // Animation Eventì—ì„œ í˜¸ì¶œ
     public void EggDieEvent()
     {
         _createEnemy.EnemyToPool(gameObject);
     }
 
-    // Áß·Â ±¸Çö ³«ÇÏ // ¾ÆÀÌÅÛµµ ½á¾ßÇÏ´Ï °øÅë ½ºÅ©¸³Æ® –EÁö »ı°¢
+    // ì¤‘ë ¥ êµ¬í˜„ ë‚™í•˜ // ì•„ì´í…œë„ ì¨ì•¼í•˜ë‹ˆ ê³µí†µ ìŠ¤í¬ë¦½íŠ¸ ëº¼ì§€ ìƒê°
     private void ApplyGravity()
     {
         if (_flagIsGrounded)
@@ -185,7 +185,7 @@ public class Enemy : MonoBehaviour , IDamageable
 
         bool foundGround = Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, _groundCheckDistance, _groundLayer);
 
-        // ÀÌ¹ø ÇÁ·¹ÀÓÀÇ ÀÌµ¿ °Å¸® ¾È¿¡ Áö¸éÀÌ ÀÖÀ¸¸é
+        // ì´ë²ˆ í”„ë ˆì„ì˜ ì´ë™ ê±°ë¦¬ ì•ˆì— ì§€ë©´ì´ ìˆìœ¼ë©´
         if (foundGround && hit.distance <= fallDistance + 0.01f || transform.position.y < hit.point.y)
         {
             Vector3 groundedPosition = transform.position;
@@ -203,7 +203,7 @@ public class Enemy : MonoBehaviour , IDamageable
         transform.position += Vector3.down * _vertical * Time.deltaTime;
     }
 
-    // Èçµé¸² È¿°ú ¾Ø º¸½ºµµ ½á¸ÔÀ½ ÁÁÀºµ¥.
+    // í”ë“¤ë¦¼ íš¨ê³¼ ì•¤ ë³´ìŠ¤ë„ ì¨ë¨¹ìŒ ì¢‹ì€ë°.
     private void AddHitShake()
     {
         _shakeAmount = Mathf.Min(_shakeAmount + _hitShake, _maxShake);

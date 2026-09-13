@@ -1,8 +1,8 @@
-using System;
+ï»¿using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
-// ±âÅ¸ ¿ÀºêÁ§Æ® °ü·Ã ÀÚ·á °ø°£ 
+// ê¸°íƒ€ ì˜¤ë¸Œì íŠ¸ ê´€ë ¨ ìë£Œ ê³µê°„ 
 
 
 [Serializable]
@@ -50,7 +50,7 @@ public class ObjectData
 
     public void AddPlayerUpgrade(int value)
     {
-        // ¾Ö´Â ¸¶ÀÌ³Ê½º °ªÀÌ °¥¼öµµ ÀÖÀ¸´Ï ¾Õ¿¡¼­ ¹æ¾î ÄÚµå ÀÛ¼ºÇØÁÖ±â.
+        // ì• ëŠ” ë§ˆì´ë„ˆìŠ¤ ê°’ì´ ê°ˆìˆ˜ë„ ìˆìœ¼ë‹ˆ ì•ì—ì„œ ë°©ì–´ ì½”ë“œ ì‘ì„±í•´ì£¼ê¸°.
 
         _playerUpgrade += value;
     }

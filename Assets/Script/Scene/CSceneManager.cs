@@ -1,10 +1,10 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class CSceneManager : MonoBehaviour
 {
-    [Header("¾À Ä«Å»·Î±×")]
+    [Header("ì”¬ ì¹´íƒˆë¡œê·¸")]
     [SerializeField] private CSceneCatalog _catalog;
 
     private bool _isLoading;
@@ -48,13 +48,13 @@ public class CSceneManager : MonoBehaviour
 
         if (!_catalog.TryGetSceneName(id, out string sceneName))
         {
-            Debug.Log($"Ä«Å»·Î±×¿¡ µî·ÏµÇÁö ¾ÊÀº ¾ÀÀÔ´Ï´Ù: {id}");
+            Debug.Log($"ì¹´íƒˆë¡œê·¸ì— ë“±ë¡ë˜ì§€ ì•Šì€ ì”¬ì…ë‹ˆë‹¤: {id}");
             return;
         }
 
         if (!Application.CanStreamedLevelBeLoaded(sceneName))
         {
-            Debug.Log($"·ÎµåÇÒ ¼ö ¾ø´Â ¾ÀÀÔ´Ï´Ù: {sceneName}");
+            Debug.Log($"ë¡œë“œí•  ìˆ˜ ì—†ëŠ” ì”¬ì…ë‹ˆë‹¤: {sceneName}");
             return;
         }
 
@@ -71,7 +71,7 @@ public class CSceneManager : MonoBehaviour
 
         if (operation == null)
         {
-            Debug.LogError($"¾À ·Îµå ¿äÃ» ½ÇÆĞ: {sceneName}");
+            Debug.LogError($"ì”¬ ë¡œë“œ ìš”ì²­ ì‹¤íŒ¨: {sceneName}");
 
             _isLoading = false;
             yield break;
@@ -80,7 +80,7 @@ public class CSceneManager : MonoBehaviour
         while (!operation.isDone)
         {
             float progress = Mathf.Clamp01(operation.progress / 0.9f);
-            Debug.Log($"ÁøÇà·ü : {progress}");
+            Debug.Log($"ì§„í–‰ë¥  : {progress}");
             yield return null;
         }
 

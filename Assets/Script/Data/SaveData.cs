@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -18,7 +18,7 @@ public enum RelicType
 public class RelicOwnedData
 {
     public RelicType Type;
-    public int Level; // 0ÀÌ¸é ¹ÌÈ¹µæ
+    public int Level; // 0ì´ë©´ ë¯¸íšë“
     public string Name;
     public string Description;
 }
@@ -32,7 +32,7 @@ public class RelicSaveData
 
 public class SaveData : MonoBehaviour
 {
-    [Header("ÃÖ´ë·¹º§")]
+    [Header("ìµœëŒ€ë ˆë²¨")]
     [SerializeField] private int _maxAttackPower;
     [SerializeField] private int _maxAttackSpeed;
     [SerializeField] private int _maxMoveSpeed;
@@ -40,7 +40,7 @@ public class SaveData : MonoBehaviour
     [SerializeField] private int _maxCriticalChance;
     [SerializeField] private int _maxCriticalDamageMultiplier;
 
-    [Header("·¹º§´ç °è¼ö")]
+    [Header("ë ˆë²¨ë‹¹ ê³„ìˆ˜")]
     [SerializeField] private float _coeAttackPower;
     [SerializeField] private float _coeAttackSpeed;
     [SerializeField] private float _coeMoveSpeed;
@@ -66,8 +66,8 @@ public class SaveData : MonoBehaviour
             {
                 Type = RelicType.AttackPower,
                 Level = 0,
-                Name = "", // "ÈûÀÇ À¯¹° {level}"
-                Description = "", // $"°ø°İ·ÂÀÌ {CoeAttackPower:F0} Áõ°¡ÇÕ´Ï´Ù."
+                Name = "", // "í˜ì˜ ìœ ë¬¼ {level}"
+                Description = "", // $"ê³µê²©ë ¥ì´ {CoeAttackPower:F0} ì¦ê°€í•©ë‹ˆë‹¤."
             },
             new RelicOwnedData
             {
@@ -136,18 +136,18 @@ public class SaveData : MonoBehaviour
 
     public void AddPoints(int valve)
     {
-        // ¼Ò¸ğÃ³ ¸¸µé¶§ µ¥ÀÌÅÍ ÀúÀå È®ÀÎ 
+        // ì†Œëª¨ì²˜ ë§Œë“¤ë•Œ ë°ì´í„° ì €ì¥ í™•ì¸ 
         _saveData.Points += valve;
-        Debug.Log($"Æ÷ÀÎÆ® È®ÀÎ : {_saveData.Points}");
+        Debug.Log($"í¬ì¸íŠ¸ í™•ì¸ : {_saveData.Points}");
     }
 
     private void Update()
     {
         // test
-        if(Input.GetKeyDown(KeyCode.Tab))
+        if(Input.GetKeyDown(KeyCode.B))
         {
-            Debug.Log("test");
             GetRelic();
+            LoadRelic();
         }
     }
 
@@ -347,14 +347,26 @@ public class SaveData : MonoBehaviour
         return null;
     }
 
+    // ìœ ë¬¼íšë“ì‹œ í•´ë‹¹ ìœ ë¬¼ ì •ë³´ ì—…ë°ì´íŠ¸í›„ ë‹¤ì‹œ ë°›ì„ ìš©ë„
+    public RelicOwnedData GetOwnedRelic(RelicType type)
+    {
+        foreach (RelicOwnedData relic in _saveData.Relics)
+        {
+            if (relic.Type == type)
+            {
+                return relic;
+            }
+        }
 
+        return null;
+    }
 
     private void SaveRelic()
     {
         string json = JsonUtility.ToJson(_saveData, true);
         File.WriteAllText(SavePath, json);
 
-        Debug.Log($"À¯¹° ÀúÀå ¿Ï·á: {SavePath}");
+        Debug.Log($"ìœ ë¬¼ ì €ì¥ ì™„ë£Œ: {SavePath}");
     }
 
 
@@ -362,7 +374,7 @@ public class SaveData : MonoBehaviour
     {
         if (!File.Exists(SavePath))
         {
-            Debug.Log("ÀúÀåµÈ À¯¹° ÆÄÀÏÀÌ ¾ø½À´Ï´Ù.");
+            Debug.Log("ì €ì¥ëœ ìœ ë¬¼ íŒŒì¼ì´ ì—†ìŠµë‹ˆë‹¤.");
             return;
         }
 
@@ -371,59 +383,59 @@ public class SaveData : MonoBehaviour
         RelicSaveData loadedData = JsonUtility.FromJson<RelicSaveData>(json);
         if (loadedData == null || loadedData.Relics == null)
         {
-            Debug.LogWarning("À¯¹° µ¥ÀÌÅÍ°¡ ¿Ã¹Ù¸£Áö ¾Ê½À´Ï´Ù.");
+            Debug.LogWarning("ìœ ë¬¼ ë°ì´í„°ê°€ ì˜¬ë°”ë¥´ì§€ ì•ŠìŠµë‹ˆë‹¤.");
             return;
         }
 
         _saveData = loadedData;
 
-        // ÃÊ±â ¼¼ÆÃ. ÀÎµ¦½º ¹øÈ£ ÁÖÀÇ
+        // ì´ˆê¸° ì„¸íŒ…. ì¸ë±ìŠ¤ ë²ˆí˜¸ ì£¼ì˜
         RelicOwnedData relic = _saveData.Relics[0];
         if (relic.Type == RelicType.AttackPower && relic.Level != 0)
         {
             _relicData.SetRelic00(relic.Level * _coeAttackPower);
-            relic.Name = $"ÈûÀÇ À¯¹° {relic.Level}";
-            relic.Description = $"°ø°İ·ÂÀÌ {CoeAttackPower * relic.Level:F0} Áõ°¡ÇÕ´Ï´Ù.";
+            relic.Name = $"í˜ì˜ ìœ ë¬¼ {relic.Level}";
+            relic.Description = $"ê³µê²©ë ¥ì´ {CoeAttackPower * relic.Level:F0} ì¦ê°€í•©ë‹ˆë‹¤.";
         }
 
         relic = _saveData.Relics[1];
         if (relic.Type == RelicType.AttackSpeed && relic.Level != 0)
         {
             _relicData.SetRelic01(relic.Level * _coeAttackSpeed);
-            relic.Name = $"°ø°İ¼ÓµµÀÇ À¯¹° {relic.Level}";
-            relic.Description = $"°ø°İ¼Óµµ°¡ {CoeAttackSpeed * relic.Level:F0} Áõ°¡ÇÕ´Ï´Ù.";
+            relic.Name = $"ê³µê²©ì†ë„ì˜ ìœ ë¬¼ {relic.Level}";
+            relic.Description = $"ê³µê²©ì†ë„ê°€ {CoeAttackSpeed * relic.Level:F2} ì¦ê°€í•©ë‹ˆë‹¤.";
         }
 
         relic = _saveData.Relics[2];
         if (relic.Type == RelicType.MoveSpeed && relic.Level != 0)
         {
             _relicData.SetRelic02(relic.Level * _coeMoveSpeed);
-            relic.Name = $"ÀÌµ¿¼ÓµµÀÇ À¯¹° {relic.Level}";
-            relic.Description = $"ÀÌµ¿¼Óµµ°¡ {_coeMoveSpeed * relic.Level:F0} Áõ°¡ÇÕ´Ï´Ù.";
+            relic.Name = $"ì´ë™ì†ë„ì˜ ìœ ë¬¼ {relic.Level}";
+            relic.Description = $"ì´ë™ì†ë„ê°€ {_coeMoveSpeed * relic.Level:F2} ì¦ê°€í•©ë‹ˆë‹¤.";
         }
 
         relic = _saveData.Relics[3];
         if (relic.Type == RelicType.RotateSpeed && relic.Level != 0)
         {
             _relicData.SetRelic03(relic.Level * _coeRotateSpeed);
-            relic.Name = $"È¸Àü¼ÓµµÀÇ À¯¹° {relic.Level}";
-            relic.Description = $"È¸Àü¼Óµµ°¡ {_coeRotateSpeed * relic.Level:F0} Áõ°¡ÇÕ´Ï´Ù.";
+            relic.Name = $"íšŒì „ì†ë„ì˜ ìœ ë¬¼ {relic.Level}";
+            relic.Description = $"íšŒì „ì†ë„ê°€ {_coeRotateSpeed * relic.Level:F0} ì¦ê°€í•©ë‹ˆë‹¤.";
         }
 
         relic = _saveData.Relics[4];
         if (relic.Type == RelicType.CriticalChance && relic.Level != 0)
         {
             _relicData.SetRelic04(relic.Level * _coeCriticalChance);
-            relic.Name = $"Ä¡¸íÅ¸ÀÇ À¯¹° {relic.Level}";
-            relic.Description = $"Ä¡¸íÅ¸È®·üÀÌ {_coeCriticalChance * relic.Level * 100:F0}% Áõ°¡ÇÕ´Ï´Ù.";
+            relic.Name = $"ì¹˜ëª…íƒ€ì˜ ìœ ë¬¼ {relic.Level}";
+            relic.Description = $"ì¹˜ëª…íƒ€í™•ë¥ ì´ {_coeCriticalChance * relic.Level * 100:F2}% ì¦ê°€í•©ë‹ˆë‹¤.";
         }
 
         relic = _saveData.Relics[5];
         if (relic.Type == RelicType.CriticalDamageMultiplier && relic.Level != 0)
         {
             _relicData.SetRelic05(relic.Level * _coeCriticalDamageMultiplier);
-            relic.Name = $"Ä¡¸íÅ¸ °è¼öÀÇ À¯¹° {relic.Level}";
-            relic.Description = $"Ä¡¸íÅ¸ °è¼ö°¡ {_coeCriticalDamageMultiplier * relic.Level * 100:F2}% Áõ°¡ÇÕ´Ï´Ù.";
+            relic.Name = $"ì¹˜ëª…íƒ€ ê³„ìˆ˜ì˜ ìœ ë¬¼ {relic.Level}";
+            relic.Description = $"ì¹˜ëª…íƒ€ ê³„ìˆ˜ê°€ {_coeCriticalDamageMultiplier * relic.Level * 100:F2}% ì¦ê°€í•©ë‹ˆë‹¤.";
         }
 
         SaveRelic();

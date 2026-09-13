@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using static RelicData;
 
 public class ManagerDontDestroy : MonoBehaviour
@@ -28,7 +28,7 @@ public class ManagerDontDestroy : MonoBehaviour
 
     private void Awake()
     {
-        // Áßº¹ ¸Å´ÏÀú Á¦°Å
+        // ì¤‘ë³µ ë§¤ë‹ˆì € ì œê±°
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -37,7 +37,7 @@ public class ManagerDontDestroy : MonoBehaviour
 
         Instance = this;
 
-        // ¾ÀÀÌ º¯°æµÇ¾îµµ À¯Áö
+        // ì”¬ì´ ë³€ê²½ë˜ì–´ë„ ìœ ì§€
         DontDestroyOnLoad(gameObject);
 
         if (_gameData == null)

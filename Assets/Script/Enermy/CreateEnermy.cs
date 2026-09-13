@@ -1,16 +1,16 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class CreateEnemy : MonoBehaviour
 {
-    // Àû 15¸¶¸®ÀÇ »ı¼º°ú ·£´ı ½ºÆù °ü¸®
+    // ì  15ë§ˆë¦¬ì˜ ìƒì„±ê³¼ ëœë¤ ìŠ¤í° ê´€ë¦¬
 
-    [Header("½ºÆùÇÒ Àû ¿ÀºêÁ§Æ®")]
+    [Header("ìŠ¤í°í•  ì  ì˜¤ë¸Œì íŠ¸")]
     [SerializeField] GameObject _GoEnermy = null;
     [SerializeField] private int _enermyCreate = 15;
     [SerializeField] private int _enermyCount = 10;
 
-    [Header("Àû ½ºÆù ¹üÀ§")]
+    [Header("ì  ìŠ¤í° ë²”ìœ„")]
     [SerializeField]
     private Vector3 _enemyCenter = new Vector3(0f, 5f, 0f);
 
@@ -26,7 +26,7 @@ public class CreateEnemy : MonoBehaviour
     {
         if (_GoEnermy == null)
         {
-            Debug.LogError("Àû ÇÁ¸®ÆÕÀÌ ¿¬°áµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogError("ì  í”„ë¦¬íŒ¹ì´ ì—°ê²°ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
 
             return;
         }
@@ -49,11 +49,11 @@ public class CreateEnemy : MonoBehaviour
             return;
         }
 
-        // Ç® ·çÆ® »ı¼º ¡æ Hierarchy Á¤¸®¿ë
+        // í’€ ë£¨íŠ¸ ìƒì„± â†’ Hierarchy ì •ë¦¬ìš©
         GameObject root = new GameObject("Enermy");
         _enemy = root.transform;
 
-        // Ç®¿¡´Â 15°³ »ı¼º
+        // í’€ì—ëŠ” 15ê°œ ìƒì„±
         for (int i = 0; i < _enermyCreate; i++)
         {
             GameObject enemy = Instantiate(_GoEnermy, _enemy);
@@ -65,7 +65,7 @@ public class CreateEnemy : MonoBehaviour
 
     private void EnemySpawn()
     {
-        // È°¼ºÈ­µÈ ÀûÀÌ 10¸¶¸®¸é Ãß°¡ ½ºÆùÇÏÁö ¾ÊÀ½
+        // í™œì„±í™”ëœ ì ì´ 10ë§ˆë¦¬ë©´ ì¶”ê°€ ìŠ¤í°í•˜ì§€ ì•ŠìŒ
         if (_enemyList.Count >= _enermyCount)
         {
             return;
@@ -89,7 +89,7 @@ public class CreateEnemy : MonoBehaviour
     }
 
 
-    // ÀûÀÌ Á×¾úÀ» ¶§ È£Ãâ
+    // ì ì´ ì£½ì—ˆì„ ë•Œ í˜¸ì¶œ
     public void EnemyToPool(GameObject enemy)
     {
         if (enemy == null)
@@ -97,7 +97,7 @@ public class CreateEnemy : MonoBehaviour
             return;
         }
 
-        // Áßº¹ Á¦°Å Ã¼Å© 
+        // ì¤‘ë³µ ì œê±° ì²´í¬ 
         if (!_enemyList.Remove(enemy))
         {
             return;

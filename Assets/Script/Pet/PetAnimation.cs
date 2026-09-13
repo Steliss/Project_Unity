@@ -1,9 +1,9 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class PetAnimation : MonoBehaviour
 {
 
-    [Header("ÂüÁ¶")]
+    [Header("ì°¸ì¡°")]
     [SerializeField] private Animator _animator;
 
     public enum Animation
@@ -12,14 +12,14 @@ public class PetAnimation : MonoBehaviour
         IdleYaw,   // Idle
         Confuse,   // Play
         PetVr,		// Play
-        LevelUp,   // UIÃ¢
-        Happy,	   // ½Â¸®
-        Scared,	    // ÆĞ¹è
-        FireAttack,		// ÆÄÀÌ¾îº¼
-        PawR,		// ¶¥ °ø°İ1
-        PawL,		// ¶¥ °ø°İ2
-        Fly,	// ³¯±â
-        Run,		// ´Ş¸®±â
+        LevelUp,   // UIì°½
+        Happy,	   // ìŠ¹ë¦¬
+        Scared,	    // íŒ¨ë°°
+        FireAttack,		// íŒŒì´ì–´ë³¼
+        PawR,		// ë•… ê³µê²©1
+        PawL,		// ë•… ê³µê²©2
+        Fly,	// ë‚ ê¸°
+        Run,		// ë‹¬ë¦¬ê¸°
     }
 
 

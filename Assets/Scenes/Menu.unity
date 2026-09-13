@@ -1163,7 +1163,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 143795792}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -2058,8 +2058,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2313,8 +2313,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3062,7 +3062,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 200, y: 220}
+  m_AnchoredPosition: {x: 200, y: 180}
   m_SizeDelta: {x: 320, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &475185142
@@ -3517,9 +3517,9 @@ MonoBehaviour:
   _maxCriticalChance: 5
   _maxCriticalDamageMultiplier: 5
   _coeAttackPower: 10
-  _coeAttackSpeed: 3
-  _coeMoveSpeed: 1
-  _coeRotateSpeed: 10
+  _coeAttackSpeed: 0.1
+  _coeMoveSpeed: 0.2
+  _coeRotateSpeed: 2
   _coeCriticalChance: 0.05
   _coeCriticalDamageMultiplier: 0.1
 --- !u!114 &610294965
@@ -4101,7 +4101,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 787345766}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -5623,8 +5623,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b65c8ccf52ae4dd4d8d9cfd8cafb5797, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _farmingTime: 10
-  _bossTime: 100
+  _farmingTime: 120
+  _bossTime: 120
 --- !u!1 &1305830013
 GameObject:
   m_ObjectHideFlags: 0
@@ -6347,8 +6347,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6578,7 +6578,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 220}
+  m_AnchoredPosition: {x: 0, y: 180}
   m_SizeDelta: {x: 320, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1575514909
@@ -7269,7 +7269,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -200, y: 220}
+  m_AnchoredPosition: {x: -200, y: 180}
   m_SizeDelta: {x: 320, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1697663467
@@ -8285,7 +8285,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1857103653}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -9123,8 +9123,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 500}
-  m_SizeDelta: {x: 300, y: 50}
+  m_AnchoredPosition: {x: 0, y: 400}
+  m_SizeDelta: {x: 700, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1935462548
 MonoBehaviour:
@@ -9146,7 +9146,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Title
+  m_text: "\uBCF4\uC0C1\uC744 \uC120\uD0DD\uD558\uC138\uC694"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 88b5a15f4d603c9478c94b2eaf59c28d, type: 2}
   m_sharedMaterial: {fileID: 4005433578373999098, guid: 88b5a15f4d603c9478c94b2eaf59c28d, type: 2}

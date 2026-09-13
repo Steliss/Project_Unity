@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class MenuUI : MonoBehaviour
@@ -46,7 +46,7 @@ public class MenuUI : MonoBehaviour
 
     private void OnButtonClick(string buttonType)
     {
-        Debug.Log($"��ư Ŭ����: {buttonType}");
+        Debug.Log($"버튼 클릭됨: {buttonType}");
 
         if (buttonType == "StartButton")
         {
@@ -64,13 +64,10 @@ public class MenuUI : MonoBehaviour
             _soundManager.SFXGunfirePlay();
             _showRelicUI.ToggleRelicUI();
         }
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.N))
+        else if(buttonType == "ExitButton")
         {
-            OnButtonClick("CloseUIButton");
+            Debug.Log("종료 버튼 실행");
+            Application.Quit();
         }
     }
 }

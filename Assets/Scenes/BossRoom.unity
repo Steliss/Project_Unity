@@ -918,8 +918,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 450, y: 400}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 650, y: 400}
+  m_SizeDelta: {x: 600, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &328252799
 MonoBehaviour:
@@ -941,7 +941,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC720\uBB3C\uC774\uB984"
+  m_text: "\uC720\uBB3C\uC774\uB984\uC740\uAC04\uC7A5\uAC8C\uC7A5\uD30C\uB780\uAC8C\uC7A5\uB09C\uC548\uBA39\uC5B4 "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 88b5a15f4d603c9478c94b2eaf59c28d, type: 2}
   m_sharedMaterial: {fileID: 4005433578373999098, guid: 88b5a15f4d603c9478c94b2eaf59c28d, type: 2}
@@ -2370,7 +2370,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _createBoss: {fileID: 1606180163}
+  _player: {fileID: 2072888231}
   _animator: {fileID: 963101022}
+  _damageLogUI: {fileID: 1012476878}
   _bossBaseHP: 100
   _bossCoefficientHP: 50
   _hitShake: 0.1
@@ -3869,7 +3871,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _createBoss: {fileID: 1606180163}
+  _player: {fileID: 2072888231}
   _animator: {fileID: 1248522250}
+  _damageLogUI: {fileID: 1012476878}
   _bossBaseHP: 10
   _bossCoefficientHP: 50
   _hitShake: 0.1
@@ -5009,7 +5013,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _createBoss: {fileID: 1606180163}
+  _player: {fileID: 2072888231}
   _animator: {fileID: 1768252651}
+  _damageLogUI: {fileID: 1012476878}
   _bossBaseHP: 10
   _bossCoefficientHP: 50
   _hitShake: 0.1
@@ -5597,8 +5603,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2045576419}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.1713613, y: 0.66057736, z: -0.15864746, w: 0.7135152}
-  m_LocalPosition: {x: 7.406539, y: -3.5402558, z: 4.223854}
+  m_LocalRotation: {x: 0.053228408, y: -0.6962822, z: 0.051914357, w: 0.7139067}
+  m_LocalPosition: {x: 10.000212, y: 6, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6134,11 +6140,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 2072888231}
+  _damageLogUI: {fileID: 1012476878}
   _orbitRadius: 3
   _orbitSpeed: 12
   _rotateSpeed: 240
-  _flyingHeight: 4
-  _floatingHeight: 2
+  _flyingHeight: 3
+  _floatingHeight: 1
   _floatingSpeed: 2
   _landingSpeed: 3
   _teleportDistance: 20

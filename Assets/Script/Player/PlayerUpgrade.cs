@@ -1,29 +1,33 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class PlayerUpgrade : MonoBehaviour
 {
     [SerializeField] private GameObject _player;
     [SerializeField] private GameObject _uiPlayer;
+    [SerializeField] private DamageLogUI _damageLogUI;
+    [SerializeField] private RewardChoiceManager _rewardChoiceManager;
 
-    [Header("°­È­ È®·ü Á¶ÀÛ")]
+    [Header("ê°•í™” í™•ë¥  ì¡°ì‘")]
     [SerializeField] private float _successChanceMax = 1f;
     [SerializeField] private float _successChanceMin = 0.1f;
     [SerializeField] private float _DecreaseChance = 0.15f;
 
-    [Header("°­È­ °ü·Ã")]
-    [SerializeField] private int _consumeCoupon = 2;            // °­È­½Ã ¼Ò¸ğµÇ´Â ÇÃ·¹ÀÌ¾î·¹º§°è¼ö / ¹Ù²ÜÀÏ ÀÖÀ½ ÇÊµå UI °íÁ¤°ª³Ö¾î³ö¼­ È®ÀÎ
+    [Header("ê°•í™” ê´€ë ¨")]
+    [SerializeField] private int _consumeCoupon = 2;
 
-    //[SerializeField] private float _increaseFail = 1f;          // ½ÇÆĞ½Ã °íÁ¤ »ó½Â°ª
-    [SerializeField] private float _increaseSuccessSet = 10f;   // ¼º°ø½Ã °íÁ¤ »ó½Â°ª
-    [Range(0f, 1f)]
-    [SerializeField] private float _increaseSuccessPer = 0.1f;  // ¼º°ø½Ã ÆÛ¼¾Æ® »ó½Â°ª 
+    [SerializeField] private float _attackPowerFixed = 2f;
+    [SerializeField] private float _attackPowerPerLevel = 0.2f;
+    [SerializeField, Range(0f, 1f)]
+    private float _attackPowerPercent = 0.05f;
 
-    // °ü¸®¿ë 
-    [SerializeField] private float _addCriticalChance = 5f;
-    [SerializeField] private float _addMoveSpeed = 0.5f;
-    [SerializeField] private float _addRotateSpeed = 5f;
+    // ê´€ë¦¬ìš© 
+    [SerializeField] private float _addCriticalDamageMultiplier = 0.025f;
+    [SerializeField] private float _addAttackSpeed = 0.1f;
+    //[SerializeField] private float _addCriticalChance = 0.005f;
+    [SerializeField] private float _addMoveSpeed = 0.05f;
+    [SerializeField] private float _addRotateSpeed = 2f;
 
-    // °¡ÁßÄ¡ ·£´ı È®·ü °ü¸®
+    // ê°€ì¤‘ì¹˜ ëœë¤ í™•ë¥  ê´€ë¦¬
     [Min(0f)]
     [SerializeField] private float _attackPowerWeight = 80f;
     [Min(0f)]
@@ -43,24 +47,37 @@ public class PlayerUpgrade : MonoBehaviour
     public float SuccessChance => successChance;
 
 
+    private void Awake()
+    {
+        if (_damageLogUI == null)
+        {
+            Log.LogNull(nameof(PlayerUpgrade), nameof(Awake), nameof(_damageLogUI));
+        }
+    }
+
     private void Start()
     {
         _gameData = ManagerDontDestroy.Instance.GameData;
         if (_gameData == null)
         {
-            Log.LogNull(nameof(PlayerBattle), nameof(Start), nameof(_gameData));
+            Log.LogNull(nameof(PlayerUpgrade), nameof(Start), nameof(_gameData));
         }
         _playerData = _gameData._PlayerData;
         if (_playerData == null)
         {
-            Log.LogNull(nameof(PlayerBattle), nameof(Start), nameof(_playerData));
+            Log.LogNull(nameof(PlayerUpgrade), nameof(Start), nameof(_playerData));
             return;
         }
         _objectData = _gameData._ObjectData;
         if (_objectData == null)
         {
-            Log.LogNull(nameof(PlayerBattle), nameof(Start), nameof(_objectData));
+            Log.LogNull(nameof(PlayerUpgrade), nameof(Start), nameof(_objectData));
             return;
+        }
+        _rewardChoiceManager = ManagerDontDestroy.Instance.RewardChoiceManager;
+        if (_rewardChoiceManager == null)
+        {
+            Log.LogNull(nameof(PlayerUpgrade), nameof(Start), nameof(_rewardChoiceManager));
         }
 
         if (_player == null || _uiPlayer == null)
@@ -71,11 +88,11 @@ public class PlayerUpgrade : MonoBehaviour
         _uIPlayerEffect = _uiPlayer.GetComponent<UIPlayerEffect>();
         if( _uIPlayerEffect == null )
         {
-            Log.LogNull(nameof(PlayerBattle), nameof(Start), nameof(_uIPlayerEffect));
+            Log.LogNull(nameof(PlayerUpgrade), nameof(Start), nameof(_uIPlayerEffect));
             return;
         }
 
-        // °­È­È®·ü ÃÊ±â°ª °è»ê UI¿ë
+        // ê°•í™”í™•ë¥  ì´ˆê¸°ê°’ ê³„ì‚° UIìš©
         successChance = CalculateSuccessChance(_playerData.PlayerLevel);
         //Debug.Log($"Test : {successChance}");
     }
@@ -84,7 +101,7 @@ public class PlayerUpgrade : MonoBehaviour
     {
         PetUpgrade();
     }
-    
+
     public void PlayerUpgradeClick()
     {
         if (_playerData == null)
@@ -92,18 +109,26 @@ public class PlayerUpgrade : MonoBehaviour
             Log.LogNull(nameof(PlayerUpgrade), nameof(PlayerUpgradeClick), nameof(_playerData));
             return;
         }
-        int cost = (_playerData.PlayerLevel * _consumeCoupon) + 1;
+        _playerData.UpgradeCost = (_playerData.PlayerLevel * _consumeCoupon) + 1;
 
-        if (_objectData.PlayerUpgrade <= cost)
+        if (_objectData.PlayerUpgrade < _playerData.UpgradeCost)
         {
-            Debug.Log("°­È­±ÇÀÌ ºÎÁ·ÇÕ´Ï´Ù.");
+            _damageLogUI.AnyLog("ê°•í™”ê¶Œì´ ë¶€ì¡±í•©ë‹ˆë‹¤.");
+            //Debug.Log("ê°•í™”ê¶Œì´ ë¶€ì¡±í•©ë‹ˆë‹¤.");
             return;
         }
 
-        _objectData.AddPlayerUpgrade(-cost);
-        _playerData.AddTotalCoupon(cost);
+        _objectData.AddPlayerUpgrade(-_playerData.UpgradeCost);
+        _playerData.AddTotalCoupon(_playerData.UpgradeCost);
 
-        // °­È­ È®·ü °è»ê
+        if (_playerData.PlayerLevel >= 25)
+        {
+            _damageLogUI.AnyLog("í”Œë ˆì´ì–´ì˜ ìµœëŒ€ë ˆë²¨ì— ë„ë‹¬í–ˆìŠµë‹ˆë‹¤.");
+            PlayerUpgradeFail();
+            return;
+        }
+
+        // ê°•í™” í™•ë¥  ê³„ì‚°
         successChance = CalculateSuccessChance(_playerData.PlayerLevel);
 
         bool isSuccess = Random.value <= successChance;
@@ -111,91 +136,98 @@ public class PlayerUpgrade : MonoBehaviour
         if (isSuccess)
         {
             PlayerUpgradeSuccess();
+            _damageLogUI.AnyLog($"í”Œë ˆì´ì–´ ê°•í™” <color=blue>ì„±ê³µ! ë ˆë²¨ : {_playerData.PlayerLevel}</color>");
         }
         else
         {
+            // ì‹¤íŒ¨ ê°•í™” íšŸìˆ˜ ì €ì¥
+            _playerData.AddFailUpgrade(1);
+            _damageLogUI.AnyLog($"í”Œë ˆì´ì–´ ê°•í™” <color=red>ì‹¤íŒ¨</color> ì‹¤íŒ¨ íšŸìˆ˜ : <color=red>{_playerData.FailUpgrade}</color>");
+
             PlayerUpgradeFail();
         }
     }
 
-    // °­È­ È®·ü °è»ê 
+    // ê°•í™” í™•ë¥  ê³„ì‚° 
     private float CalculateSuccessChance(int level)
     {
         float decrease = Mathf.Log(level) * _DecreaseChance;
+        _playerData.UpgradeCost = (_playerData.PlayerLevel * _consumeCoupon) + 1;
         return Mathf.Clamp(_successChanceMax - decrease, _successChanceMin, _successChanceMax);
     }
 
-    // ¼º°ø½Ã °íÁ¤°ª°ú ÆÛ¼¾Æ®°ª ºñ±³ Å«ÂÊÀ¸·Î ´É·ÂÄ¡ Áõ°¡
+    // ì„±ê³µì‹œ ê³ ì •ê°’ê³¼ í¼ì„¼íŠ¸ê°’ ë¹„êµ í°ìª½ìœ¼ë¡œ ëŠ¥ë ¥ì¹˜ ì¦ê°€
     private void PlayerUpgradeSuccess()
     {
         _uIPlayerEffect.PlayEffect();
 
-        _increaseSuccessSet = _increaseSuccessSet * _playerData.PlayerLevel;
-        float increasePercent;
-        float increaseAmount;
+        // ê¸°ë³¸ê°’ì€ ìœ ì§€í•˜ê³ , í˜„ì¬ ë ˆë²¨ë¡œ ì´ë²ˆ ê°•í™” ì¦ê°€ëŸ‰ë§Œ ê³„ì‚°
+        float fixedIncrease = _attackPowerFixed + _attackPowerPerLevel * (_playerData.PlayerLevel - 1);
+        float percentIncrease = _playerData.AttackPower * _attackPowerPercent;
+        float increaseAmount = Mathf.Max(fixedIncrease, percentIncrease);
 
-        increasePercent = _playerData.AttackPower * _increaseSuccessPer;
-        increaseAmount = Mathf.Max(increasePercent, _increaseSuccessSet);
         _playerData.AddAttackPower(increaseAmount);
 
-        increasePercent = _playerData.CriticalDamageMultiplier * _increaseSuccessPer;
-        increaseAmount = Mathf.Max(increasePercent, _increaseSuccessSet);
-        _playerData.AddCriticalDamageMultiplier(increaseAmount);
-
-        increasePercent = _playerData.AttackSpeed * _increaseSuccessPer;
-        _playerData.AddAttackSpeed(increaseAmount);
-
-        _playerData.AddCriticalChance(_addCriticalChance);
+        _playerData.AddCriticalDamageMultiplier(_addCriticalDamageMultiplier);
+        _playerData.AddAttackSpeed(_addAttackSpeed);
         _playerData.AddMoveSpeed(_addMoveSpeed);
         _playerData.AddRotateSpeed(_addRotateSpeed);
 
         _playerData.AddPlayerLevel(1);
 
-        Debug.Log($"°­È­ ¼º°ø ÇÃ·¹ÀÌ¾î ·¹º§ : {_playerData.PlayerLevel}");
+
+        Debug.Log($"ê°•í™” ì„±ê³µ í”Œë ˆì´ì–´ ë ˆë²¨ : {_playerData.PlayerLevel}");
     }
 
-    //°¡ÁßÄ¡ ·£´ı ½ÇÆĞ È®·ü °è»ê
+    //ê°€ì¤‘ì¹˜ ëœë¤ ì‹¤íŒ¨ í™•ë¥  ê³„ì‚°
     private void PlayerUpgradeFail()
     {
         float totalWeight = _attackPowerWeight + _criticalDamageWeight + _moveSpeedWeight + _rotateSpeedWeight;
 
         if (totalWeight <= 0f)
         {
-            Debug.LogWarning("¼³Á¤µÈ °¡ÁßÄ¡°¡ ¾ø½À´Ï´Ù.");
+            Debug.LogWarning("ì„¤ì •ëœ ê°€ì¤‘ì¹˜ê°€ ì—†ìŠµë‹ˆë‹¤.");
             return;
         }
 
-        // ½ÇÆĞ½Ã ·¹º§ °è¼ö¸¸Å­ °öÇØÁÖ±â
+        // ì‹¤íŒ¨ì‹œ ë ˆë²¨ ê³„ìˆ˜ë§Œí¼ ê³±í•´ì£¼ê¸°
         float randomWeight = Random.Range(0f, totalWeight);
 
         if (randomWeight < _attackPowerWeight)
         {
             _playerData.AddAttackPower(1f * _playerData.PlayerLevel);
-            Debug.Log($"°­È­ ½ÇÆĞ º¸»ó: °ø°İ·Â {1f * _playerData.PlayerLevel}");
+            _damageLogUI.AnyLog($"ë³´ìƒ: <color=red>ê³µê²©ë ¥ {1f * _playerData.PlayerLevel:F0}</color>");
+            //Debug.Log($"ê°•í™” ì‹¤íŒ¨ ë³´ìƒ: ê³µê²©ë ¥ {1f * _playerData.PlayerLevel}");
         }
         else if (randomWeight < _attackPowerWeight + _criticalDamageWeight)
         {
             _playerData.AddCriticalDamageMultiplier(0.05f * _playerData.PlayerLevel);
-            Debug.Log($"°­È­ ½ÇÆĞ º¸»ó: Å©¸®Æ¼ÄÃ ¹èÀ² {0.05f * _playerData.PlayerLevel}");
+            _damageLogUI.AnyLog($"ë³´ìƒ: <color=red> í¬ë¦¬í‹°ì»¬ ë°°ìœ¨ {0.05f * _playerData.PlayerLevel}</color>");
+            //Debug.Log($"ê°•í™” ì‹¤íŒ¨ ë³´ìƒ: í¬ë¦¬í‹°ì»¬ ë°°ìœ¨ {0.05f * _playerData.PlayerLevel}");
         }
         else if (randomWeight < _attackPowerWeight + _criticalDamageWeight + _moveSpeedWeight)
         {
             _playerData.AddMoveSpeed(0.05f * _playerData.PlayerLevel);
-            Debug.Log($"°­È­ ½ÇÆĞ º¸»ó: ÀÌµ¿¼Óµµ {0.05f * _playerData.PlayerLevel}");
+            _damageLogUI.AnyLog($"ë³´ìƒ: <color=red> ì´ë™ì†ë„ {0.05f * _playerData.PlayerLevel}</color>");
+            //Debug.Log($"ê°•í™” ì‹¤íŒ¨ ë³´ìƒ: ì´ë™ì†ë„ {0.05f * _playerData.PlayerLevel}");
         }
         else
         {
             _playerData.AddRotateSpeed(1f * _playerData.PlayerLevel);
-            Debug.Log($"°­È­ ½ÇÆĞ º¸»ó: È¸Àü¼Óµµ {1f * _playerData.PlayerLevel}");
+            _damageLogUI.AnyLog($"ë³´ìƒ: <color=red>íšŒì „ì†ë„ {1f * _playerData.PlayerLevel}</color>");
+            //Debug.Log($"ê°•í™” ì‹¤íŒ¨ ë³´ìƒ: íšŒì „ì†ë„ {1f * _playerData.PlayerLevel}");
         }
 
-        // ½ÇÆĞ °­È­ È½¼ö ÀúÀå
-        _playerData.AddFailUpgrade(1);
+        if(_playerData.FailUpgrade >= 10)
+        {
+            _playerData.AddFailUpgrade(-10);
+            _rewardChoiceManager.OpenChoices();
+        }
     }
  
     private void PetUpgrade()
     {
-        // ÀÚµ¿ Æê ¾÷±×·¹ÀÌµå 
+        // ìë™ í« ì—…ê·¸ë ˆì´ë“œ 
         if(_playerData.PetLevel * 3 > _objectData.PetUpgrade)
         {
             return;
@@ -204,10 +236,11 @@ public class PlayerUpgrade : MonoBehaviour
         _objectData.AddPetUpgrade(-_playerData.PetLevel * 3);
         _playerData.AddTotalCoupon(_playerData.PetLevel * 3);
         _playerData.AddPetAttackPower(_playerData.PetLevel);
-        Debug.Log($"Æê °­È­ ¼º°ø : °ø°İ·Â {_playerData.PetLevel}");
+        _damageLogUI.AnyLog($"í« ê°•í™” ì„±ê³µ : <color=blue>ê³µê²©ë ¥ {_playerData.PetLevel}</color>");
+        Debug.Log($"í« ê°•í™” ì„±ê³µ : ê³µê²©ë ¥ {_playerData.PetLevel}");
 
-        // °ø°İ·Â¿¡ µû¸¥ ·¹º§ »ó½Â 
-        if(_playerData.PetAttackPower > _playerData.PetLevel * 10f)
+        // ê³µê²©ë ¥ì— ë”°ë¥¸ ë ˆë²¨ ìƒìŠ¹ 
+        if(_playerData.PetAttackPower > _playerData.PetLevel * 20f)
         {
             _playerData.AddPetLevel(1);
         }

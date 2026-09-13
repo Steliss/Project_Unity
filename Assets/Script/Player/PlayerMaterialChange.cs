@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,11 +14,11 @@ public class PlayerMaterialChange : MonoBehaviour
         GlassOff
     }
 
-    // ÀÎ½ºÆåÅÍ °ü¸®
+    // ì¸ìŠ¤í™í„° ê´€ë¦¬
     [Serializable]
     private class RendererGroup
     {
-        // ¾È°æ µû·Î °ü¸®
+        // ì•ˆê²½ ë”°ë¡œ ê´€ë¦¬
 
         [SerializeField] private RendererType _suitType;
 
@@ -72,7 +72,7 @@ public class PlayerMaterialChange : MonoBehaviour
 
         if (_playerjacket == null || _playerClothes == null || _playerSwimSuit == null) // || _uijacket == null || _uiClothes == null || _uiSwimSuit == null
         {
-            Debug.Log("Ã¶ÀÚÈ®ÀÎ");
+            Debug.Log("ì² ìí™•ì¸");
             return;
         }
     }
@@ -98,14 +98,14 @@ public class PlayerMaterialChange : MonoBehaviour
         }
     }
 
-    //ÀÇ»ó º¯°æ
+    //ì˜ìƒ ë³€ê²½
     private void LateUpdate()
     {
         DetectLevelChange();
     }
 
 
-    // ·£´õ ¹Ù²Ù±â
+    // ëœë” ë°”ê¾¸ê¸°
     private void ChangeMaterial(RendererType suitType, int materialIndex)
     {
 
@@ -121,17 +121,17 @@ public class PlayerMaterialChange : MonoBehaviour
 
         if (chooseSuit == null)
         {
-            Debug.LogWarning($"{suitType}À» Ã£Áö ¸øÇß½À´Ï´Ù.");
+            Debug.LogWarning($"{suitType}ì„ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.");
             return;
         }
         if (chooseSuit.Materials == null || materialIndex < 0)
         {
-            Debug.LogWarning($"{suitType}ÀÇ ¸ÓÆ¼¸®¾ó ÀÎµ¦½º {materialIndex}°¡ ¿Ã¹Ù¸£Áö ¾Ê½À´Ï´Ù.");
+            Debug.LogWarning($"{suitType}ì˜ ë¨¸í‹°ë¦¬ì–¼ ì¸ë±ìŠ¤ {materialIndex}ê°€ ì˜¬ë°”ë¥´ì§€ ì•ŠìŠµë‹ˆë‹¤.");
             return;
         }
         if (materialIndex >= chooseSuit.Materials.Count)
         {
-            Debug.LogWarning($"{materialIndex} ÃÊ°ú·Î 0¹øÀ¸·Î º¯°æ");
+            Debug.LogWarning($"{materialIndex} ì´ˆê³¼ë¡œ 0ë²ˆìœ¼ë¡œ ë³€ê²½");
             materialIndex = 0;
         }
 
@@ -141,7 +141,7 @@ public class PlayerMaterialChange : MonoBehaviour
         //ApplyMaterial(chooseSuit.UIPlayerRenderers, selectedMaterial);
     }
 
-    // ·£´õ Àû¿ë
+    // ëœë” ì ìš©
     private void ApplyMaterial(List<SkinnedMeshRenderer> renderers, Material material)
     {
         if (renderers == null || material == null)
@@ -160,7 +160,7 @@ public class PlayerMaterialChange : MonoBehaviour
         }
     }
 
-    // renderer Type¿¡ µû¸¥ ÇÏÀÌ¾î¶óÅ° ²ô°í Å°±â
+    // renderer Typeì— ë”°ë¥¸ í•˜ì´ì–´ë¼í‚¤ ë„ê³  í‚¤ê¸°
     private void ClothesChange(RendererType suitType)
     {
         if (_rendererGroups == null)
@@ -217,7 +217,7 @@ public class PlayerMaterialChange : MonoBehaviour
     }
 
 
-    // 1~25 ·¹º§¿¡ µû¸¥ ÀÇ»ó º¯È­
+    // 1~25 ë ˆë²¨ì— ë”°ë¥¸ ì˜ìƒ ë³€í™”
     private void DetectLevelChange()
     {
         if(_savePlayerLevel == _playerData.PlayerLevel)

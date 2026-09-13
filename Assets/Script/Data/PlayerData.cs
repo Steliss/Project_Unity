@@ -1,8 +1,8 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 
 
-// ÇÃ·¹ÀÌ¾î ÀÚ·á °ø°£
+// í”Œë ˆì´ì–´ ìžë£Œ ê³µê°„
 
 
 [Serializable]
@@ -16,20 +16,21 @@ public class PlayerData
     [SerializeField] private float _rotateSpeed = 90f;
     [SerializeField] private float _criticalChance = 0.1f;
     [SerializeField] private float _criticalDamageMultiplier = 1.5f;
-    
-    [SerializeField] private float _petAttackPower = 1f;
+
+    [SerializeField] private float _petAttackPower = 10f;
 
     private int _playerLevel = 1;
     private int _petLevel = 1;
     private int _failUpgrade = 0;
     private int _round = 0;
+    private int _upgradeCost = 0;
 
     private float _totalDamage = 0f;
     private int _totalUseCoupon = 0;
 
     private float[] _initialStats;
     private int[] _initialLevel;
-    
+
     public float AttackPower => _attackPower;
     public float AttackSpeed => _attackSpeed;
     public float AttackRange => _attackRange;
@@ -46,6 +47,7 @@ public class PlayerData
 
     public float TotalDamage => _totalDamage;
     public int TotalUseCoupon => _totalUseCoupon;
+    public int UpgradeCost { get => _upgradeCost; set => _upgradeCost = value; }
 
 
     public void SaveState()

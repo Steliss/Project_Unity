@@ -1,19 +1,12 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class UseItem : MonoBehaviour
 {
-    // ¾ÆÀÌÅÛ 1¹ø »ç¿ëÃ³¸® 
-    // playerBattle Power flag on off·Î Á¶Àı 
-    // ÇÊ¿äÇÑ°Å »ç¿ë ½Ã°£À¸·Î Å°°í ²ô±â.
-    // ¾ÆÀÌÅÛ »ç¿ë½Ã Ç® µ¹¾Æ°¡±â + ¿©·¯°³ »ç¿ë½Ã Áö¼Ó½Ã°£ ¿¬Àå 
-    // Áö¼Ó ½Ã°£ UI¿¡ ¶ç¿ì±â 
-    // ¿©±â¿¡ ¿­¼èµµ µé°í¿Í¼­ ÀÎº¥Åä¸® ±â´É ¸¸µé±â Èì... ±Ùµ¥ UI¾îÄÉ ¸¸µë? 
-
-
     [SerializeField] private CreateItem _createItem;
     [SerializeField] private PlayerBattle _playerBattle;
     [SerializeField] private InvenrotyUI _invenrotyUI;
+    [SerializeField] private DamageLogUI _damageLogUI;
 
     private float _PowerTimer = 0f;
     private bool _flagPotionTimer = false;
@@ -51,18 +44,13 @@ public class UseItem : MonoBehaviour
     void Update()
     {
         PotionTime();
-
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            PotionUse();
-        }
     }
 
     public void PotionUse()
     {
         if (_potionList.Count == 0)
         {
-            Debug.Log("TestLog : Æ÷¼Ç ¾øÀ½");
+            Debug.Log("TestLog : í¬ì…˜ ì—†ìŒ");
             return;
         }
 
@@ -88,7 +76,7 @@ public class UseItem : MonoBehaviour
 
         if (potion == null)
         {
-            Debug.Log("TestLog : ¿¹¿Ü ¹ß»ı");
+            Debug.Log("TestLog : ì˜ˆì™¸ ë°œìƒ");
             return;
         }
 
@@ -97,6 +85,7 @@ public class UseItem : MonoBehaviour
         _playerBattle.FlagPower = true;
         _flagPotionTimer = true;
         _PowerTimer += 10f;
+        _damageLogUI.AnyLog($"í¬ì…˜ ì‚¬ìš© ë‚¨ì€ ì‹œê°„ : {_PowerTimer:F0}");
     }
 
     private void PotionTime()
@@ -113,7 +102,4 @@ public class UseItem : MonoBehaviour
             _flagPotionTimer = false;
         }
     }
-
-
-
 }
