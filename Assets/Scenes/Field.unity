@@ -1239,7 +1239,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 700, y: 0}
-  m_SizeDelta: {x: 250, y: 30}
+  m_SizeDelta: {x: 250, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &136670335
 MonoBehaviour:
@@ -7543,8 +7543,8 @@ MonoBehaviour:
   _createItem: {fileID: 913498965}
   _enemyMaterialChange: {fileID: 1522221924}
   _skinnedMeshRenderer: {fileID: 712866501}
-  _enemyBaseHP: 10
-  _enemyCoefficientHP: 50
+  _enemyBaseHP: 15
+  _enemyCoefficientHP: 100
   _groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -9210,7 +9210,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 510, y: 0}
-  m_SizeDelta: {x: 150, y: 30}
+  m_SizeDelta: {x: 150, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1175021123
 MonoBehaviour:

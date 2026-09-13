@@ -2374,7 +2374,7 @@ MonoBehaviour:
   _animator: {fileID: 963101022}
   _damageLogUI: {fileID: 1012476878}
   _bossBaseHP: 100
-  _bossCoefficientHP: 50
+  _bossCoefficientHP: 100
   _hitShake: 0.1
   _maxShake: 0.3
   _speedDecrease: 1
@@ -3874,8 +3874,8 @@ MonoBehaviour:
   _player: {fileID: 2072888231}
   _animator: {fileID: 1248522250}
   _damageLogUI: {fileID: 1012476878}
-  _bossBaseHP: 10
-  _bossCoefficientHP: 50
+  _bossBaseHP: 1000
+  _bossCoefficientHP: 1000
   _hitShake: 0.1
   _maxShake: 0.3
   _speedDecrease: 1
@@ -5016,8 +5016,8 @@ MonoBehaviour:
   _player: {fileID: 2072888231}
   _animator: {fileID: 1768252651}
   _damageLogUI: {fileID: 1012476878}
-  _bossBaseHP: 10
-  _bossCoefficientHP: 50
+  _bossBaseHP: 500
+  _bossCoefficientHP: 500
   _hitShake: 0.1
   _maxShake: 0.3
   _speedDecrease: 1

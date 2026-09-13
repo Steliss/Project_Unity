@@ -48,10 +48,7 @@ public class DamageLogUI : MonoBehaviour
             return;
         }
 
-        GameObject root = new GameObject(
-            "DamageTextRoot",
-            typeof(RectTransform)
-        );
+        GameObject root = new GameObject("DamageTextRoot", typeof(RectTransform));
 
         _damageTextRoot = root.GetComponent<RectTransform>();
         _damageTextRoot.SetParent(transform, false);
@@ -64,10 +61,7 @@ public class DamageLogUI : MonoBehaviour
 
         for (int i = 0; i < _damageTextCount; i++)
         {
-            TextMeshProUGUI text = Instantiate(
-                _damageText,
-                _damageTextRoot
-            );
+            TextMeshProUGUI text = Instantiate(_damageText, _damageTextRoot);
 
             text.text = "";
             text.raycastTarget = false;

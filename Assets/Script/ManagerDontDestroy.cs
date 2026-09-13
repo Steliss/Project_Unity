@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using static RelicData;
 
 public class ManagerDontDestroy : MonoBehaviour
 {

@@ -21,6 +21,7 @@ public class CreateBoss : MonoBehaviour
     private CSceneManager _sceneManager;
     private SaveData _saveData;
 
+    private bool _flagGameOver = false;
 
     private void Awake()
     {
@@ -56,15 +57,23 @@ public class CreateBoss : MonoBehaviour
     {
         SpawnBoss();
 
-        if(_gameData.CurrentPhase == GameData.GamePhase.GameOver)
+        if (_gameData.CurrentPhase == GameData.GamePhase.GameOver)
         {
-            StartCoroutine(GameOver());
+            if (!_flagGameOver)
+            {
+                _flagGameOver = true;
+                StartCoroutine(GameOver());
+            }
+
+            return;
         }
+
     }
 
     private IEnumerator GameOver()
     {
         //Debug.Log("제한시간 초과 / 게임 오버");
+        _playerAnimation.PlayerShoot(false);
 
         int rand = Random.Range(0, 2);
 

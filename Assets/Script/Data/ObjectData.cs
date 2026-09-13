@@ -8,7 +8,7 @@ using UnityEngine;
 [Serializable]
 public class ObjectData
 {
-    [SerializeField] private int _chestLevel = 1;
+    [SerializeField] private int _chestLevel = 0;
     [SerializeField] private int _playerUpgrade = 0;
     [SerializeField] private int _PetUpgrade = 0;
 

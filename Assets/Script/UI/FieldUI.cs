@@ -105,8 +105,8 @@ public class FiledUI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.N))
         {
             Debug.Log(_objectData.PlayerUpgrade);
-            _objectData.AddPlayerUpgrade(100);
-            _damageLogUI.AnyLog($"<color=yellow>치트적용 플레이어 강화 쿠폰 100개 지급</color>");
+            _objectData.AddPlayerUpgrade(1000);
+            _damageLogUI.AnyLog($"<color=yellow>치트적용 플레이어 강화 쿠폰 1000개 지급</color>");
         }
     }
 
