@@ -120,4 +120,12 @@ public class SoundManager : MonoBehaviour
         _sfxAudio.PlayOneShot(_playSound.StartMenuSound);
     }
 
+    public void SFXUiUpgradeButtonSuccess()
+    {
+        _sfxAudio.PlayOneShot(_playSound.UiUpgrageButton_Success);
+    }
+    public void SFXUiUpgradeButtonFail()
+    {
+        _sfxAudio.PlayOneShot(_playSound.UiUpgrageButton_Fail);
+    }
 }

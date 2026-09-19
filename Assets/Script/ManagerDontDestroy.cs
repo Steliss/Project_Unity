@@ -24,7 +24,7 @@ public class ManagerDontDestroy : MonoBehaviour
     public SaveData SaveData => _saveData;  
     public RelicData RelicData => _relicData;
     public SoundManager SoundManager => _soundManager;
-
+        
     private void Awake()
     {
         // 중복 매니저 제거

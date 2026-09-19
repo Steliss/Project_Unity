@@ -188,11 +188,11 @@ public class DamageLogUI : MonoBehaviour
 
         if(iscritical)
         {
-            text.text = $"적에게 <color=yellow>{damage:F0}</color> 피해를 입히고 HP는 <color=red>{HP:F0}</color>입니다";
+            text.text = $"크리티컬! 적에게 <color=#FFBF00>{damage:F0}</color> 피해를 입히고 HP는 <color=red>{HP:F0}</color>입니다";
         }
         else
         {
-            text.text = $"적에게 <color=green>{damage:F0}</color> 피해를 입히고 HP는 <color=red>{HP:F0}</color>입니다";
+            text.text = $"적에게 <color=#FFFF00>{damage:F0}</color> 피해를 입히고 HP는 <color=red>{HP:F0}</color>입니다";
         }
 
         text.gameObject.SetActive(true);

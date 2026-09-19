@@ -178,8 +178,16 @@ public class PlayerBattle : MonoBehaviour
         directionToEnemy.y = 0f;
 
         _distance = Vector3.Distance(enemyPos, playerPos);
-        _playerAnimation.PlayerMoving(_distance - _playerData.AttackRange, _playerData.MoveSpeed);
-        _uiPlayerAnimation.PlayerMoving(_distance - _playerData.AttackRange, _playerData.MoveSpeed);
+        if(_distance > _playerData.AttackRange)
+        {
+            _playerAnimation.PlayerMoving(1f);
+            _uiPlayerAnimation.PlayerMoving(0.5f);
+        }
+        else
+        {
+            _playerAnimation.PlayerMoving(0f);
+            _uiPlayerAnimation.PlayerMoving(0f);
+        }
 
         Quaternion targetRotation = Quaternion.LookRotation(directionToEnemy, Vector3.up);
         float remainingAngle = Quaternion.Angle(_player.transform.rotation, targetRotation);

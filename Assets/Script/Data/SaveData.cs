@@ -395,7 +395,7 @@ public class SaveData : MonoBehaviour
         {
             _relicData.SetRelic00(relic.Level * _coeAttackPower);
             relic.Name = $"힘의 유물 {relic.Level}";
-            relic.Description = $"공격력이 {CoeAttackPower * relic.Level:F0} 증가합니다.";
+            relic.Description = $"공격력이 <color=#00FFFF>{CoeAttackPower * relic.Level:F0}</color> 증가합니다.";
         }
 
         relic = _saveData.Relics[1];
@@ -403,7 +403,7 @@ public class SaveData : MonoBehaviour
         {
             _relicData.SetRelic01(relic.Level * _coeAttackSpeed);
             relic.Name = $"공격속도의 유물 {relic.Level}";
-            relic.Description = $"공격속도가 {CoeAttackSpeed * relic.Level:F2} 증가합니다.";
+            relic.Description = $"공격속도가 <color=#00FFFF>{CoeAttackSpeed * relic.Level:F2}</color> 증가합니다.";
         }
 
         relic = _saveData.Relics[2];
@@ -411,7 +411,7 @@ public class SaveData : MonoBehaviour
         {
             _relicData.SetRelic02(relic.Level * _coeMoveSpeed);
             relic.Name = $"이동속도의 유물 {relic.Level}";
-            relic.Description = $"이동속도가 {_coeMoveSpeed * relic.Level:F2} 증가합니다.";
+            relic.Description = $"이동속도가 <color=#00FFFF>{_coeMoveSpeed * relic.Level:F2}</color> 증가합니다.";
         }
 
         relic = _saveData.Relics[3];
@@ -419,7 +419,7 @@ public class SaveData : MonoBehaviour
         {
             _relicData.SetRelic03(relic.Level * _coeRotateSpeed);
             relic.Name = $"회전속도의 유물 {relic.Level}";
-            relic.Description = $"회전속도가 {_coeRotateSpeed * relic.Level:F0} 증가합니다.";
+            relic.Description = $"회전속도가 <color=#00FFFF>{_coeRotateSpeed * relic.Level:F0}</color> 증가합니다.";
         }
 
         relic = _saveData.Relics[4];
@@ -427,7 +427,7 @@ public class SaveData : MonoBehaviour
         {
             _relicData.SetRelic04(relic.Level * _coeCriticalChance);
             relic.Name = $"치명타의 유물 {relic.Level}";
-            relic.Description = $"치명타확률이 {_coeCriticalChance * relic.Level * 100:F2}% 증가합니다.";
+            relic.Description = $"치명타확률이 <color=#00FFFF>{_coeCriticalChance * relic.Level * 100:F2}%</color> 증가합니다.";
         }
 
         relic = _saveData.Relics[5];
@@ -435,7 +435,7 @@ public class SaveData : MonoBehaviour
         {
             _relicData.SetRelic05(relic.Level * _coeCriticalDamageMultiplier);
             relic.Name = $"치명타 계수의 유물 {relic.Level}";
-            relic.Description = $"치명타 계수가 {_coeCriticalDamageMultiplier * relic.Level * 100:F2}% 증가합니다.";
+            relic.Description = $"치명타 계수가 <color=#00FFFF>{_coeCriticalDamageMultiplier * relic.Level * 100:F2}%</color> 증가합니다.";
         }
 
         SaveRelic();

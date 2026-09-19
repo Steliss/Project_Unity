@@ -5623,8 +5623,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b65c8ccf52ae4dd4d8d9cfd8cafb5797, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _farmingTime: 120
-  _bossTime: 60
+  _farmingTime: 140
+  _bossTime: 40
 --- !u!1 &1305830013
 GameObject:
   m_ObjectHideFlags: 0
@@ -8859,6 +8859,8 @@ MonoBehaviour:
   _dragonBlessSound: {fileID: 8300000, guid: 6e32fdb9173707f499420d86948d46c9, type: 3}
   _dragonClawSound: {fileID: 8300000, guid: 653cf252c3fba73459c2b193c1359cee, type: 3}
   _startMenuSound: {fileID: 8300000, guid: 6e32fdb9173707f499420d86948d46c9, type: 3}
+  _uiUpgradeButton_Success: {fileID: 8300000, guid: 457e7769b25f53140a3fd336dd514035, type: 3}
+  _uiUpgradeButton_Fail: {fileID: 8300000, guid: 1de926517c2c71645959e8e49a99e610, type: 3}
 --- !u!82 &1916301099
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9123,7 +9125,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 400}
+  m_AnchoredPosition: {x: 0, y: 355}
   m_SizeDelta: {x: 700, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1935462548

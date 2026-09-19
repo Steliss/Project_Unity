@@ -42,6 +42,7 @@ public class PlayerUpgrade : MonoBehaviour
     private ObjectData _objectData;
 
     private UIPlayerEffect _uIPlayerEffect;
+    private SoundManager _soundManager;
 
     private float successChance;
     public float SuccessChance => successChance;
@@ -49,9 +50,21 @@ public class PlayerUpgrade : MonoBehaviour
 
     private void Awake()
     {
+        if (_player == null || _uiPlayer == null)
+        {
+            Log.LogNull(nameof(PlayerUpgrade), nameof(Start));
+        }
+
         if (_damageLogUI == null)
         {
             Log.LogNull(nameof(PlayerUpgrade), nameof(Awake), nameof(_damageLogUI));
+        }
+
+        _uIPlayerEffect = _uiPlayer.GetComponent<UIPlayerEffect>();
+        if (_uIPlayerEffect == null)
+        {
+            Log.LogNull(nameof(PlayerUpgrade), nameof(Start), nameof(_uIPlayerEffect));
+            return;
         }
     }
 
@@ -80,17 +93,13 @@ public class PlayerUpgrade : MonoBehaviour
             Log.LogNull(nameof(PlayerUpgrade), nameof(Start), nameof(_rewardChoiceManager));
         }
 
+        _soundManager = ManagerDontDestroy.Instance.SoundManager;
         if (_player == null || _uiPlayer == null)
         {
             Log.LogNull(nameof(PlayerUpgrade), nameof(Start));
         }
 
-        _uIPlayerEffect = _uiPlayer.GetComponent<UIPlayerEffect>();
-        if( _uIPlayerEffect == null )
-        {
-            Log.LogNull(nameof(PlayerUpgrade), nameof(Start), nameof(_uIPlayerEffect));
-            return;
-        }
+
 
         // 강화확률 초기값 계산 UI용
         successChance = CalculateSuccessChance(_playerData.PlayerLevel);
@@ -113,11 +122,13 @@ public class PlayerUpgrade : MonoBehaviour
 
         if (_objectData.PlayerUpgrade < _playerData.UpgradeCost)
         {
-            _damageLogUI.AnyLog("강화권이 부족합니다.");
+            _soundManager.SFXUiUpgradeButtonFail();
+            _damageLogUI.AnyLog("<color=#FFFF66>강화권이 부족합니다.</color>");
             //Debug.Log("강화권이 부족합니다.");
             return;
         }
 
+        _soundManager.SFXUiUpgradeButtonSuccess();
         _objectData.AddPlayerUpgrade(-_playerData.UpgradeCost);
         _playerData.AddTotalCoupon(_playerData.UpgradeCost);
 
@@ -136,13 +147,13 @@ public class PlayerUpgrade : MonoBehaviour
         if (isSuccess)
         {
             PlayerUpgradeSuccess();
-            _damageLogUI.AnyLog($"플레이어 강화 <color=blue>성공! 레벨 : {_playerData.PlayerLevel}</color>");
+            _damageLogUI.AnyLog($"플레이어 강화 <color=#FFF200>성공! 레벨 : {_playerData.PlayerLevel}</color>");
         }
         else
         {
             // 실패 강화 횟수 저장
             _playerData.AddFailUpgrade(1);
-            _damageLogUI.AnyLog($"플레이어 강화 <color=red>실패</color> 실패 횟수 : <color=red>{_playerData.FailUpgrade}</color>");
+            _damageLogUI.AnyLog($"플레이어 강화 <color=#FFFF66>실패</color> 실패 횟수 : <color=#FFFF66>{_playerData.FailUpgrade}</color>");
 
             PlayerUpgradeFail();
         }
@@ -196,25 +207,25 @@ public class PlayerUpgrade : MonoBehaviour
         if (randomWeight < _attackPowerWeight)
         {
             _playerData.AddAttackPower(1f * _playerData.PlayerLevel);
-            _damageLogUI.AnyLog($"보상: <color=red>공격력 {1f * _playerData.PlayerLevel:F0}</color>");
+            _damageLogUI.AnyLog($"보상: <color=#FFF200>공격력 {1f * _playerData.PlayerLevel:F0}</color>");
             //Debug.Log($"강화 실패 보상: 공격력 {1f * _playerData.PlayerLevel}");
         }
         else if (randomWeight < _attackPowerWeight + _criticalDamageWeight)
         {
             _playerData.AddCriticalDamageMultiplier(0.05f * _playerData.PlayerLevel);
-            _damageLogUI.AnyLog($"보상: <color=red> 크리티컬 배율 {0.05f * _playerData.PlayerLevel}</color>");
+            _damageLogUI.AnyLog($"보상: <color=#FFF200> 크리티컬 배율 {0.05f * _playerData.PlayerLevel}</color>");
             //Debug.Log($"강화 실패 보상: 크리티컬 배율 {0.05f * _playerData.PlayerLevel}");
         }
         else if (randomWeight < _attackPowerWeight + _criticalDamageWeight + _moveSpeedWeight)
         {
             _playerData.AddMoveSpeed(0.05f * _playerData.PlayerLevel);
-            _damageLogUI.AnyLog($"보상: <color=red> 이동속도 {0.05f * _playerData.PlayerLevel}</color>");
+            _damageLogUI.AnyLog($"보상: <color=#FFF200> 이동속도 {0.05f * _playerData.PlayerLevel}</color>");
             //Debug.Log($"강화 실패 보상: 이동속도 {0.05f * _playerData.PlayerLevel}");
         }
         else
         {
             _playerData.AddRotateSpeed(1f * _playerData.PlayerLevel);
-            _damageLogUI.AnyLog($"보상: <color=red>회전속도 {1f * _playerData.PlayerLevel}</color>");
+            _damageLogUI.AnyLog($"보상: <color=#FFF200>회전속도 {1f * _playerData.PlayerLevel}</color>");
             //Debug.Log($"강화 실패 보상: 회전속도 {1f * _playerData.PlayerLevel}");
         }
 
@@ -236,7 +247,7 @@ public class PlayerUpgrade : MonoBehaviour
         _objectData.AddPetUpgrade(-_playerData.PetLevel * 3);
         _playerData.AddTotalCoupon(_playerData.PetLevel * 3);
         _playerData.AddPetAttackPower(_playerData.PetLevel);
-        _damageLogUI.AnyLog($"펫 강화 성공 : <color=blue>공격력 {_playerData.PetLevel}</color>");
+        _damageLogUI.AnyLog($"펫 강화 성공 : <color=#FFF200>공격력 {_playerData.PetLevel}</color>");
         Debug.Log($"펫 강화 성공 : 공격력 {_playerData.PetLevel}");
 
         // 공격력에 따른 레벨 상승 

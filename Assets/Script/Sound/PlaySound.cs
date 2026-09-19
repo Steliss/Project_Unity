@@ -9,6 +9,8 @@ public class PlaySound : MonoBehaviour
     [SerializeField] private AudioClip _dragonBlessSound;
     [SerializeField] private AudioClip _dragonClawSound;
     [SerializeField] private AudioClip _startMenuSound;
+    [SerializeField] private AudioClip _uiUpgradeButton_Success;
+    [SerializeField] private AudioClip _uiUpgradeButton_Fail;
 
 
     public AudioClip GunFireSound => _gunFireSound;
@@ -18,5 +20,6 @@ public class PlaySound : MonoBehaviour
     public AudioClip DragonBlessSound => _dragonBlessSound;
     public AudioClip DragonClawSound => _dragonClawSound;
     public AudioClip StartMenuSound => _startMenuSound;
-
+    public AudioClip UiUpgrageButton_Success => _uiUpgradeButton_Success;
+    public AudioClip UiUpgrageButton_Fail => _uiUpgradeButton_Fail;
 }

@@ -48,27 +48,9 @@ public class PlayerAnimation : MonoBehaviour
         _hashShoot = Animator.StringToHash("bShoot");
     }
 
-    public void PlayerMoving(float stopDistance, float moveSpeed)
+    public void PlayerMoving(float moveSpeed)
     {
-        float speed01;
-
-        if (stopDistance <= 0f)
-        {
-            // 목표 위치
-            speed01 = 0f;
-        }
-        else if (stopDistance > moveSpeed)
-        {
-            // 남은 거리가 이동속도보다 큼
-            speed01 = 1f;
-        }
-        else
-        {
-            // 목표 위치와 가까움
-            speed01 = 0.5f;
-        }
-
-        _animator.SetFloat(_hashSpeed, speed01);
+        _animator.SetFloat(_hashSpeed, moveSpeed);
     }
 
     public void PlayerShoot(bool shoot)

@@ -234,7 +234,7 @@ public class RewardChoiceManager : MonoBehaviour
         private readonly bool _removeAfterSelect; 
 
         public string Name => $"공격력 증가 {SizeName()}";
-        public string Description => $"공격력이 {_value} 만큼 증가합니다.";
+        public string Description => $"공격력이 <color=#00FFFF>{_value}</color> 만큼 증가합니다.";
         public bool removeAfterSelect => _removeAfterSelect;
 
         public AttackPowerReward(float value, RewardSize rewardSize, bool removeAfterSelect)
@@ -276,7 +276,7 @@ public class RewardChoiceManager : MonoBehaviour
         private readonly bool _removeAfterSelect;
 
         public string Name => $"공격속도 {SizeName()}";
-        public string Description => $"공격속도가 {_value} 만큼 증가합니다.";
+        public string Description => $"공격속도가 <color=#00FFFF>{_value}</color> 만큼 증가합니다.";
         public bool removeAfterSelect => _removeAfterSelect;
 
         public AttackSpeedReward(float value, RewardSize rewardSize, bool removeAfterSelect)
@@ -317,7 +317,7 @@ public class RewardChoiceManager : MonoBehaviour
         private readonly bool _removeAfterSelect;
 
         public string Name => $"사거리 {SizeName()}";
-        public string Description => $"사거리가 {_value} 만큼 증가합니다.";
+        public string Description => $"사거리가 <color=#00FFFF>{_value}</color> 만큼 증가합니다.";
         public bool removeAfterSelect => _removeAfterSelect;
 
         public AttackRangeReward(float value, RewardSize rewardSize, bool removeAfterSelect)
@@ -358,7 +358,7 @@ public class RewardChoiceManager : MonoBehaviour
         private readonly bool _removeAfterSelect;
 
         public string Name => $"회전속도 {SizeName()}";
-        public string Description => $"회전속도가 {_value} 만큼 증가합니다.";
+        public string Description => $"회전속도가 <color=#00FFFF>{_value}</color> 만큼 증가합니다.";
         public bool removeAfterSelect => _removeAfterSelect;
 
         public RotateSpeedReward(float value, RewardSize rewardSize, bool removeAfterSelect)
@@ -400,7 +400,7 @@ public class RewardChoiceManager : MonoBehaviour
         private readonly bool _removeAfterSelect;
 
         public string Name => $"이동속도 증가 {SizeName()}";
-        public string Description => $"이동속도가 {_value} 만큼 증가합니다.";
+        public string Description => $"이동속도가 <color=#00FFFF>{_value}</color> 만큼 증가합니다.";
         public bool removeAfterSelect => _removeAfterSelect;
 
         public MoveSpeedReward(float value, RewardSize rewardSize, bool removeAfterSelect)
@@ -441,7 +441,7 @@ public class RewardChoiceManager : MonoBehaviour
         private readonly bool _removeAfterSelect;
 
         public string Name => $"크리티컬 확률 증가 {SizeName()}";
-        public string Description => $"크리티컬 확률이 {_value} 만큼 증가합니다.";
+        public string Description => $"크리티컬 확률이 <color=#00FFFF>{_value}</color> 만큼 증가합니다.";
         public bool removeAfterSelect => _removeAfterSelect;
 
         public CriticalChanceReward(float value, RewardSize rewardSize, bool removeAfterSelect)
@@ -482,7 +482,7 @@ public class RewardChoiceManager : MonoBehaviour
         private readonly bool _removeAfterSelect;
 
         public string Name => $"크리티컬 배율 증가 {SizeName()}";
-        public string Description => $"크리티컬 배율이 {_value} 만큼 증가합니다.";
+        public string Description => $"크리티컬 배율이 <color=#00FFFF>{_value}</color> 만큼 증가합니다.";
         public bool removeAfterSelect => _removeAfterSelect;
 
         public CriticalDamageReward(float value, RewardSize rewardSize, bool removeAfterSelect)
